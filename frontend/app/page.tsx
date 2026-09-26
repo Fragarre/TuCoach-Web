@@ -1192,6 +1192,43 @@ async function descargarMaterialPdf() {
     }
   }
 
+  useEffect(() => {
+    if (
+      !session ||
+      !estadoSuscripcion ||
+      estadoSuscripcion.suscrito ||
+      !estadoSuscripcion.prueba_24h_activa ||
+      !estadoSuscripcion.prueba_24h_fin_at
+    ) {
+      return;
+    }
+
+    const finMs = new Date(estadoSuscripcion.prueba_24h_fin_at).getTime();
+    if (!Number.isFinite(finMs)) return;
+
+    const actualizarAlCaducar = () => {
+      void actualizarSuscripcion();
+    };
+    const esperaMs = finMs - Date.now();
+
+    if (esperaMs <= 0) {
+      actualizarAlCaducar();
+      return;
+    }
+
+    const temporizador = window.setTimeout(
+      actualizarAlCaducar,
+      Math.min(esperaMs + 250, 2_147_483_647)
+    );
+
+    return () => window.clearTimeout(temporizador);
+  }, [
+    session,
+    estadoSuscripcion?.suscrito,
+    estadoSuscripcion?.prueba_24h_activa,
+    estadoSuscripcion?.prueba_24h_fin_at,
+  ]);
+
   async function abrirCheckout() {
     setError("");
     setMensaje("");
