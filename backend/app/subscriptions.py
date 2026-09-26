@@ -392,6 +392,7 @@ def obtener_estado_suscripcion(user_id: UUID) -> dict:
 
             if (
                 perfil is not None
+                and perfil["prueba_gratuita_consumida_at"] is None
                 and perfil["prueba_24h_inicio_at"] is None
                 and not suscrito_stripe
                 and not acceso_interno
@@ -402,6 +403,7 @@ def obtener_estado_suscripcion(user_id: UUID) -> dict:
                     SET prueba_24h_inicio_at = now(),
                         updated_at = now()
                     WHERE id = %s
+                      AND prueba_gratuita_consumida_at IS NULL
                       AND prueba_24h_inicio_at IS NULL
                     RETURNING prueba_24h_inicio_at
                     """,
