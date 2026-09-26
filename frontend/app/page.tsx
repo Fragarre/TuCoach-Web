@@ -2015,6 +2015,7 @@ async function descargarMaterialPdf() {
                 <li>Corrección y análisis acumulado</li>
                 <li>PDFs de preguntas y soluciones</li>
                 <li>Materiales de estudio: resúmenes, extractos y normas completas</li>
+                <li>Descubre oportunidades de empleo público</li>
               </ul>
               <button
                 type="button"
