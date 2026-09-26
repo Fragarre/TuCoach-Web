@@ -2028,7 +2028,7 @@ async function descargarMaterialPdf() {
             <div className="pricing-card">
               <span className="pricing-name">NetReto</span>
               <div className="pricing-price">
-                <strong>10 €</strong>
+                <strong>15 €</strong>
                 <span>/ mes</span>
               </div>
               <ul>
