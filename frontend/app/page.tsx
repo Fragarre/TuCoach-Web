@@ -1863,15 +1863,6 @@ async function descargarMaterialPdf() {
               <div className="value-step">
                 <span className="value-step-number">04</span>
                 <div>
-                  <strong>Resuelve dudas y profundiza</strong>
-                  <p>
-                    Consulta tus dudas con el apoyo del contenido de tu temario o explora conocimiento general para comprender mejor cada materia.
-                  </p>
-                </div>
-              </div>
-              <div className="value-step">
-                <span className="value-step-number">05</span>
-                <div>
                   <strong>Estudia también con materiales</strong>
                   <p>
                     Descarga resúmenes, extractos del temario y textos completos de las normas de tu convocatoria.
@@ -1899,7 +1890,7 @@ async function descargarMaterialPdf() {
               </p>
             </div>
 
-            <div className="public-process public-process-five">
+            <div className="public-process">
               <article id="simulacros">
                 <span className="process-number">01</span>
                 <div className="process-content">
@@ -1937,21 +1928,8 @@ async function descargarMaterialPdf() {
                 </div>
               </article>
 
-              <article>
-                <span className="process-number">04</span>
-                <div className="process-content">
-                  <span className="process-kicker">Profundiza</span>
-                  <h3>Resuelve dudas con el Chat</h3>
-                  <p>
-                    Consulta el contenido de tu convocatoria o amplía la explicación
-                    con conocimiento general para comprender mejor la materia antes
-                    de volver a practicar.
-                  </p>
-                </div>
-              </article>
-
               <article id="materiales-proceso">
-                <span className="process-number">05</span>
+                <span className="process-number">04</span>
                 <div className="process-content">
                   <span className="process-kicker">Estudia</span>
                   <h3>Apóyate en materiales de tu convocatoria</h3>
@@ -2037,7 +2015,6 @@ async function descargarMaterialPdf() {
                 <li>Corrección y análisis acumulado</li>
                 <li>PDFs de preguntas y soluciones</li>
                 <li>Materiales de estudio: resúmenes, extractos y normas completas</li>
-                <li>Chat de apoyo de la convocatoria</li>
               </ul>
               <button
                 type="button"
