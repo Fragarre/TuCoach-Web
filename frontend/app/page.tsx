@@ -2019,7 +2019,7 @@ async function descargarMaterialPdf() {
               <button
                 type="button"
                 className="secondary public-cta"
-                onClick={() => router.push("/empleo")}
+                onClick={() => window.location.assign("/empleo")}
               >
                 Ver oportunidades →
               </button>
