@@ -1993,6 +1993,39 @@ async function descargarMaterialPdf() {
             </div>
           </section>
 
+          <section className="public-highlight">
+            <div>
+              <span className="eyebrow">Empleo público</span>
+              <h2>Descubre oportunidades y sigue sus novedades</h2>
+              <p>
+                Consulta oportunidades de empleo público de la Generalitat Valenciana,
+                las diputaciones y los ayuntamientos de Valencia, Alicante y Castellón,
+                con su información oficial reunida en un mismo lugar.
+              </p>
+            </div>
+            <div className="highlight-stats">
+              <div>
+                <span>Descubre</span>
+                <strong>Encuentra oportunidades que encajan contigo</strong>
+              </div>
+              <div>
+                <span>Infórmate</span>
+                <strong>Consulta sus publicaciones y novedades oficiales</strong>
+              </div>
+              <div>
+                <span>Prepárate</span>
+                <strong>Conecta cada oportunidad con tu preparación</strong>
+              </div>
+              <button
+                type="button"
+                className="secondary public-cta"
+                onClick={() => router.push("/empleo")}
+              >
+                Ver oportunidades →
+              </button>
+            </div>
+          </section>
+
           <section className="public-pricing" id="precio">
             <div>
               <span className="eyebrow">Precio sencillo</span>
