@@ -3204,7 +3204,7 @@ async function descargarMaterialPdf() {
               materialNormaId === null ||
               (!estadoSuscripcion?.suscrito &&
                 (!prueba24hActiva ||
-                  estadoSuscripcion.prueba_24h_materiales_restantes <= 0))
+                  (estadoSuscripcion?.prueba_24h_materiales_restantes ?? 0) <= 0))
             }
             onClick={descargarMaterialPdf}
           >
@@ -3249,7 +3249,7 @@ async function descargarMaterialPdf() {
                 convocatoriaSimulacroId === null ||
                 (!estadoSuscripcion?.suscrito &&
                   (!prueba24hActiva ||
-                    estadoSuscripcion.prueba_24h_simulacros_restantes <= 0))
+                    (estadoSuscripcion?.prueba_24h_simulacros_restantes ?? 0) <= 0))
               }
               onClick={() => convocatoriaSimulacroId !== null && crear(convocatoriaSimulacroId)}
             >
@@ -3429,7 +3429,7 @@ async function descargarMaterialPdf() {
                   ocupado ||
                   (!estadoSuscripcion?.suscrito &&
                     (!prueba24hActiva ||
-                      estadoSuscripcion.prueba_24h_tests_restantes <= 0))
+                      (estadoSuscripcion?.prueba_24h_tests_restantes ?? 0) <= 0))
                 }
                 onClick={crearTest}
               >
