@@ -23,6 +23,7 @@ function fecha(valor:string|null){if(!valor)return "—";const d=new Date(valor)
 function identificacion(p:Proceso){const texto=p.denominacion||"";const m=texto.match(/\b(?:Convocatoria|Convocat[oò]ria)\s+([A-Z]?\s*\d{1,3}\/\d{2,4}[A-Z]?)\b/i);if(m)return m[1].replace(/\s+/g,"").toUpperCase();const mAut=texto.match(/\b(AUT\s*\d{1,3}\/\d{2,4})\b/i);if(mAut)return mAut[1].replace(/\s+/g,"").toUpperCase();return null}
 function textoInscripcion(p:Proceso){
   const i=p.inscripcion;
+  if(!i&&p.estado_inscripcion==="PENDIENTE_BOE")return "Inscripción pendiente de publicación en BOE";
   if(!i)return "Plazo de inscripción no determinado";
   if(i.plazos_multiples&&i.plazos?.length)return i.codigo==="ABIERTO"?"Inscripción abierta · varios plazos":i.codigo==="CERRADO"?"Inscripción cerrada · varios plazos":"Varios plazos de inscripción";
   if(i.codigo==="ABIERTO"&&i.fecha_cierre)return `Inscripción abierta hasta ${fecha(i.fecha_cierre)}`;
