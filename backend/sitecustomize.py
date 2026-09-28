@@ -4,7 +4,6 @@ import atexit
 import os
 import subprocess
 import sys
-import time
 from pathlib import Path
 
 
@@ -89,27 +88,11 @@ if _activar_unificacion_empleo():
                 self.state.employment_process = proceso
                 atexit.register(detener_empleo)
 
-                limite = time.monotonic() + 45
-                ultimo_error = ""
-                while time.monotonic() < limite:
-                    if proceso.poll() is not None:
-                        raise RuntimeError(
-                            f"El backend interno de Empleo terminó durante el arranque (código {proceso.returncode})."
-                        )
-                    try:
-                        respuesta = httpx.get(f"{_EMPLOYMENT_BASE}/health", timeout=2.0)
-                        if respuesta.status_code == 200:
-                            return
-                        ultimo_error = f"HTTP {respuesta.status_code}"
-                    except Exception as exc:
-                        ultimo_error = f"{type(exc).__name__}: {exc}"
-                    time.sleep(0.5)
-
-                detener_empleo()
-                raise RuntimeError(
-                    "El backend interno de Empleo no respondió a /health durante el arranque. "
-                    f"Último error: {ultimo_error}"
-                )
+                # El proceso interno puede tardar más que la ventana de detección
+                # de puertos de Render. No se bloquea el arranque público: hasta
+                # que Empleo responda, el proxy devolverá 503 de forma explícita.
+                # Esto permite que Render conserve el servicio público disponible
+                # sin acceder ni modificar datos durante el inicio.
 
             async def reenviar(request: Request, path: str) -> Response:
                 destino = f"{_EMPLOYMENT_BASE}/{path.lstrip('/')}"

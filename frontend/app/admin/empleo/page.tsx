@@ -5,301 +5,85 @@ import type { CSSProperties, FormEvent } from "react";
 import { createClient } from "../../../lib/supabase/client";
 
 type AmbitoAdministrativo = "SI" | "NO" | "REVISION";
-
-type Pendiente = {
-  id: number;
-  organismo_id: number;
-  organismo_nombre: string | null;
-  codigo_externo: string | null;
-  denominacion: string;
-  grupo: string | null;
-  tipo_proceso: string | null;
-  sistema_selectivo: string | null;
-  turno: string | null;
-  plazas: number | null;
-  estado: string | null;
-  origen_dato: string;
-  revision_estado: string;
-  ambito_administrativo?: AmbitoAdministrativo;
-  fecha_convocatoria: string | null;
-  fecha_apertura: string | null;
-  fecha_cierre: string | null;
-  fecha_examen: string | null;
-  lugar_examen: string | null;
-  observaciones_internas: string | null;
+type Organismo = { id: number; nombre: string };
+type MunicipioCatalogo = { codigo_ine: string; nombre: string; nombre_val: string; etiqueta: string };
+type Proceso = {
+  id: number; organismo_id: number; organismo_nombre: string | null; codigo_externo: string | null;
+  denominacion: string; grupo: string | null; subgrupo: string | null; cuerpo_escala: string | null;
+  tipo_proceso: string | null; sistema_selectivo: string | null; turno: string | null; plazas: number | null;
+  estado: string | null; origen_dato: string; revision_estado: string; ambito_administrativo?: AmbitoAdministrativo;
+  fecha_convocatoria: string | null; fecha_apertura: string | null; fecha_cierre: string | null;
+  fecha_examen: string | null; lugar_examen: string | null; observaciones_internas: string | null;
 };
-
-type Convocatoria = Pendiente;
-
-type Temario = {
-  contenido_texto: string;
-  origen: string;
-  estado: string;
-  fuente_url: string | null;
-  observaciones: string | null;
-} | null;
-
-type ExtraccionTemario = {
-  contenido_texto: string;
-  fuente_url: string;
-  fuente_publicacion_id: number;
-  fuente_referencia: string | null;
-  fuente_titulo: string | null;
-  caracteres_fuente: number;
+type Temario = { contenido_texto: string; origen: string; estado: string; fuente_url: string | null; observaciones: string | null } | null;
+type ExtraccionTemario = { contenido_texto: string; fuente_url: string; fuente_referencia: string | null; fuente_titulo: string | null };
+type AltaManual = {
+  administracion: "GENERALITAT" | "DIPUTACION" | "AYUNTAMIENTO"; provincia: string; municipio_codigo_ine: string; denominacion: string; codigo_externo: string; grupo: string; subgrupo: string; cuerpo_escala: string;
+  tipo_proceso: string; sistema_selectivo: string; turno: string; plazas: string; estado: string; revision_estado: string;
+  fecha_convocatoria: string; fecha_apertura: string; fecha_cierre: string; fecha_examen: string; lugar_examen: string; observaciones_internas: string;
 };
-
-type Formulario = {
-  organismo_id: string;
-  denominacion: string;
-  codigo_externo: string;
-  grupo: string;
-  tipo_proceso: string;
-  sistema_selectivo: string;
-  turno: string;
-  plazas: string;
-  estado: string;
-  revision_estado: string;
-  fecha_convocatoria: string;
-  fecha_apertura: string;
-  fecha_cierre: string;
-  fecha_examen: string;
-  lugar_examen: string;
-  observaciones_internas: string;
-};
-
-const inicial: Formulario = {
-  organismo_id: "1", denominacion: "", codigo_externo: "", grupo: "", tipo_proceso: "Oposición",
-  sistema_selectivo: "Oposición", turno: "TURNO_LIBRE", plazas: "", estado: "EN_CURSO",
-  revision_estado: "PENDIENTE_REVISION", fecha_convocatoria: "", fecha_apertura: "", fecha_cierre: "",
-  fecha_examen: "", lugar_examen: "", observaciones_internas: "",
-};
-
+type Correccion = { grupo: string; subgrupo: string; cuerpo_escala: string; fecha_apertura: string; fecha_cierre: string; evidencia_url: string; observaciones_internas: string };
+const altaInicial: AltaManual = { administracion: "GENERALITAT", provincia: "", municipio_codigo_ine: "", denominacion: "", codigo_externo: "", grupo: "", subgrupo: "", cuerpo_escala: "", tipo_proceso: "Oposición", sistema_selectivo: "Oposición", turno: "TURNO_LIBRE", plazas: "", estado: "EN_CURSO", revision_estado: "PENDIENTE_REVISION", fecha_convocatoria: "", fecha_apertura: "", fecha_cierre: "", fecha_examen: "", lugar_examen: "", observaciones_internas: "" };
+const fecha = (valor: string | null) => (valor || "").slice(0, 10);
+const clasificacion = (p: Proceso) => [p.grupo && `Grupo: ${p.grupo}`, p.subgrupo && `Subgrupo: ${p.subgrupo}`, p.cuerpo_escala && `Escala: ${p.cuerpo_escala}`].filter(Boolean).join(" · ") || "Sin clasificar";
+const normalizarBusqueda = (texto: string) => texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase();
 async function api<T>(path: string, init?: RequestInit): Promise<T> {
-  const supabase = createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  const headers = new Headers(init?.headers);
-  headers.set("Content-Type", "application/json");
+  const supabase = createClient(); const { data: { session } } = await supabase.auth.getSession(); const headers = new Headers(init?.headers); headers.set("Content-Type", "application/json");
   if (session?.access_token) headers.set("Authorization", `Bearer ${session.access_token}`);
-  const response = await fetch(`/api/empleo/admin/gestion/${path}`, { cache: "no-store", ...init, headers });
-  const text = await response.text();
-  let body: unknown = null;
+  const response = await fetch(`/api/empleo/admin/gestion/${path}`, { cache: "no-store", ...init, headers }); const text = await response.text(); let body: unknown = null;
   try { body = text ? JSON.parse(text) : null; } catch { body = text; }
-  if (!response.ok) {
-    const detail = body && typeof body === "object" && "detail" in body ? String((body as { detail: unknown }).detail) : `HTTP ${response.status}`;
-    throw new Error(detail);
-  }
+  if (!response.ok) throw new Error(body && typeof body === "object" && "detail" in body ? String((body as { detail: unknown }).detail) : `HTTP ${response.status}`);
   return body as T;
 }
-
-function formularioDe(p: Pendiente): Formulario {
-  return {
-    organismo_id: String(p.organismo_id), denominacion: p.denominacion || "", codigo_externo: p.codigo_externo || "",
-    grupo: p.grupo || "", tipo_proceso: p.tipo_proceso || "", sistema_selectivo: p.sistema_selectivo || "",
-    turno: p.turno || "", plazas: p.plazas == null ? "" : String(p.plazas), estado: p.estado || "EN_CURSO",
-    revision_estado: p.revision_estado || "PENDIENTE_REVISION", fecha_convocatoria: (p.fecha_convocatoria || "").slice(0, 10),
-    fecha_apertura: (p.fecha_apertura || "").slice(0, 10), fecha_cierre: (p.fecha_cierre || "").slice(0, 10),
-    fecha_examen: (p.fecha_examen || "").slice(0, 10), lugar_examen: p.lugar_examen || "",
-    observaciones_internas: p.observaciones_internas || "",
-  };
-}
+function correccionDe(p: Proceso): Correccion { return { grupo: p.grupo || "", subgrupo: p.subgrupo || "", cuerpo_escala: p.cuerpo_escala || "", fecha_apertura: fecha(p.fecha_apertura), fecha_cierre: fecha(p.fecha_cierre), evidencia_url: "", observaciones_internas: "" }; }
 
 export default function EmpleoAdminPage() {
-  const [pendientes, setPendientes] = useState<Pendiente[]>([]);
-  const [convocatorias, setConvocatorias] = useState<Convocatoria[]>([]);
-  const [seleccion, setSeleccion] = useState<Pendiente | null>(null);
-  const [form, setForm] = useState<Formulario>(inicial);
-  const [temario, setTemario] = useState<Temario>(null);
-  const [textoTemario, setTextoTemario] = useState("");
-  const [estadoTemario, setEstadoTemario] = useState("PENDIENTE_REVISION");
-  const [origenTemario, setOrigenTemario] = useState("MANUAL");
-  const [fuenteTemario, setFuenteTemario] = useState<string | null>(null);
-  const [nuevo, setNuevo] = useState(false);
-  const [cargando, setCargando] = useState(true);
-  const [extrayendo, setExtrayendo] = useState(false);
-  const [guardando, setGuardando] = useState(false);
-  const [error, setError] = useState("");
-  const [mensaje, setMensaje] = useState("");
-
-  async function cargar() {
-    setCargando(true); setError("");
-    try {
-      const [p, c] = await Promise.all([
-        api<Pendiente[]>("pendientes?limite=200"),
-        api<Convocatoria[]>("convocatorias"),
-      ]);
-      const ambitos = new Map(c.map(x => [x.id, x.ambito_administrativo || "REVISION"]));
-      setPendientes(p.map(x => ({ ...x, ambito_administrativo: ambitos.get(x.id) || "REVISION" })));
-      setConvocatorias(c);
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setCargando(false); }
-  }
-
+  const [pendientes, setPendientes] = useState<Proceso[]>([]); const [convocatorias, setConvocatorias] = useState<Proceso[]>([]); const [organismos, setOrganismos] = useState<Organismo[]>([]);
+  const [seleccion, setSeleccion] = useState<Proceso | null>(null); const [alta, setAlta] = useState<AltaManual>(altaInicial); const [correccion, setCorreccion] = useState<Correccion>({ ...correccionDe({ grupo: null, subgrupo: null, cuerpo_escala: null, fecha_apertura: null, fecha_cierre: null } as Proceso) });
+  const [modoAlta, setModoAlta] = useState(false); const [temario, setTemario] = useState<Temario>(null); const [textoTemario, setTextoTemario] = useState(""); const [estadoTemario, setEstadoTemario] = useState("PENDIENTE_REVISION"); const [origenTemario, setOrigenTemario] = useState("MANUAL"); const [fuenteTemario, setFuenteTemario] = useState<string | null>(null);
+  const [cargando, setCargando] = useState(true); const [guardando, setGuardando] = useState(false); const [extrayendo, setExtrayendo] = useState(false); const [error, setError] = useState(""); const [mensaje, setMensaje] = useState("");
+  const [busqueda, setBusqueda] = useState(""); const [filtroPendiente, setFiltroPendiente] = useState("INCOMPLETA"); const [filtroOrganismo, setFiltroOrganismo] = useState("");
+  const [municipios, setMunicipios] = useState<MunicipioCatalogo[]>([]); const [municipioTexto, setMunicipioTexto] = useState("");
+  async function cargar() { setCargando(true); setError(""); try { const [p, c, o] = await Promise.all([api<Proceso[]>("pendientes?limite=200"), api<Proceso[]>("convocatorias"), api<Organismo[]>("organismos")]); const ambitos = new Map(c.map(x => [x.id, x.ambito_administrativo || "REVISION"])); setPendientes(p.map(x => ({ ...x, ambito_administrativo: ambitos.get(x.id) || "REVISION" }))); setConvocatorias(c); setOrganismos(o); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setCargando(false); } }
   useEffect(() => { void cargar(); }, []);
-
-  async function abrir(p: Pendiente) {
-    setSeleccion(p); setNuevo(false); setForm(formularioDe(p)); setMensaje(""); setError("");
-    try {
-      const t = await api<Temario>(`procesos/${p.id}/temario`);
-      setTemario(t); setTextoTemario(t?.contenido_texto || ""); setEstadoTemario(t?.estado || "PENDIENTE_REVISION");
-      setOrigenTemario(t?.origen || "MANUAL"); setFuenteTemario(t?.fuente_url || null);
-    } catch (e) {
-      setTemario(null); setTextoTemario(""); setEstadoTemario("PENDIENTE_REVISION"); setOrigenTemario("MANUAL"); setFuenteTemario(null);
-      setError(e instanceof Error ? e.message : String(e));
-    }
-  }
-
-  function crear() {
-    setSeleccion(null); setNuevo(true); setForm(inicial); setTemario(null); setTextoTemario("");
-    setEstadoTemario("PENDIENTE_REVISION"); setOrigenTemario("MANUAL"); setFuenteTemario(null); setMensaje(""); setError("");
-  }
-
-  async function guardar(e: FormEvent) {
-    e.preventDefault(); setGuardando(true); setError(""); setMensaje("");
-    const payload = {
-      ...form, organismo_id: Number(form.organismo_id), plazas: form.plazas ? Number(form.plazas) : null,
-      codigo_externo: form.codigo_externo || null, grupo: form.grupo || null, tipo_proceso: form.tipo_proceso || null,
-      sistema_selectivo: form.sistema_selectivo || null, turno: form.turno || null,
-      fecha_convocatoria: form.fecha_convocatoria || null, fecha_apertura: form.fecha_apertura || null,
-      fecha_cierre: form.fecha_cierre || null, fecha_examen: form.fecha_examen || null,
-      lugar_examen: form.lugar_examen || null, observaciones_internas: form.observaciones_internas || null, es_oportunidad: true,
-    };
-    try {
-      const p = nuevo ? await api<Pendiente>("procesos", { method: "POST", body: JSON.stringify(payload) })
-        : await api<Pendiente>(`procesos/${seleccion?.id}`, { method: "PUT", body: JSON.stringify(payload) });
-      setSeleccion(p); setForm(formularioDe(p)); setNuevo(false); setMensaje("Convocatoria guardada."); await cargar();
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setGuardando(false); }
-  }
-
-  async function cambiarRevision(estado: string) {
-    if (!seleccion) return;
-    setGuardando(true); setError(""); setMensaje("");
-    try {
-      await api(`procesos/${seleccion.id}/revision`, { method: "PATCH", body: JSON.stringify({ estado, observaciones: form.observaciones_internas || null }) });
-      setForm((actual) => ({ ...actual, revision_estado: estado })); setSeleccion({ ...seleccion, revision_estado: estado });
-      setMensaje(`Estado cambiado a ${estado}.`); await cargar();
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setGuardando(false); }
-  }
-
-  async function cambiarAmbito(ambito: AmbitoAdministrativo) {
-    if (!seleccion) return;
-    setGuardando(true); setError(""); setMensaje("");
-    try {
-      await api(`procesos/${seleccion.id}/ambito-administrativo`, {
-        method: "PATCH", body: JSON.stringify({ ambito_administrativo: ambito }),
-      });
-      setSeleccion({ ...seleccion, ambito_administrativo: ambito });
-      setMensaje(ambito === "SI" ? "Incluida en el ámbito administrativo de Tu Coach." : ambito === "NO" ? "Excluida del ámbito administrativo de Tu Coach." : "Marcada para revisión del ámbito administrativo.");
-      await cargar();
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setGuardando(false); }
-  }
-
-  async function extraerTemario() {
-    if (!seleccion) return;
-    setExtrayendo(true); setError(""); setMensaje("");
-    try {
-      const resultado = await api<ExtraccionTemario>(`procesos/${seleccion.id}/temario/extraer`, { method: "POST" });
-      setTextoTemario(resultado.contenido_texto); setOrigenTemario("AUTOMATICO"); setEstadoTemario("PENDIENTE_REVISION"); setFuenteTemario(resultado.fuente_url);
-      setMensaje(`Temario extraído de ${resultado.fuente_titulo || resultado.fuente_referencia || "la fuente oficial"}. Revísalo antes de guardarlo.`);
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setExtrayendo(false); }
-  }
-
-  async function guardarTemario() {
-    if (!seleccion || !textoTemario.trim()) return;
-    setGuardando(true); setError(""); setMensaje("");
-    try {
-      const t = await api<Temario>(`procesos/${seleccion.id}/temario`, {
-        method: "PUT",
-        body: JSON.stringify({ contenido_texto: textoTemario, origen: origenTemario, estado: estadoTemario, fuente_url: fuenteTemario }),
-      });
-      setTemario(t); setMensaje("Temario guardado.");
-    } catch (e) { setError(e instanceof Error ? e.message : String(e)); }
-    finally { setGuardando(false); }
-  }
-
+  useEffect(() => { if (alta.administracion !== "AYUNTAMIENTO" || !alta.provincia) { setMunicipios([]); return; } let activa = true; void api<MunicipioCatalogo[]>(`catalogo-municipios?provincia=${encodeURIComponent(alta.provincia)}`).then(datos => { if (activa) setMunicipios(datos); }).catch(e => { if (activa) setError(e instanceof Error ? e.message : String(e)); }); return () => { activa = false; }; }, [alta.administracion, alta.provincia]);
+  async function abrir(resumen: Proceso) { setModoAlta(false); setMensaje(""); setError(""); try { const [proceso, t] = await Promise.all([api<Proceso>(`procesos/${resumen.id}`), api<Temario>(`procesos/${resumen.id}/temario`)]); setSeleccion(proceso); setCorreccion(correccionDe(proceso)); setTemario(t); setTextoTemario(t?.contenido_texto || ""); setEstadoTemario(t?.estado || "PENDIENTE_REVISION"); setOrigenTemario(t?.origen || "MANUAL"); setFuenteTemario(t?.fuente_url || null); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } }
+  function nuevaAlta() { setSeleccion(null); setModoAlta(true); setAlta(altaInicial); setMunicipioTexto(""); setMensaje(""); setError(""); }
+  async function guardarAlta(e: FormEvent) { e.preventDefault(); if (alta.administracion === "AYUNTAMIENTO" && !alta.municipio_codigo_ine) { setError("Selecciona un municipio de la lista oficial."); return; } setGuardando(true); setError(""); setMensaje(""); const payload = { ...alta, provincia: alta.administracion === "GENERALITAT" ? null : alta.provincia || null, municipio_codigo_ine: alta.administracion === "AYUNTAMIENTO" ? alta.municipio_codigo_ine || null : null, plazas: alta.plazas ? Number(alta.plazas) : null, codigo_externo: alta.codigo_externo || null, grupo: alta.grupo || null, subgrupo: alta.subgrupo || null, cuerpo_escala: alta.cuerpo_escala || null, tipo_proceso: alta.tipo_proceso || null, sistema_selectivo: alta.sistema_selectivo || null, turno: alta.turno || null, fecha_convocatoria: alta.fecha_convocatoria || null, fecha_apertura: alta.fecha_apertura || null, fecha_cierre: alta.fecha_cierre || null, fecha_examen: alta.fecha_examen || null, lugar_examen: alta.lugar_examen || null, observaciones_internas: alta.observaciones_internas || null, es_oportunidad: true }; try { const p = await api<Proceso>("procesos/alta-manual", { method: "POST", body: JSON.stringify(payload) }); setModoAlta(false); setMensaje("Alta manual creada. Revísala antes de publicarla."); await cargar(); await abrir(p); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setGuardando(false); } }
+  async function guardarCorreccion(e: FormEvent) { e.preventDefault(); if (!seleccion) return; setGuardando(true); setError(""); setMensaje(""); try { const p = await api<Proceso & { campos_corregidos?: string[] }>(`procesos/${seleccion.id}/correccion-manual`, { method: "PATCH", body: JSON.stringify(correccion) }); setSeleccion(p); setCorreccion(correccionDe(p)); setMensaje(`Corrección guardada: ${p.campos_corregidos?.join(", ") || "sin cambios"}.`); await cargar(); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setGuardando(false); } }
+  async function cambiarRevision(estado: string) { if (!seleccion) return; setGuardando(true); setError(""); try { await api(`procesos/${seleccion.id}/revision`, { method: "PATCH", body: JSON.stringify({ estado, observaciones: correccion.observaciones_internas || null }) }); setSeleccion({ ...seleccion, revision_estado: estado }); setMensaje(`Estado cambiado a ${estado}.`); await cargar(); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setGuardando(false); } }
+  async function cambiarAmbito(ambito: AmbitoAdministrativo) { if (!seleccion) return; setGuardando(true); setError(""); try { await api(`procesos/${seleccion.id}/ambito-administrativo`, { method: "PATCH", body: JSON.stringify({ ambito_administrativo: ambito }) }); setSeleccion({ ...seleccion, ambito_administrativo: ambito }); setMensaje("Ámbito administrativo actualizado."); await cargar(); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setGuardando(false); } }
+  async function extraerTemario() { if (!seleccion) return; setExtrayendo(true); setError(""); try { const r = await api<ExtraccionTemario>(`procesos/${seleccion.id}/temario/extraer`, { method: "POST" }); setTextoTemario(r.contenido_texto); setOrigenTemario("AUTOMATICO"); setEstadoTemario("PENDIENTE_REVISION"); setFuenteTemario(r.fuente_url); setMensaje(`Temario propuesto desde ${r.fuente_titulo || r.fuente_referencia || "la fuente oficial"}.`); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setExtrayendo(false); } }
+  async function guardarTemario() { if (!seleccion || !textoTemario.trim()) return; setGuardando(true); setError(""); try { const t = await api<Temario>(`procesos/${seleccion.id}/temario`, { method: "PUT", body: JSON.stringify({ contenido_texto: textoTemario, origen: origenTemario, estado: estadoTemario, fuente_url: fuenteTemario }) }); setTemario(t); setMensaje("Temario guardado."); } catch (e) { setError(e instanceof Error ? e.message : String(e)); } finally { setGuardando(false); } }
   if (cargando) return <main style={styles.main}><p>Cargando Centro de gestión…</p></main>;
-
-  const renderItem = (p: Pendiente) => (
-    <button type="button" key={p.id} onClick={() => void abrir(p)} style={seleccion?.id === p.id ? styles.itemActive : styles.item}>
-      <strong>{p.denominacion}</strong><span>{p.organismo_nombre || "—"}</span><span>{p.origen_dato} · {p.revision_estado} · Administrativo: {p.ambito_administrativo || "REVISION"}</span>
-    </button>
-  );
-
-  return (
-    <main style={styles.main}>
-      <header style={styles.header}>
-        <div><div style={styles.kicker}>TU COACH · ADMINISTRACIÓN</div><h1 style={styles.title}>Centro de gestión de Empleo</h1><p style={styles.subtitle}>Revisión, edición y mantenimiento de las oportunidades administrativas de empleo público.</p></div>
-        <a href="/empleo" style={styles.link}>Volver a Empleo</a>
-      </header>
-      {error && <div style={styles.error}>{error}</div>}
-      {mensaje && <div style={styles.success}>{mensaje}</div>}
-      <div style={styles.layout}>
-        <aside style={styles.sidebar}>
-          <div style={styles.sideHead}><strong>Pendientes de revisión</strong><button type="button" onClick={crear} style={styles.primary}>+ Nueva</button></div>
-          {pendientes.length === 0 ? <p style={styles.muted}>No hay pendientes.</p> : pendientes.map(renderItem)}
-          <div style={styles.sectionTitle}>Convocatorias existentes</div>
-          {convocatorias.length === 0 ? <p style={styles.muted}>No hay convocatorias.</p> : convocatorias.map(renderItem)}
-        </aside>
-        <section style={styles.content}>
-          {!seleccion && !nuevo ? <div style={styles.empty}><h2>Gestión de convocatorias</h2><p>Selecciona una convocatoria pendiente o una convocatoria existente, o crea una nueva.</p></div> : <>
-            <form onSubmit={guardar} style={styles.form}>
-              <h2>{nuevo ? "Nueva convocatoria" : "Editar convocatoria"}</h2>
-              {!nuevo && seleccion && <div style={styles.ambitoBox}>
-                <div><strong>Ámbito administrativo de Tu Coach</strong><p style={styles.muted}>Solo las convocatorias marcadas como SI aparecen en el catálogo público. REVISION requiere decisión manual.</p></div>
-                <select value={seleccion.ambito_administrativo || "REVISION"} disabled={guardando} onChange={(e) => void cambiarAmbito(e.target.value as AmbitoAdministrativo)} style={styles.status}>
-                  <option value="SI">SI · Administrativa</option>
-                  <option value="NO">NO · Fuera de ámbito</option>
-                  <option value="REVISION">REVISION · Decidir manualmente</option>
-                </select>
-              </div>}
-              <div style={styles.grid}>
-                <label>Organismo<select value={form.organismo_id} onChange={(e) => setForm({ ...form, organismo_id: e.target.value })}><option value="1">Generalitat Valenciana</option><option value="2">Diputación de Valencia</option></select></label>
-                <label>Denominación<input required value={form.denominacion} onChange={(e) => setForm({ ...form, denominacion: e.target.value })} /></label>
-                <label>Código externo<input value={form.codigo_externo} onChange={(e) => setForm({ ...form, codigo_externo: e.target.value })} /></label>
-                <label>Grupo<input value={form.grupo} onChange={(e) => setForm({ ...form, grupo: e.target.value })} /></label>
-                <label>Tipo de proceso<input value={form.tipo_proceso} onChange={(e) => setForm({ ...form, tipo_proceso: e.target.value })} /></label>
-                <label>Sistema selectivo<input value={form.sistema_selectivo} onChange={(e) => setForm({ ...form, sistema_selectivo: e.target.value })} /></label>
-                <label>Turno<input value={form.turno} onChange={(e) => setForm({ ...form, turno: e.target.value })} /></label>
-                <label>Plazas<input type="number" min="0" value={form.plazas} onChange={(e) => setForm({ ...form, plazas: e.target.value })} /></label>
-                <label>Estado<input value={form.estado} onChange={(e) => setForm({ ...form, estado: e.target.value })} /></label>
-                <label>Revisión<select value={form.revision_estado} onChange={(e) => setForm({ ...form, revision_estado: e.target.value })}><option>PENDIENTE_REVISION</option><option>PUBLICADA</option><option>DESCARTADA</option></select></label>
-                <label>Fecha convocatoria<input type="date" value={form.fecha_convocatoria} onChange={(e) => setForm({ ...form, fecha_convocatoria: e.target.value })} /></label>
-                <label>Inicio inscripción<input type="date" value={form.fecha_apertura} onChange={(e) => setForm({ ...form, fecha_apertura: e.target.value })} /></label>
-                <label>Cierre inscripción<input type="date" value={form.fecha_cierre} onChange={(e) => setForm({ ...form, fecha_cierre: e.target.value })} /></label>
-                <label>Fecha examen<input type="date" value={form.fecha_examen} onChange={(e) => setForm({ ...form, fecha_examen: e.target.value })} /></label>
-                <label>Lugar examen<input value={form.lugar_examen} onChange={(e) => setForm({ ...form, lugar_examen: e.target.value })} /></label>
-              </div>
-              <label>Observaciones internas<textarea rows={4} value={form.observaciones_internas} onChange={(e) => setForm({ ...form, observaciones_internas: e.target.value })} /></label>
-              <div style={styles.actions}><button type="submit" disabled={guardando} style={styles.primary}>{guardando ? "Guardando…" : "Guardar"}</button>{!nuevo && <><button type="button" disabled={guardando} onClick={() => void cambiarRevision("PUBLICADA")} style={styles.secondary}>Publicar</button><button type="button" disabled={guardando} onClick={() => void cambiarRevision("DESCARTADA")} style={styles.danger}>Descartar</button></>}</div>
-            </form>
-            {!nuevo && seleccion && <section style={styles.form}>
-              <h2>Temario oficial</h2>
-              <p style={styles.muted}>Se conserva el texto literal del temario de la convocatoria. La extracción automática solo propone el texto; no lo publica sin revisión.</p>
-              <div style={styles.temarioActions}><button type="button" disabled={extrayendo || guardando} onClick={() => void extraerTemario()} style={styles.primary}>{extrayendo ? "Extrayendo…" : "Extraer de fuente oficial"}</button></div>
-              <select value={estadoTemario} onChange={(e) => setEstadoTemario(e.target.value)} style={styles.status}><option>PENDIENTE_REVISION</option><option>VERIFICADO</option><option>DESCARTADO</option></select>
-              <textarea rows={18} value={textoTemario} onChange={(e) => setTextoTemario(e.target.value)} placeholder="Pegar aquí el temario oficial…" style={styles.temario} />
-              {fuenteTemario && <div style={styles.source}>Fuente: <a href={fuenteTemario} target="_blank" rel="noreferrer">publicación oficial</a> · Origen: {origenTemario}</div>}
-              <button type="button" disabled={guardando || !textoTemario.trim()} onClick={() => void guardarTemario()} style={styles.primary}>Guardar temario</button>
-              {temario && <p style={styles.muted}>Origen almacenado: {temario.origen} · Estado: {temario.estado}</p>}
-            </section>}
-          </>}
-        </section>
-      </div>
-    </main>
-  );
+  const botonItem = (p: Proceso) => <button type="button" key={p.id} onClick={() => void abrir(p)} style={seleccion?.id === p.id ? styles.itemActive : styles.item}><strong>{p.denominacion}</strong><span>{p.organismo_nombre || "—"}</span><span>{p.origen_dato} · {p.revision_estado} · {clasificacion(p)}</span></button>;
+  const textoBusqueda = normalizarBusqueda(busqueda.trim());
+  const resultadosExistentes = convocatorias.filter(p => {
+    const coincideTexto = !textoBusqueda || normalizarBusqueda(`${p.denominacion} ${p.organismo_nombre || ""} ${p.codigo_externo || ""}`).includes(textoBusqueda);
+    const coincideOrganismo = !filtroOrganismo || String(p.organismo_id) === filtroOrganismo;
+    const incompleta = !p.grupo || !p.subgrupo || !p.cuerpo_escala;
+    const coincideFiltro = filtroPendiente === "TODAS" || (filtroPendiente === "INCOMPLETA" && incompleta) || (filtroPendiente === "SIN_GRUPO" && !p.grupo) || (filtroPendiente === "SIN_SUBGRUPO" && !p.subgrupo) || (filtroPendiente === "SIN_ESCALA" && !p.cuerpo_escala) || (filtroPendiente === "SIN_PLAZO" && !p.fecha_apertura && !p.fecha_cierre);
+    return coincideTexto && coincideOrganismo && coincideFiltro;
+  });
+  const selectorExistentes = <><div style={styles.sectionTitle}>Buscar convocatoria existente</div><p style={styles.help}>Empieza por las fichas sin clasificación completa; escribe Benicolet, el ayuntamiento o el puesto para acotar.</p><input aria-label="Buscar convocatoria" placeholder="Buscar ayuntamiento, puesto o código…" value={busqueda} onChange={e => setBusqueda(e.target.value)} style={styles.search} /><select aria-label="Filtrar necesidades" value={filtroPendiente} onChange={e => setFiltroPendiente(e.target.value)} style={styles.filter}><option value="INCOMPLETA">Sin clasificación completa</option><option value="SIN_GRUPO">Sin grupo</option><option value="SIN_SUBGRUPO">Sin subgrupo</option><option value="SIN_ESCALA">Sin escala</option><option value="SIN_PLAZO">Sin plazo determinado</option><option value="TODAS">Todas las convocatorias</option></select><select aria-label="Filtrar organismo" value={filtroOrganismo} onChange={e => setFiltroOrganismo(e.target.value)} style={styles.filter}><option value="">Todos los organismos</option>{organismos.map(o => <option key={o.id} value={o.id}>{o.nombre}</option>)}</select><p style={styles.muted}>{resultadosExistentes.length} resultado{resultadosExistentes.length === 1 ? "" : "s"}{resultadosExistentes.length > 20 ? " · se muestran los primeros 20; concreta la búsqueda" : ""}</p>{resultadosExistentes.slice(0, 20).map(botonItem)}</>;
+  const formatoAdmin = <style>{`
+    main > div:last-child { grid-template-columns: 430px minmax(0, 1fr) !important; }
+    main aside { font-size: 14px; }
+    main aside button { padding: 9px 10px !important; }
+    main aside button strong { font-size: 15px; }
+    main aside button span { font-size: 13px; font-weight: 400; line-height: 1.35; }
+    main label { display: flex; flex-direction: column; gap: 5px; min-width: 0; font-size: 14px; font-weight: 500; }
+    main label input, main label select, main label textarea,
+    main input[aria-label], main select[aria-label] { box-sizing: border-box; width: 100%; max-width: 100%; min-height: 38px; padding: 7px 9px; border: 1px solid #b9c4d3; border-radius: 7px; font: inherit; font-size: 14px; background: #fff; }
+    main label textarea { min-height: 88px; }
+    main aside input[aria-label], main aside select[aria-label] { margin: 4px 0; }
+    main section h2 { font-size: 26px; margin: 0 0 12px; }
+    main section p { font-size: 14px; line-height: 1.45; }
+    @media (max-width: 980px) { main > div:last-child { grid-template-columns: 1fr !important; } }
+  `}</style>;
+  const item = (p: Proceso) => <>{p === convocatorias[0] && <>{formatoAdmin}{selectorExistentes}</>}{botonItem(p)}</>;
+  const camposAlta = <div style={styles.grid}><label>Administración convocante<select required value={alta.administracion} onChange={e => { setAlta({ ...alta, administracion: e.target.value as AltaManual["administracion"], provincia: "", municipio_codigo_ine: "" }); setMunicipioTexto(""); }}><option value="GENERALITAT">Generalitat Valenciana</option><option value="DIPUTACION">Diputación provincial</option><option value="AYUNTAMIENTO">Ayuntamiento</option></select></label>{alta.administracion === "GENERALITAT" ? <div style={styles.contextoOrganismo}>Solo se asociará a la Generalitat Valenciana.</div> : <label>Provincia<select required value={alta.provincia} onChange={e => { setAlta({ ...alta, provincia: e.target.value, municipio_codigo_ine: "" }); setMunicipioTexto(""); }}><option value="">Selecciona provincia</option><option>Alicante</option><option>Castellón</option><option>Valencia</option></select></label>}{alta.administracion === "AYUNTAMIENTO" && <label>Municipio oficial<input required list="municipios-cv" disabled={!alta.provincia} placeholder={alta.provincia ? "Escribe y selecciona el municipio" : "Selecciona primero la provincia"} value={municipioTexto} onChange={e => { const texto = e.target.value; const municipio = municipios.find(item => item.etiqueta === texto || item.nombre === texto || item.nombre_val === texto); setMunicipioTexto(texto); setAlta({ ...alta, municipio_codigo_ine: municipio?.codigo_ine || "" }); }} /><datalist id="municipios-cv">{municipios.map(municipio => <option key={municipio.codigo_ine} value={municipio.etiqueta} />)}</datalist><small>Selecciona un municipio del catálogo oficial; se conserva su código INE.</small></label>}<label>Denominación<input required value={alta.denominacion} onChange={e => setAlta({ ...alta, denominacion: e.target.value })} /></label><label>Código externo<input value={alta.codigo_externo} onChange={e => setAlta({ ...alta, codigo_externo: e.target.value })} /></label><ClasificacionFields value={alta} setValue={setAlta} /><label>Tipo de proceso<input value={alta.tipo_proceso} onChange={e => setAlta({ ...alta, tipo_proceso: e.target.value })} /></label><label>Sistema selectivo<input value={alta.sistema_selectivo} onChange={e => setAlta({ ...alta, sistema_selectivo: e.target.value })} /></label><label>Turno<input value={alta.turno} onChange={e => setAlta({ ...alta, turno: e.target.value })} /></label><label>Plazas<input type="number" min="0" value={alta.plazas} onChange={e => setAlta({ ...alta, plazas: e.target.value })} /></label><label>Estado<input value={alta.estado} onChange={e => setAlta({ ...alta, estado: e.target.value })} /></label><label>Revisión<select value={alta.revision_estado} onChange={e => setAlta({ ...alta, revision_estado: e.target.value })}><option>PENDIENTE_REVISION</option><option>PUBLICADA</option><option>DESCARTADA</option></select></label><label>Fecha convocatoria<input type="date" value={alta.fecha_convocatoria} onChange={e => setAlta({ ...alta, fecha_convocatoria: e.target.value })} /></label><label>Inicio inscripción<input type="date" value={alta.fecha_apertura} onChange={e => setAlta({ ...alta, fecha_apertura: e.target.value })} /></label><label>Cierre inscripción<input type="date" value={alta.fecha_cierre} onChange={e => setAlta({ ...alta, fecha_cierre: e.target.value })} /></label><label>Fecha examen<input type="date" value={alta.fecha_examen} onChange={e => setAlta({ ...alta, fecha_examen: e.target.value })} /></label><label>Lugar examen<input value={alta.lugar_examen} onChange={e => setAlta({ ...alta, lugar_examen: e.target.value })} /></label></div>;
+  return <main style={styles.main}><header style={styles.header}><div><div style={styles.kicker}>TU COACH · ADMINISTRACIÓN</div><h1 style={styles.title}>Centro de gestión de Empleo</h1><p style={styles.subtitle}>Altas manuales separadas de las correcciones verificadas de convocatorias detectadas.</p></div><a href="/empleo" style={styles.link}>Volver a Empleo</a></header>{error && <div style={styles.error}>{error}</div>}{mensaje && <div style={styles.success}>{mensaje}</div>}<div style={styles.layout}><aside style={styles.sidebar}><div style={styles.sideHead}><strong>Pendientes de revisión</strong><button type="button" onClick={nuevaAlta} style={styles.primary}>+ Alta manual</button></div><p style={styles.help}>Para una convocatoria que no haya sido detectada por la actualización periódica.</p>{pendientes.length ? pendientes.map(item) : <p style={styles.muted}>No hay pendientes.</p>}<div style={styles.sectionTitle}>Convocatorias existentes</div>{convocatorias.length ? convocatorias.map(item) : <p style={styles.muted}>No hay convocatorias.</p>}</aside><section style={styles.content}>{modoAlta ? <form onSubmit={guardarAlta} style={styles.form}><h2>Alta manual de convocatoria no detectada</h2><p style={styles.help}>Crea una convocatoria nueva sin modificar ninguna detectada automáticamente. La publicación seguirá requiriendo revisión.</p>{camposAlta}<label>Observaciones internas<textarea rows={4} value={alta.observaciones_internas} onChange={e => setAlta({ ...alta, observaciones_internas: e.target.value })} /></label><div style={styles.actions}><button type="submit" disabled={guardando} style={styles.primary}>{guardando ? "Guardando…" : "Crear alta manual"}</button></div></form> : !seleccion ? <div style={styles.empty}><h2>Gestión de convocatorias</h2><p>Selecciona una convocatoria para corregir datos contrastados o usa “Alta manual” si no fue detectada por el proceso periódico.</p></div> : <><section style={styles.form}><h2>{seleccion.denominacion}</h2><p style={styles.muted}>{seleccion.organismo_nombre} · Origen: {seleccion.origen_dato}</p><div style={styles.ambitoBox}><div><strong>Ámbito administrativo de Tu Coach</strong><p style={styles.muted}>Solo SI aparece en el catálogo público.</p></div><select value={seleccion.ambito_administrativo || "REVISION"} disabled={guardando} onChange={e => void cambiarAmbito(e.target.value as AmbitoAdministrativo)} style={styles.status}><option value="SI">SI · Administrativa</option><option value="NO">NO · Fuera de ámbito</option><option value="REVISION">REVISION · Decidir manualmente</option></select></div><div style={styles.readOnly}><span><strong>Clasificación actual:</strong> {clasificacion(seleccion)}</span><span><strong>Plazo actual:</strong> {seleccion.fecha_apertura && seleccion.fecha_cierre ? `${fecha(seleccion.fecha_apertura)} — ${fecha(seleccion.fecha_cierre)}` : "No determinado"}</span></div><div style={styles.actions}><button type="button" disabled={guardando} onClick={() => void cambiarRevision("PUBLICADA")} style={styles.secondary}>Publicar</button><button type="button" disabled={guardando} onClick={() => void cambiarRevision("DESCARTADA")} style={styles.danger}>Descartar</button></div></section><form onSubmit={guardarCorreccion} style={styles.form}><h2>Corrección manual de puesto y plazo</h2><p style={styles.help}>Úsala solo tras contrastar el documento oficial. No altera enlace, origen, publicaciones ni datos técnicos de la detección. Cada cambio queda registrado y no genera notificaciones.</p><div style={styles.grid}><ClasificacionFields value={correccion} setValue={setCorreccion} /><label>Inicio inscripción<input type="date" value={correccion.fecha_apertura} onChange={e => setCorreccion({ ...correccion, fecha_apertura: e.target.value })} /></label><label>Cierre inscripción<input type="date" value={correccion.fecha_cierre} onChange={e => setCorreccion({ ...correccion, fecha_cierre: e.target.value })} /></label><label style={styles.full}>Enlace oficial que verifica la corrección<input required type="url" placeholder="https://…" value={correccion.evidencia_url} onChange={e => setCorreccion({ ...correccion, evidencia_url: e.target.value })} /></label></div><label>Nota interna (opcional)<textarea rows={3} value={correccion.observaciones_internas} onChange={e => setCorreccion({ ...correccion, observaciones_internas: e.target.value })} /></label><div style={styles.actions}><button type="submit" disabled={guardando} style={styles.primary}>{guardando ? "Guardando…" : "Guardar corrección verificada"}</button></div></form><section style={styles.form}><h2>Temario oficial</h2><p style={styles.muted}>La extracción solo propone texto de la fuente: no lo publica sin revisión.</p><button type="button" disabled={extrayendo || guardando} onClick={() => void extraerTemario()} style={styles.primary}>{extrayendo ? "Extrayendo…" : "Extraer de fuente oficial"}</button><select value={estadoTemario} onChange={e => setEstadoTemario(e.target.value)} style={styles.status}><option>PENDIENTE_REVISION</option><option>VERIFICADO</option><option>DESCARTADO</option></select><textarea rows={18} value={textoTemario} onChange={e => setTextoTemario(e.target.value)} placeholder="Pegar aquí el temario oficial…" style={styles.temario} />{fuenteTemario && <div style={styles.source}>Fuente: <a href={fuenteTemario} target="_blank" rel="noreferrer">publicación oficial</a> · Origen: {origenTemario}</div>}<button type="button" disabled={guardando || !textoTemario.trim()} onClick={() => void guardarTemario()} style={styles.primary}>Guardar temario</button>{temario && <p style={styles.muted}>Origen almacenado: {temario.origen} · Estado: {temario.estado}</p>}</section></>}</section></div></main>;
 }
-
-const styles: Record<string, CSSProperties> = {
-  main: { maxWidth: 1440, margin: "0 auto", padding: "32px 20px 60px", fontFamily: "system-ui, sans-serif", color: "#172033" },
-  header: { display: "flex", justifyContent: "space-between", gap: 24, alignItems: "flex-start", marginBottom: 24 },
-  kicker: { fontSize: 12, letterSpacing: 1.4, fontWeight: 700, opacity: 0.6 }, title: { fontSize: 32, margin: "6px 0" }, subtitle: { opacity: 0.7 }, link: { color: "inherit", fontWeight: 600 },
-  layout: { display: "grid", gridTemplateColumns: "360px minmax(0, 1fr)", gap: 18, alignItems: "start" }, sidebar: { border: "1px solid #d9dee8", borderRadius: 12, background: "#fff", padding: 14, position: "sticky", top: 18, maxHeight: "calc(100vh - 36px)", overflow: "auto" },
-  sideHead: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }, sectionTitle: { fontWeight: 700, padding: "18px 8px 8px", borderTop: "1px solid #d9dee8", marginTop: 10 },
-  item: { display: "flex", flexDirection: "column", gap: 4, width: "100%", textAlign: "left", padding: "12px 10px", marginBottom: 6, border: "1px solid transparent", borderRadius: 9, background: "transparent", cursor: "pointer" }, itemActive: { display: "flex", flexDirection: "column", gap: 4, width: "100%", textAlign: "left", padding: "12px 10px", marginBottom: 6, border: "1px solid #172033", borderRadius: 9, background: "#edf2f8", cursor: "pointer" },
-  content: { minWidth: 0 }, empty: { border: "1px solid #d9dee8", borderRadius: 12, padding: 28, background: "#fff" }, form: { border: "1px solid #d9dee8", borderRadius: 12, padding: 22, background: "#fff", marginBottom: 18 }, grid: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14 }, actions: { display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }, temarioActions: { display: "flex", gap: 10, marginBottom: 10 },
-  ambitoBox: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18, padding: 14, marginBottom: 18, border: "1px solid #c8ced9", borderRadius: 9, background: "#f7f9fc" },
-  primary: { border: 0, borderRadius: 8, padding: "9px 14px", background: "#172033", color: "#fff", fontWeight: 700, cursor: "pointer" }, secondary: { border: "1px solid #c8ced9", borderRadius: 8, padding: "9px 14px", background: "#fff", cursor: "pointer" }, danger: { border: "1px solid #c8ced9", borderRadius: 8, padding: "9px 14px", background: "#fff", color: "#8b1e1e", cursor: "pointer" }, status: { padding: 9, border: "1px solid #c8ced9", borderRadius: 7, marginBottom: 10 }, temario: { display: "block", width: "100%", boxSizing: "border-box", margin: "8px 0 12px", padding: 12, border: "1px solid #c8ced9", borderRadius: 8, fontFamily: "inherit", resize: "vertical" }, source: { marginBottom: 12, fontSize: 14, opacity: 0.7 }, error: { padding: 12, marginBottom: 14, borderRadius: 8, background: "#fff0f0", color: "#8b1e1e" }, success: { padding: 12, marginBottom: 14, borderRadius: 8, background: "#f0f6f0" }, muted: { opacity: 0.65, fontSize: 14 },
-};
+function ClasificacionFields<T extends { grupo: string; subgrupo: string; cuerpo_escala: string }>({ value, setValue }: { value: T; setValue: (next: T) => void }) { return <><label>Grupo<select value={value.grupo} onChange={e => setValue({ ...value, grupo: e.target.value })}><option value="">Sin especificar</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option></select></label><label>Subgrupo<select value={value.subgrupo} onChange={e => setValue({ ...value, subgrupo: e.target.value })}><option value="">Sin especificar</option><option>A1</option><option>A2</option><option>B</option><option>C1</option><option>C2</option><option>D</option><option>E</option></select></label><label>Escala<select value={value.cuerpo_escala} onChange={e => setValue({ ...value, cuerpo_escala: e.target.value })}><option value="">Sin especificar</option><option>Administración General</option><option>Administración Especial</option></select></label></>; }
+const styles: Record<string, CSSProperties> = { main: { maxWidth: 1440, margin: "0 auto", padding: "32px 20px 60px", fontFamily: "system-ui, sans-serif", color: "#172033" }, header: { display: "flex", justifyContent: "space-between", gap: 24, alignItems: "flex-start", marginBottom: 24 }, kicker: { fontSize: 12, letterSpacing: 1.4, fontWeight: 700, opacity: 0.6 }, title: { fontSize: 32, margin: "6px 0" }, subtitle: { opacity: 0.7 }, link: { color: "inherit", fontWeight: 600 }, layout: { display: "grid", gridTemplateColumns: "360px minmax(0, 1fr)", gap: 18, alignItems: "start" }, sidebar: { border: "1px solid #d9dee8", borderRadius: 12, background: "#fff", padding: 14, position: "sticky", top: 18, maxHeight: "calc(100vh - 36px)", overflow: "auto" }, sideHead: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8, marginBottom: 10 }, sectionTitle: { fontWeight: 700, padding: "18px 8px 8px", borderTop: "1px solid #d9dee8", marginTop: 10 }, item: { display: "flex", flexDirection: "column", gap: 4, width: "100%", textAlign: "left", padding: "12px 10px", marginBottom: 6, border: "1px solid transparent", borderRadius: 9, background: "transparent", cursor: "pointer" }, itemActive: { display: "flex", flexDirection: "column", gap: 4, width: "100%", textAlign: "left", padding: "12px 10px", marginBottom: 6, border: "1px solid #172033", borderRadius: 9, background: "#edf2f8", cursor: "pointer" }, content: { minWidth: 0 }, empty: { border: "1px solid #d9dee8", borderRadius: 12, padding: 28, background: "#fff" }, form: { border: "1px solid #d9dee8", borderRadius: 12, padding: 22, background: "#fff", marginBottom: 18 }, grid: { display: "grid", gridTemplateColumns: "repeat(2, minmax(0, 1fr))", gap: 14 }, full: { gridColumn: "1 / -1" }, actions: { display: "flex", gap: 10, marginTop: 16, flexWrap: "wrap" }, ambitoBox: { display: "flex", justifyContent: "space-between", alignItems: "center", gap: 18, padding: 14, marginBottom: 18, border: "1px solid #c8ced9", borderRadius: 9, background: "#f7f9fc" }, readOnly: { display: "flex", flexDirection: "column", gap: 8, padding: 12, borderRadius: 8, background: "#f7f9fc" }, primary: { border: 0, borderRadius: 8, padding: "9px 14px", background: "#172033", color: "#fff", fontWeight: 700, cursor: "pointer" }, secondary: { border: "1px solid #c8ced9", borderRadius: 8, padding: "9px 14px", background: "#fff", cursor: "pointer" }, danger: { border: "1px solid #c8ced9", borderRadius: 8, padding: "9px 14px", background: "#fff", color: "#8b1e1e", cursor: "pointer" }, status: { padding: 9, border: "1px solid #c8ced9", borderRadius: 7, margin: "10px 0" }, temario: { display: "block", width: "100%", boxSizing: "border-box", margin: "8px 0 12px", padding: 12, border: "1px solid #c8ced9", borderRadius: 8, fontFamily: "inherit", resize: "vertical" }, source: { marginBottom: 12, fontSize: 14, opacity: 0.7 }, error: { padding: 12, marginBottom: 14, borderRadius: 8, background: "#fff0f0", color: "#8b1e1e" }, success: { padding: 12, marginBottom: 14, borderRadius: 8, background: "#f0f6f0" }, muted: { opacity: 0.65, fontSize: 14 }, help: { color: "#526070", fontSize: 14, lineHeight: 1.45 } };
