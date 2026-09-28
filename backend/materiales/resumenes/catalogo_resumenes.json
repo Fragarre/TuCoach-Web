@@ -14,6 +14,13 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 9,
+    "norma": "Decreto 41/2016, de 15 de abril, del Consell, por el que se establece el sistema para la mejora de la calidad de los servicios públicos y la evaluación de los planes y programas en la Administración de la Generalitat y su sector público instrumental",
+    "fuente": "LOCAL-PDF-DECRETO-41-2016",
+    "archivo": "0009_Decreto_41_2016_de_15_de_abril_del_Consell_por_el_que_se_establece_el_sistema_para_la_mejora_de.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 10,
     "norma": "Decreto 42/2019, de 22 de marzo",
     "fuente": "LOCAL-DOGV-DECRETO-42-2019",
@@ -42,6 +49,27 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 15,
+    "norma": "Decreto Legislativo 1/2021, de 18 de junio, del Consell, texto refundido de la Ley de ordenación del territorio, urbanismo y paisaje",
+    "fuente": "LOCAL-PDF-DECRETO-LEGISLATIVO-1-2021",
+    "archivo": "0015_Decreto_Legislativo_1_2021_de_18_de_junio_del_Consell_texto_refundido_de_la_Ley_de_ordenaci_n_d.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 18,
+    "norma": "Ley 1/1987, de 31 de marzo, Electoral Valenciana",
+    "fuente": "BOE-A-1987-9636",
+    "archivo": "0018_Ley_1_1987_de_31_de_marzo_Electoral_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 19,
+    "norma": "Ley 1/2014, de 28 de febrero, del Comité Econòmic i Social de la Comunitat Valenciana",
+    "fuente": "BOE-A-2014-2949",
+    "archivo": "0019_Ley_1_2014_de_28_de_febrero_del_Comit_Econ_mic_i_Social_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 20,
     "norma": "Ley 1/2015, de 6 de febrero, de Hacienda Pública, del Sector Público Instrumental y de Subvenciones",
     "fuente": "BOE-A-2015-1952",
@@ -56,10 +84,122 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 22,
+    "norma": "Ley 10/1994, de 19 de diciembre, de creación del Consell Jurídic Consultiu de la Comunitat Valenciana",
+    "fuente": "BOE-A-1995-1949",
+    "archivo": "0022_Ley_10_1994_de_19_de_diciembre_de_creaci_n_del_Consell_Jur_dic_Consultiu_de_la_Comunitat_Valenc.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 23,
+    "norma": "Ley 10/2014, de 29 de diciembre, de Salud de la Comunitat Valenciana",
+    "fuente": "BOE-A-2015-1239",
+    "archivo": "0023_Ley_10_2014_de_29_de_diciembre_de_Salud_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 24,
+    "norma": "Ley 12/1985, de 30 de octubre, del Consell Valencià de Cultura",
+    "fuente": "BOE-A-1986-2791",
+    "archivo": "0024_Ley_12_1985_de_30_de_octubre_del_Consell_Valenci_de_Cultura.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 26,
+    "norma": "Ley 13/2010, de 23 de noviembre, de Protección Civil y Gestión de Emergencias",
+    "fuente": "BOE-A-2010-19046",
+    "archivo": "0026_Ley_13_2010_de_23_de_noviembre_de_Protecci_n_Civil_y_Gesti_n_de_Emergencias.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 27,
+    "norma": "Ley 14/2003, de 10 de abril, de Patrimonio de la Generalitat Valenciana",
+    "fuente": "BOE-A-2003-10298",
+    "archivo": "0027_Ley_14_2003_de_10_de_abril_de_Patrimonio_de_la_Generalitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 28,
+    "norma": "Ley 15/2018, de 7 de junio, de turismo, ocio y hospitalidad de la Comunitat Valenciana",
+    "fuente": "BOE-A-2018-8950",
+    "archivo": "0028_Ley_15_2018_de_7_de_junio_de_turismo_ocio_y_hospitalidad_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 29,
+    "norma": "Ley 17/2017, de 13 de diciembre, de coordinación de policías locales de la Comunitat Valenciana",
+    "fuente": "BOE-A-2018-98",
+    "archivo": "0029_Ley_17_2017_de_13_de_diciembre_de_coordinaci_n_de_polic_as_locales_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 30,
     "norma": "Ley 19/2013, de 9 de diciembre, de transparencia, acceso a la información pública y buen gobierno",
     "fuente": "BOE-A-2013-12887",
     "archivo": "0030_LEY_19_2013.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 31,
+    "norma": "Ley 2/2009, de 14 de abril, de coordinación del sistema valenciano de investigación científica y desarrollo tecnológico",
+    "fuente": "BOE-A-2009-7515",
+    "archivo": "0031_Ley_2_2009_de_14_de_abril_de_coordinaci_n_del_sistema_valenciano_de_investigaci_n_cient_fica_y_.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 32,
+    "norma": "Ley 2/2011, de 22 de marzo, del Deporte y la Actividad Física de la Comunitat Valenciana",
+    "fuente": "BOE-A-2011-6874",
+    "archivo": "0032_Ley_2_2011_de_22_de_marzo_del_Deporte_y_la_Actividad_F_sica_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 33,
+    "norma": "Ley 2/2021, de 26 de marzo, del Síndic de Greuges de la Comunitat Valenciana",
+    "fuente": "BOE-A-2021-6051",
+    "archivo": "0033_Ley_2_2021_de_26_de_marzo_del_S_ndic_de_Greuges_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 34,
+    "norma": "Ley 2/2023, de 20 de febrero, reguladora de la protección de las personas que informen sobre infracciones normativas y de lucha contra la corrupción",
+    "fuente": "BOE-A-2023-4513",
+    "archivo": "0034_Ley_2_2023_de_20_de_febrero_reguladora_de_la_protecci_n_de_las_personas_que_informen_sobre_infr.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 35,
+    "norma": "Ley 20/2017, de 28 de diciembre, de tasas",
+    "fuente": "BOE-A-2018-1870",
+    "archivo": "0035_Ley_20_2017_de_28_de_diciembre_de_tasas.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 36,
+    "norma": "Ley 22/2009, de 18 de diciembre, por la que se regula el sistema de financiación de las Comunidades Autónomas de régimen común y Ciudades con Estatuto de Autonomía",
+    "fuente": "BOE-A-2009-20375",
+    "archivo": "0036_Ley_22_2009_de_18_de_diciembre_por_la_que_se_regula_el_sistema_de_financiaci_n_de_las_Comunidad.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 38,
+    "norma": "Ley 25/2018, de 10 de diciembre, reguladora de la actividad de los grupos de interés de la Comunitat Valenciana",
+    "fuente": "BOE-A-2019-967",
+    "archivo": "0038_Ley_25_2018_de_10_de_diciembre_reguladora_de_la_actividad_de_los_grupos_de_inter_s_de_la_Comuni.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 39,
+    "norma": "Ley 29/1998, de 13 de julio, reguladora de la Jurisdicción Contencioso-administrativa",
+    "fuente": "BOE-A-1998-16718",
+    "archivo": "0039_Ley_29_1998_de_13_de_julio_reguladora_de_la_Jurisdicci_n_Contencioso_administrativa.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 40,
+    "norma": "Ley 3/2019, de 18 de febrero, de servicios sociales inclusivos de la Comunitat Valenciana",
+    "fuente": "BOE-A-2019-3489",
+    "archivo": "0040_Ley_3_2019_de_18_de_febrero_de_servicios_sociales_inclusivos_de_la_Comunitat_Valenciana.pdf",
     "estado": "APROBADO"
   },
   {
@@ -105,6 +245,13 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 50,
+    "norma": "Ley 50/1997, de 27 de noviembre, del Gobierno",
+    "fuente": "BOE-A-1997-25336",
+    "archivo": "0050_Ley_50_1997_de_27_de_noviembre_del_Gobierno.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 51,
     "norma": "Ley 53/1984, de 26 de diciembre",
     "fuente": "BOE-A-1985-151",
@@ -119,10 +266,38 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 54,
+    "norma": "Ley 6/1998, de 22 de junio, de Ordenación Farmacéutica de la Comunitat Valenciana",
+    "fuente": "BOE-A-1998-17351",
+    "archivo": "0054_Ley_6_1998_de_22_de_junio_de_Ordenaci_n_Farmac_utica_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 56,
+    "norma": "Ley 6/2024, de 5 de diciembre, de simplificación administrativa",
+    "fuente": "BOE-A-2025-1",
+    "archivo": "0056_Ley_6_2024_de_5_de_diciembre_de_simplificaci_n_administrativa.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 57,
     "norma": "ley 6 2025 de 30 de mayo",
     "fuente": "BOE-A-2025-11960",
     "archivo": "0057_ley_6_2025_de_30_de_mayo.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 58,
+    "norma": "Ley 7/1998, de 16 de septiembre, de creación de la Acadèmia Valenciana de la Llengua",
+    "fuente": "BOE-A-1998-24262",
+    "archivo": "0058_Ley_7_1998_de_16_de_septiembre_de_creaci_n_de_la_Acad_mia_Valenciana_de_la_Llengua.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 60,
+    "norma": "Ley 8/2010, de 23 de junio, de régimen local de la Comunitat Valenciana",
+    "fuente": "BOE-A-2010-11729",
+    "archivo": "0060_Ley_8_2010_de_23_de_junio_de_r_gimen_local_de_la_Comunitat_Valenciana.pdf",
     "estado": "APROBADO"
   },
   {
@@ -140,6 +315,13 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 64,
+    "norma": "LEY DE EXPROPIACIÓN FORZOSA DE 1954",
+    "fuente": "BOE-A-1954-15431",
+    "archivo": "0064_LEY_DE_EXPROPIACI_N_FORZOSA_DE_1954.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 65,
     "norma": "Ley Orgánica 1/2004, de 28 de diciembre, de Medidas de Protección Integral contra la Violencia de Género",
     "fuente": "BOE-A-2004-21760",
@@ -147,10 +329,38 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 66,
+    "norma": "Ley Orgánica 2/1979, de 3 de octubre, del Tribunal Constitucional",
+    "fuente": "BOE-A-1979-23709",
+    "archivo": "0066_Ley_Org_nica_2_1979_de_3_de_octubre_del_Tribunal_Constitucional.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 67,
     "norma": "Ley Orgánica 2/1982, de 12 de mayo",
     "fuente": "BOE-A-1982-11584",
     "archivo": "0067_LEY_ORGANICA_2_1982.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 68,
+    "norma": "Ley Orgánica 2/1987, de 18 de mayo, de Conflictos Jurisdiccionales",
+    "fuente": "BOE-A-1987-12077",
+    "archivo": "0068_Ley_Org_nica_2_1987_de_18_de_mayo_de_Conflictos_Jurisdiccionales.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 69,
+    "norma": "Ley Orgánica 2/2012, de 27 de abril, de Estabilidad Presupuestaria y Sostenibilidad Financiera",
+    "fuente": "BOE-A-2012-5730",
+    "archivo": "0069_Ley_Org_nica_2_2012_de_27_de_abril_de_Estabilidad_Presupuestaria_y_Sostenibilidad_Financiera.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 70,
+    "norma": "Ley Orgánica 3/1981, de 6 de abril, del Defensor del Pueblo",
+    "fuente": "BOE-A-1981-10325",
+    "archivo": "0070_Ley_Org_nica_3_1981_de_6_de_abril_del_Defensor_del_Pueblo.pdf",
     "estado": "APROBADO"
   },
   {
@@ -175,10 +385,45 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 74,
+    "norma": "Ley Orgánica 6/1985, de 1 de julio, del Poder Judicial",
+    "fuente": "BOE-A-1985-12666",
+    "archivo": "0074_Ley_Org_nica_6_1985_de_1_de_julio_del_Poder_Judicial.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 75,
+    "norma": "Ley Orgánica 8/1980, de 22 de septiembre, de Financiación de las Comunidades Autónomas",
+    "fuente": "BOE-A-1980-21166",
+    "archivo": "0075_Ley_Org_nica_8_1980_de_22_de_septiembre_de_Financiaci_n_de_las_Comunidades_Aut_nomas.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 77,
+    "norma": "Real Decreto 203/2021, de 30 de marzo, por el que se aprueba el Reglamento de actuación y funcionamiento del sector público por medios electrónicos",
+    "fuente": "BOE-A-2021-5032",
+    "archivo": "0077_Real_Decreto_203_2021_de_30_de_marzo_por_el_que_se_aprueba_el_Reglamento_de_actuaci_n_y_funcion.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 80,
     "norma": "Real Decreto Legislativo 5/2015, de 30 de octubre, texto refundido de la Ley del Estatuto Básico del Empleado Público",
     "fuente": "BOE-A-2015-11719",
     "archivo": "0080_REAL_DECRETO_LEGISLATIVO_5_2015.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 81,
+    "norma": "Real Decreto Legislativo 8/2015, de 30 de octubre, texto refundido de la Ley General de la Seguridad Social",
+    "fuente": "BOE-A-2015-11724",
+    "archivo": "0081_Real_Decreto_Legislativo_8_2015_de_30_de_octubre_texto_refundido_de_la_Ley_General_de_la_Seguri.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 82,
+    "norma": "REGLAMENTO DE LES CORTS VALENCIANES",
+    "fuente": "LOCAL-PDF-REGLAMENTO-DE-LES-CORTS",
+    "archivo": "0082_REGLAMENTO_DE_LES_CORTS_VALENCIANES.pdf",
     "estado": "APROBADO"
   },
   {
@@ -196,10 +441,171 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 208,
+    "norma": "Ley 26/2018, de 21 de diciembre, de derechos y garantías de la infancia y la adolescencia",
+    "fuente": "BOE-A-2019-1986",
+    "archivo": "0208_Ley_26_2018_de_21_de_diciembre_de_derechos_y_garant_as_de_la_infancia_y_la_adolescencia.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 249,
+    "norma": "Real Decreto 635/2014, de 25 de julio, por el que se desarrolla la metodología de cálculo del periodo medio de pago a proveedores de las Administraciones Públicas",
+    "fuente": "BOE-A-2014-8132",
+    "archivo": "0249_Real_Decreto_635_2014_de_25_de_julio_por_el_que_se_desarrolla_la_metodolog_a_de_c_lculo_del_per.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 670,
+    "norma": "Ley 7/1985, de 2 de abril, Reguladora de las Bases del Régimen Local",
+    "fuente": "BOE-A-1985-5392",
+    "archivo": "0670_Ley_7_1985_de_2_de_abril_Reguladora_de_las_Bases_del_R_gimen_Local.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 909,
+    "norma": "Código Civil",
+    "fuente": "BOE-A-1889-4763",
+    "archivo": "0909_C_digo_Civil.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 914,
+    "norma": "Decreto 103/2014, de 4 de julio, del Consell, por el que se regulan los precios públicos de la Generalitat",
+    "fuente": "LOCAL-PDF-DECRETO-103-2014",
+    "archivo": "0914_Decreto_103_2014_de_4_de_julio_del_Consell_por_el_que_se_regulan_los_precios_p_blicos_de_la_Gen.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 954,
+    "norma": "Ley 2/1997, de 13 de marzo, por la que se regula la Conferencia para Asuntos Relacionados con las Comunidades Europeas",
+    "fuente": "BOE-A-1997-5630",
+    "archivo": "0954_Ley_2_1997_de_13_de_marzo_por_la_que_se_regula_la_Conferencia_para_Asuntos_Relacionados_con_las.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 971,
+    "norma": "Ley 4/1998, de 11 de junio, del Patrimonio Cultural Valenciano",
+    "fuente": "BOE-A-1998-17524",
+    "archivo": "0971_Ley_4_1998_de_11_de_junio_del_Patrimonio_Cultural_Valenciano.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 972,
+    "norma": "Ley 4/2007, de 9 de febrero, de coordinación del Sistema Universitario Valenciano",
+    "fuente": "BOE-A-2007-6118",
+    "archivo": "0972_Ley_4_2007_de_9_de_febrero_de_coordinaci_n_del_Sistema_Universitario_Valenciano.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 979,
+    "norma": "Ley 5/2019, de 28 de febrero, de estructuras agrarias de la Comunitat Valenciana",
+    "fuente": "BOE-A-2019-4086",
+    "archivo": "0979_Ley_5_2019_de_28_de_febrero_de_estructuras_agrarias_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 1249,
+    "norma": "Ley 6/2022, de 5 de diciembre, del cambio climático y la transición ecológica de la Comunitat Valenciana",
+    "fuente": "BOE-A-2023-4378",
+    "archivo": "1249_Ley_6_2022_de_5_de_diciembre_del_cambio_clim_tico_y_la_transici_n_ecol_gica_de_la_Comunitat_Val.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 1281,
     "norma": "orden 19 2013 de 3 de diciembre",
     "fuente": "LOCAL-DOGV-ORDEN-19-2013",
     "archivo": "1281_orden_19_2013_de_3_de_diciembre.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 1391,
+    "norma": "Ley 8/2016, de 28 de octubre, de incompatibilidades y conflictos de intereses de personas con cargos públicos no electos",
+    "fuente": "BOE-A-2016-11021",
+    "archivo": "1391_Ley_8_2016_de_28_de_octubre_de_incompatibilidades_y_conflictos_de_intereses_de_personas_con_car.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2042,
+    "norma": "Ley 3/1993, de 9 de diciembre, Forestal de la Comunitat Valenciana",
+    "fuente": "BOE-A-1994-1915",
+    "archivo": "2042_Ley_3_1993_de_9_de_diciembre_Forestal_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2073,
+    "norma": "Ley 8/2004, de 20 de octubre, de la Vivienda de la Comunitat Valenciana",
+    "fuente": "BOE-A-2004-19752",
+    "archivo": "2073_Ley_8_2004_de_20_de_octubre_de_la_Vivienda_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2125,
+    "norma": "Carta de los Derechos Fundamentales de la Unión Europea",
+    "fuente": "DOUE-C-2010-083-CARTA",
+    "archivo": "2125_Carta_de_los_Derechos_Fundamentales_de_la_Uni_n_Europea.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2163,
+    "norma": "Ley 1/2024, de 27 de junio, por la que se regula la libertad educativa",
+    "fuente": "BOE-A-2024-16511",
+    "archivo": "2163_Ley_1_2024_de_27_de_junio_por_la_que_se_regula_la_libertad_educativa.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2174,
+    "norma": "Ley 14/2010, de 3 de diciembre, de espectáculos públicos, actividades recreativas y establecimientos públicos",
+    "fuente": "BOE-A-2010-20014",
+    "archivo": "2174_Ley_14_2010_de_3_de_diciembre_de_espect_culos_p_blicos_actividades_recreativas_y_establecimient.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2208,
+    "norma": "Ley 5/2017, de 10 de febrero, de pesca marítima y acuicultura de la Comunitat Valenciana",
+    "fuente": "BOE-A-2017-2424",
+    "archivo": "2208_Ley_5_2017_de_10_de_febrero_de_pesca_mar_tima_y_acuicultura_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 2522,
+    "norma": "Ley 6/2011, de 1 de abril, de Movilidad de la Comunitat Valenciana",
+    "fuente": "BOE-A-2011-7330",
+    "archivo": "2522_Ley_6_2011_de_1_de_abril_de_Movilidad_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 3068,
+    "norma": "Ley 4/2011, de 23 de marzo, de Bibliotecas de la Comunitat Valenciana",
+    "fuente": "BOE-A-2011-6876",
+    "archivo": "3068_Ley_4_2011_de_23_de_marzo_de_Bibliotecas_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 5387,
+    "norma": "Ley 3/2000, de 17 de abril, por la que se crea el Servicio Valenciano de Empleo y Formación",
+    "fuente": "BOE-A-2000-9724",
+    "archivo": "5387_Ley_3_2000_de_17_de_abril_por_la_que_se_crea_el_Servicio_Valenciano_de_Empleo_y_Formaci_n.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 5388,
+    "norma": "Ley 3/2005, de 15 de junio, de Archivos",
+    "fuente": "BOE-A-2005-12100",
+    "archivo": "5388_Ley_3_2005_de_15_de_junio_de_Archivos.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 8484,
+    "norma": "Ley 15/2017, de 10 de noviembre, de políticas integrales de juventud",
+    "fuente": "BOE-A-2017-15372",
+    "archivo": "8484_Ley_15_2017_de_10_de_noviembre_de_pol_ticas_integrales_de_juventud.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 8570,
+    "norma": "Ley Orgánica 2/2006, de 3 de mayo, de Educación",
+    "fuente": "BOE-A-2006-7899",
+    "archivo": "8570_Ley_Org_nica_2_2006_de_3_de_mayo_de_Educaci_n.pdf",
     "estado": "APROBADO"
   },
   {
@@ -210,10 +616,136 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 10412,
+    "norma": "Ley 33/2003, de 3 de noviembre, del Patrimonio de las Administraciones Públicas",
+    "fuente": "BOE-A-2003-20254",
+    "archivo": "10412_Ley_33_2003_de_3_de_noviembre_del_Patrimonio_de_las_Administraciones_P_blicas.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11749,
+    "norma": "Decreto-ley 1/2011, de 30 de septiembre, del Consell, de medidas urgentes de régimen económico-financiero del sector público empresarial y fundacional",
+    "fuente": "LOCAL-PDF-DECRETO-LEY-1-2011",
+    "archivo": "11749_Decreto_ley_1_2011_de_30_de_septiembre_del_Consell_de_medidas_urgentes_de_r_gimen_econ_mico_fin.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11750,
+    "norma": "Directiva (UE) 2019/1937, de 23 de octubre de 2019, relativa a la protección de las personas que informen sobre infracciones del Derecho de la Unión",
+    "fuente": "LOCAL-PDF-DIRECTIVA-UE-2019-1937",
+    "archivo": "11750_Directiva_UE_2019_1937_de_23_de_octubre_de_2019_relativa_a_la_protecci_n_de_las_personas_que_in.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11751,
+    "norma": "GEN-Actos juridicos administracion",
+    "fuente": "LOCAL-PDF-GEN-ACTOS-JURIDICOS-ADMINISTRACION",
+    "archivo": "11751_GEN_Actos_juridicos_administracion.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11752,
+    "norma": "GEN-Eficacia de las normas",
+    "fuente": "LOCAL-PDF-GEN-EFICACIA-DE-LAS-NORMAS",
+    "archivo": "11752_GEN_Eficacia_de_las_normas.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11753,
+    "norma": "GEN-Formas de Actividad Administrativa",
+    "fuente": "LOCAL-PDF-GEN-FORMAS-DE-ACTIVIDAD-ADMINISTRATIVA",
+    "archivo": "11753_GEN_Formas_de_Actividad_Administrativa.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11754,
+    "norma": "GEN-Fuentes del dercho I",
+    "fuente": "LOCAL-PDF-GEN-FUENTES-DEL-DERCHO-I",
+    "archivo": "11754_GEN_Fuentes_del_dercho_I.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11755,
+    "norma": "GEN-Fuentes del dercho II",
+    "fuente": "LOCAL-PDF-GEN-FUENTES-DEL-DERCHO-II",
+    "archivo": "11755_GEN_Fuentes_del_dercho_II.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11757,
+    "norma": "Ley 1/2011, de 22 de marzo, por la que se aprueba el Estatuto de los Consumidores y Usuarios de la Comunitat Valenciana",
+    "fuente": "BOE-A-2011-6873",
+    "archivo": "11757_Ley_1_2011_de_22_de_marzo_por_la_que_se_aprueba_el_Estatuto_de_los_Consumidores_y_Usuarios_de_l.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11763,
+    "norma": "Ley 10/2009, de 20 de noviembre, de creación del Comité Valenciano para los Asuntos Europeos",
+    "fuente": "BOE-A-2009-20073",
+    "archivo": "11763_Ley_10_2009_de_20_de_noviembre_de_creaci_n_del_Comit_Valenciano_para_los_Asuntos_Europeos.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11765,
+    "norma": "Ley 11/2003, de 10 de abril, sobre el Estatuto de las Personas con Discapacidad",
+    "fuente": "BOE-A-2003-10295",
+    "archivo": "11765_Ley_11_2003_de_10_de_abril_sobre_el_Estatuto_de_las_Personas_con_Discapacidad.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11787,
+    "norma": "Ley 3/2011, de 23 de marzo, de comercio de la Comunitat Valenciana",
+    "fuente": "BOE-A-2011-6875",
+    "archivo": "11787_Ley_3_2011_de_23_de_marzo_de_comercio_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11789,
+    "norma": "Ley 3/2026, de 29 de junio, de la Generalitat, de medidas urgentes frente a la hiperregulación, la agilización de procedimientos y la garantía de la unidad de mercado",
+    "fuente": "BOE-A-2026-15683",
+    "archivo": "11789_Ley_3_2026_de_29_de_junio_de_la_Generalitat_de_medidas_urgentes_frente_a_la_hiperregulaci_n_la_.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11797,
+    "norma": "Ley 4/2023, de 13 de abril, de Participación Ciudadana y Fomento del Asociacionismo de la Comunitat Valenciana",
+    "fuente": "BOE-A-2023-10640",
+    "archivo": "11797_Ley_4_2023_de_13_de_abril_de_Participaci_n_Ciudadana_y_Fomento_del_Asociacionismo_de_la_Comunit.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 11798,
     "norma": "Ley 4/2023, de 28 de febrero, para la igualdad real y efectiva de las personas trans y para la garantía de los derechos de las personas LGTBI",
     "fuente": "BOE-A-2023-5366",
     "archivo": "11798_Ley_4_2023_de_28_de_febrero_para_la_igualdad_real_y_efectiva_de_las_personas_trans_y_para_la_ga.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11801,
+    "norma": "Ley 5/2011, de 29 de marzo, de Economía Social",
+    "fuente": "BOE-A-2011-5708",
+    "archivo": "11801_Ley_5_2011_de_29_de_marzo_de_Econom_a_Social.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11832,
+    "norma": "Reglamento (UE) 2016/679, de 27 de abril de 2016, General de Protección de Datos",
+    "fuente": "LOCAL-PDF-REGLAMENTO-UE-2016-679",
+    "archivo": "11832_Reglamento_UE_2016_679_de_27_de_abril_de_2016_General_de_Protecci_n_de_Datos.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11833,
+    "norma": "Reglamento (UE, Euratom) 2024/2509, de 23 de septiembre de 2024, sobre las normas financieras aplicables al presupuesto general de la Unión",
+    "fuente": "LOCAL-PDF-REGLAMENTO-UE-EURATOM-2024-2509",
+    "archivo": "11833_Reglamento_UE_Euratom_2024_2509_de_23_de_septiembre_de_2024_sobre_las_normas_financieras_aplica.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11843,
+    "norma": "ley 25/2014 de 27 de noviembre",
+    "fuente": "BOE-A-2014-12326",
+    "archivo": "11843_ley_25_2014_de_27_de_noviembre.pdf",
     "estado": "APROBADO"
   }
 ]
