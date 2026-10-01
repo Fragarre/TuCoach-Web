@@ -3145,27 +3145,84 @@ async function descargarMaterialPdf() {
           descargar.
         </p>
 
-        <label htmlFor="material-convocatoria">Convocatoria</label>
-        <select
-          id="material-convocatoria"
-          className="select"
-          value={materialConvocatoriaId ?? ""}
-          onChange={(event) => {
-            const valor = Number(event.target.value);
-            setMaterialConvocatoriaId(
-              Number.isFinite(valor) ? valor : null
-            );
-            setMaterialNormaId(null);
-            setError("");
-            setMensaje("");
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: 24,
+            alignItems: "start",
           }}
         >
-          {convocatorias.map((convocatoria) => (
-            <option key={convocatoria.id} value={convocatoria.id}>
-              {convocatoria.codigo} — {convocatoria.puesto}
-            </option>
-          ))}
-        </select>
+          <div>
+            <label htmlFor="material-convocatoria">Convocatorias</label>
+            <select
+              id="material-convocatoria"
+              className="select"
+              style={{ width: "100%" }}
+              value={
+                materialConvocatoriaId !== null &&
+                !convocatorias
+                  .find((convocatoria) => convocatoria.id === materialConvocatoriaId)
+                  ?.codigo.startsWith("Apoyo-")
+                  ? materialConvocatoriaId
+                  : ""
+              }
+              onChange={(event) => {
+                setMaterialConvocatoriaId(
+                  event.target.value === "" ? null : Number(event.target.value)
+                );
+                setMaterialNormaId(null);
+                setError("");
+                setMensaje("");
+              }}
+            >
+              <option value="">Selecciona una convocatoria</option>
+              {convocatorias
+                .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                .map((convocatoria) => (
+                  <option key={convocatoria.id} value={convocatoria.id}>
+                    {convocatoria.codigo} — {convocatoria.puesto}
+                  </option>
+                ))}
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="modelo-convocatoria-materiales">
+              Modelos de Convocatorias para Ayuntamientos
+            </label>
+            <select
+              id="modelo-convocatoria-materiales"
+              className="select"
+              style={{ width: "100%" }}
+              value={
+                materialConvocatoriaId !== null &&
+                convocatorias
+                  .find((convocatoria) => convocatoria.id === materialConvocatoriaId)
+                  ?.codigo.startsWith("Apoyo-")
+                  ? materialConvocatoriaId
+                  : ""
+              }
+              onChange={(event) => {
+                setMaterialConvocatoriaId(
+                  event.target.value === "" ? null : Number(event.target.value)
+                );
+                setMaterialNormaId(null);
+                setError("");
+                setMensaje("");
+              }}
+            >
+              <option value="">Selecciona un modelo de convocatoria</option>
+              {convocatorias
+                .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                .map((convocatoria) => (
+                  <option key={convocatoria.id} value={convocatoria.id}>
+                    {convocatoria.codigo} — {convocatoria.puesto}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
 
         <div style={{ marginTop: 18 }}>
           <label htmlFor="material-norma">Ley / norma</label>
