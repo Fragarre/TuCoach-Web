@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 
 import { apiFetch } from "@/lib/api";
@@ -377,6 +377,9 @@ export default function Home() {
   const [cargandoSesion, setCargandoSesion] = useState(true);
   const [pantallaPublica, setPantallaPublica] = useState< "LANDING" | "LOGIN" | "REGISTRO" | "RECUPERAR" | "NUEVA_PASSWORD" >("LANDING");
   const [email, setEmail] = useState("");
+  const correoInput = useRef<HTMLInputElement>(null);
+  const reenviando = useRef(false);
+  const [esperaReenvio, setEsperaReenvio] = useState(0);
   const [password, setPassword] = useState("");
   const [nuevaPassword, setNuevaPassword] = useState("");
   const [confirmarPassword, setConfirmarPassword] = useState("");
@@ -483,6 +486,13 @@ const [materialTipo, setMaterialTipo] = useState<
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const estado = params.get("checkout");
+
+    if (params.get("acceso") === "login") {
+      setPantallaPublica("LOGIN");
+      params.delete("acceso");
+      const consulta = params.toString();
+      window.history.replaceState({}, "", `${window.location.pathname}${consulta ? `?${consulta}` : ""}${window.location.hash}`);
+    }
 
     if (estado === "success" || estado === "cancel") {
       setCheckoutRetorno(estado);
@@ -1267,6 +1277,44 @@ async function descargarMaterialPdf() {
     }
   }
 
+  useEffect(() => {
+    if (esperaReenvio <= 0) return;
+    const temporizador = window.setTimeout(() => setEsperaReenvio((valor) => valor - 1), 1000);
+    return () => window.clearTimeout(temporizador);
+  }, [esperaReenvio]);
+
+  async function reenviarConfirmacion() {
+    if (ocupado || reenviando.current || esperaReenvio > 0) return;
+    if (!correoInput.current?.reportValidity()) return;
+
+    reenviando.current = true;
+    setError("");
+    setMensaje("");
+    setOcupado(true);
+    setAccionEnCurso("Solicitando correo de confirmación...");
+    setEsperaReenvio(60);
+
+    try {
+      const { error: authError } = await supabase.auth.resend({
+        type: "signup",
+        email: email.trim(),
+      });
+      if (authError) {
+        setError(authError.status === 429
+          ? "Se han solicitado demasiados correos. Espera unos minutos antes de volver a intentarlo."
+          : "No se ha podido solicitar el correo de confirmación. Inténtalo de nuevo más tarde.");
+        return;
+      }
+      setMensaje("Si esta dirección tiene un registro pendiente de confirmación, recibirás un nuevo correo. Revisa la bandeja de entrada y las carpetas Spam, Correo no deseado o Promociones.");
+    } catch {
+      setError("No se ha podido conectar para solicitar el correo. Inténtalo de nuevo más tarde.");
+    } finally {
+      reenviando.current = false;
+      setOcupado(false);
+      setAccionEnCurso(null);
+    }
+  }
+
   async function iniciarSesion(event: FormEvent) {
     event.preventDefault();
     setError("");
@@ -1283,7 +1331,9 @@ async function descargarMaterialPdf() {
     setAccionEnCurso(null);
 
     if (authError) {
-      setError(authError.message);
+      setError(authError.code === "email_not_confirmed"
+        ? "Debes confirmar tu correo antes de iniciar sesión. Revisa tu bandeja de entrada y Spam o Correo no deseado. Si no encuentras el mensaje, solicita el reenvío de confirmación."
+        : authError.message);
       return;
     }
 
@@ -1314,7 +1364,7 @@ async function descargarMaterialPdf() {
 
     if (!data.session) {
       setMensaje(
-        "Cuenta creada correctamente. Te hemos enviado un correo para confirmar tu dirección. Cuando la hayas confirmado, podrás iniciar sesión."
+        `Revisa tu correo para completar el registro en Tu Coach. Abre el mensaje enviado a ${email.trim()} y pulsa «Confirmar mi cuenta». Si no lo encuentras, revisa las carpetas Spam, Correo no deseado o Promociones. Después de confirmar tu correo, podrás iniciar sesión.`
       );
       setPantallaPublica("LOGIN");
     }
@@ -2171,7 +2221,7 @@ async function descargarMaterialPdf() {
             </span>
             <h1>
               {esRegistro
-                ? "Crea tu cuenta y prueba NetReto durante 24 horas."
+                ? "Crea tu cuenta y prueba Tu Coach durante 24 horas."
                 : "Continúa con tu preparación."}
             </h1>
             <p>
@@ -2191,15 +2241,24 @@ async function descargarMaterialPdf() {
             <span className="eyebrow">
               {esRegistro ? "Crear cuenta" : "Acceso"}
             </span>
-            <h2>{esRegistro ? "Prueba NetReto gratis" : "Iniciar sesión"}</h2>
+            <h2>{esRegistro ? "Prueba Tu Coach gratis" : "Iniciar sesión"}</h2>
 
             {error && <div className="error">{error}</div>}
             {mensaje && <div className="success">{mensaje}</div>}
+
+            {esRegistro && (
+              <p>
+                Para completar el registro, tendrás que confirmar tu correo.
+                Tras crear la cuenta, revisa tu bandeja de entrada y también
+                Spam o Correo no deseado.
+              </p>
+            )}
 
             <form onSubmit={esRegistro ? crearCuenta : iniciarSesion}>
               <label htmlFor="email">Correo electrónico</label>
               <input
                 id="email"
+                ref={correoInput}
                 type="email"
                 autoComplete="username"
                 value={email}
@@ -2232,6 +2291,20 @@ async function descargarMaterialPdf() {
                     : "Entrar"}
               </button>
             </form>
+
+            {!esRegistro && (
+              <div style={{ marginTop: "0.8rem" }}>
+                <p>¿No has recibido el correo para confirmar tu cuenta? Introduce arriba tu correo y solicita otro mensaje.</p>
+                <button
+                  type="button"
+                  className="link-button"
+                  disabled={ocupado || esperaReenvio > 0}
+                  onClick={() => void reenviarConfirmacion()}
+                >
+                  {esperaReenvio > 0 ? `Podrás reenviar en ${esperaReenvio} s` : "Reenviar correo de confirmación"}
+                </button>
+              </div>
+            )}
 
             {!esRegistro && (
         <div style={{ marginTop: "0.8rem", textAlign: "center" }}>
