@@ -220,7 +220,10 @@ type ChatRespuesta = {
   modo: ChatModo;
 };
 
-const ORIGENES = ["A1", "A2", "C1", "C2"] as const;
+const ORIGENES = [
+  "A1", "A2", "C1", "C2",
+  "AYTO-A1", "AYTO-A2", "AYTO-C1", "AYTO-C2",
+] as const;
 const FUENTES = ["REAL", "IA"] as const;
 
 const SEGURIDADES = [

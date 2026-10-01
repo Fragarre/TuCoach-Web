@@ -20,7 +20,10 @@ from app.database import (
 from app.postgres import conectar_postgres
 from app.repositorio_contenidos import convocatoria_esta_activa
 
-ORIGENES_VALIDOS = {"A1", "A2", "C1", "C2"}
+ORIGENES_VALIDOS = {
+    "A1", "A2", "C1", "C2",
+    "AYTO-A1", "AYTO-A2", "AYTO-C1", "AYTO-C2",
+}
 FUENTES_VALIDAS = {"REAL", "IA"}
 RESPUESTAS_VALIDAS = {"A", "B", "C", "D"}
 SEGURIDADES_VALIDAS = {"SEGURO", "MENOS_SEGURO"}
