@@ -3424,22 +3424,82 @@ async function descargarMaterialPdf() {
           <section className="card">
             <h2>Construir test</h2>
 
-            <label>Convocatoria</label>
-            <select
-              className="select"
-              value={convocatoriaTestId ?? ""}
-              onChange={(e) => {
-                setConvocatoriaTestId(Number(e.target.value));
-                setTemasSeleccionados([]);
-                setNormasSeleccionadas([]);
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+                gap: 24,
+                alignItems: "start",
               }}
             >
-              {convocatorias.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.codigo} — {c.puesto}
-                </option>
-              ))}
-            </select>
+              <div>
+                <label htmlFor="convocatoria-test">Convocatorias</label>
+                <select
+                  id="convocatoria-test"
+                  className="select"
+                  style={{ width: "100%" }}
+                  value={
+                    convocatoriaTestId !== null &&
+                    !convocatorias
+                      .find((convocatoria) => convocatoria.id === convocatoriaTestId)
+                      ?.codigo.startsWith("Apoyo-")
+                      ? convocatoriaTestId
+                      : ""
+                  }
+                  onChange={(e) => {
+                    setConvocatoriaTestId(
+                      e.target.value === "" ? null : Number(e.target.value)
+                    );
+                    setTemasSeleccionados([]);
+                    setNormasSeleccionadas([]);
+                  }}
+                >
+                  <option value="">Selecciona una convocatoria</option>
+                  {convocatorias
+                    .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                    .map((convocatoria) => (
+                      <option key={convocatoria.id} value={convocatoria.id}>
+                        {convocatoria.codigo} — {convocatoria.puesto}
+                      </option>
+                    ))}
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="modelo-convocatoria-test">
+                  Modelos de Convocatorias para Ayuntamientos
+                </label>
+                <select
+                  id="modelo-convocatoria-test"
+                  className="select"
+                  style={{ width: "100%" }}
+                  value={
+                    convocatoriaTestId !== null &&
+                    convocatorias
+                      .find((convocatoria) => convocatoria.id === convocatoriaTestId)
+                      ?.codigo.startsWith("Apoyo-")
+                      ? convocatoriaTestId
+                      : ""
+                  }
+                  onChange={(e) => {
+                    setConvocatoriaTestId(
+                      e.target.value === "" ? null : Number(e.target.value)
+                    );
+                    setTemasSeleccionados([]);
+                    setNormasSeleccionadas([]);
+                  }}
+                >
+                  <option value="">Selecciona un modelo de convocatoria</option>
+                  {convocatorias
+                    .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                    .map((convocatoria) => (
+                      <option key={convocatoria.id} value={convocatoria.id}>
+                        {convocatoria.codigo} — {convocatoria.puesto}
+                      </option>
+                    ))}
+                </select>
+              </div>
+            </div>
 
             <label>Número de preguntas</label>
             <input
