@@ -3259,20 +3259,39 @@ async function descargarMaterialPdf() {
         !modoHistoricoPostBaja && (
         <section className="card">
           <h2>Crear simulacro</h2>
-          <p className="muted">Selecciona la convocatoria y crea una prueba completa.</p>
+          <p className="muted">
+            Selecciona una convocatoria oficial o, si preparas una oposición de
+            Administración Local, uno de los modelos genéricos de apoyo.
+          </p>
 
-          <label htmlFor="convocatoria-simulacro">Convocatoria</label>
+          <label htmlFor="convocatoria-simulacro">
+            Convocatoria o modelo de apoyo
+          </label>
           <select
             id="convocatoria-simulacro"
             className="select"
             value={convocatoriaSimulacroId ?? ""}
             onChange={(e) => setConvocatoriaSimulacroId(Number(e.target.value))}
           >
-            {convocatorias.map((convocatoria) => (
-              <option key={convocatoria.id} value={convocatoria.id}>
-                {convocatoria.codigo} — {convocatoria.puesto}
-              </option>
-            ))}
+            <optgroup label="Convocatorias oficiales">
+              {convocatorias
+                .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                .map((convocatoria) => (
+                  <option key={convocatoria.id} value={convocatoria.id}>
+                    {convocatoria.codigo} — {convocatoria.puesto}
+                  </option>
+                ))}
+            </optgroup>
+
+            <optgroup label="Modelos de apoyo para Administración Local">
+              {convocatorias
+                .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                .map((convocatoria) => (
+                  <option key={convocatoria.id} value={convocatoria.id}>
+                    {convocatoria.codigo} — {convocatoria.puesto}
+                  </option>
+                ))}
+            </optgroup>
           </select>
 
           <div style={{ marginTop: 18 }}>
