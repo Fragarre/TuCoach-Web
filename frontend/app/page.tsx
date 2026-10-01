@@ -3260,38 +3260,67 @@ async function descargarMaterialPdf() {
         <section className="card">
           <h2>Crear simulacro</h2>
           <p className="muted">
-            Selecciona una convocatoria oficial o, si preparas una oposición de
-            Administración Local, uno de los modelos genéricos de apoyo.
+            Selecciona una convocatoria oficial o un modelo de convocatoria para
+            ayuntamientos.
           </p>
 
-          <label htmlFor="convocatoria-simulacro">
-            Convocatoria o modelo de apoyo
-          </label>
+          <label htmlFor="convocatoria-simulacro">Convocatorias</label>
           <select
             id="convocatoria-simulacro"
             className="select"
-            value={convocatoriaSimulacroId ?? ""}
-            onChange={(e) => setConvocatoriaSimulacroId(Number(e.target.value))}
+            value={
+              convocatorias.find(
+                (convocatoria) =>
+                  convocatoria.id === convocatoriaSimulacroId &&
+                  !convocatoria.codigo.startsWith("Apoyo-")
+              )?.id ?? ""
+            }
+            onChange={(e) =>
+              setConvocatoriaSimulacroId(
+                e.target.value === "" ? null : Number(e.target.value)
+              )
+            }
           >
-            <optgroup label="Convocatorias oficiales">
-              {convocatorias
-                .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
-                .map((convocatoria) => (
-                  <option key={convocatoria.id} value={convocatoria.id}>
-                    {convocatoria.codigo} — {convocatoria.puesto}
-                  </option>
-                ))}
-            </optgroup>
+            <option value="">Selecciona una convocatoria</option>
+            {convocatorias
+              .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+              .map((convocatoria) => (
+                <option key={convocatoria.id} value={convocatoria.id}>
+                  {convocatoria.codigo} — {convocatoria.puesto}
+                </option>
+              ))}
+          </select>
 
-            <optgroup label="Modelos de apoyo para Administración Local">
-              {convocatorias
-                .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
-                .map((convocatoria) => (
-                  <option key={convocatoria.id} value={convocatoria.id}>
-                    {convocatoria.codigo} — {convocatoria.puesto}
-                  </option>
-                ))}
-            </optgroup>
+          <label
+            htmlFor="modelo-convocatoria-ayuntamiento"
+            style={{ display: "block", marginTop: 18 }}
+          >
+            Modelos de Convocatorias para Ayuntamientos
+          </label>
+          <select
+            id="modelo-convocatoria-ayuntamiento"
+            className="select"
+            value={
+              convocatorias.find(
+                (convocatoria) =>
+                  convocatoria.id === convocatoriaSimulacroId &&
+                  convocatoria.codigo.startsWith("Apoyo-")
+              )?.id ?? ""
+            }
+            onChange={(e) =>
+              setConvocatoriaSimulacroId(
+                e.target.value === "" ? null : Number(e.target.value)
+              )
+            }
+          >
+            <option value="">Selecciona un modelo de convocatoria</option>
+            {convocatorias
+              .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+              .map((convocatoria) => (
+                <option key={convocatoria.id} value={convocatoria.id}>
+                  {convocatoria.codigo} — {convocatoria.puesto}
+                </option>
+              ))}
           </select>
 
           <div style={{ marginTop: 18 }}>
