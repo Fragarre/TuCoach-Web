@@ -3264,64 +3264,78 @@ async function descargarMaterialPdf() {
             ayuntamientos.
           </p>
 
-          <label htmlFor="convocatoria-simulacro">Convocatorias</label>
-          <select
-            id="convocatoria-simulacro"
-            className="select"
-            value={
-              convocatorias.find(
-                (convocatoria) =>
-                  convocatoria.id === convocatoriaSimulacroId &&
-                  !convocatoria.codigo.startsWith("Apoyo-")
-              )?.id ?? ""
-            }
-            onChange={(e) =>
-              setConvocatoriaSimulacroId(
-                e.target.value === "" ? null : Number(e.target.value)
-              )
-            }
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+              gap: 24,
+              alignItems: "start",
+            }}
           >
-            <option value="">Selecciona una convocatoria</option>
-            {convocatorias
-              .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
-              .map((convocatoria) => (
-                <option key={convocatoria.id} value={convocatoria.id}>
-                  {convocatoria.codigo} — {convocatoria.puesto}
-                </option>
-              ))}
-          </select>
+            <div>
+              <label htmlFor="convocatoria-simulacro">Convocatorias</label>
+              <select
+                id="convocatoria-simulacro"
+                className="select"
+                style={{ width: "100%" }}
+                value={
+                  convocatoriaSimulacroId !== null &&
+                  !convocatorias
+                    .find((convocatoria) => convocatoria.id === convocatoriaSimulacroId)
+                    ?.codigo.startsWith("Apoyo-")
+                    ? convocatoriaSimulacroId
+                    : ""
+                }
+                onChange={(e) =>
+                  setConvocatoriaSimulacroId(
+                    e.target.value === "" ? null : Number(e.target.value)
+                  )
+                }
+              >
+                <option value="">Selecciona una convocatoria</option>
+                {convocatorias
+                  .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                  .map((convocatoria) => (
+                    <option key={convocatoria.id} value={convocatoria.id}>
+                      {convocatoria.codigo} — {convocatoria.puesto}
+                    </option>
+                  ))}
+              </select>
+            </div>
 
-          <label
-            htmlFor="modelo-convocatoria-ayuntamiento"
-            style={{ display: "block", marginTop: 18 }}
-          >
-            Modelos de Convocatorias para Ayuntamientos
-          </label>
-          <select
-            id="modelo-convocatoria-ayuntamiento"
-            className="select"
-            value={
-              convocatorias.find(
-                (convocatoria) =>
-                  convocatoria.id === convocatoriaSimulacroId &&
-                  convocatoria.codigo.startsWith("Apoyo-")
-              )?.id ?? ""
-            }
-            onChange={(e) =>
-              setConvocatoriaSimulacroId(
-                e.target.value === "" ? null : Number(e.target.value)
-              )
-            }
-          >
-            <option value="">Selecciona un modelo de convocatoria</option>
-            {convocatorias
-              .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
-              .map((convocatoria) => (
-                <option key={convocatoria.id} value={convocatoria.id}>
-                  {convocatoria.codigo} — {convocatoria.puesto}
-                </option>
-              ))}
-          </select>
+            <div>
+              <label htmlFor="modelo-convocatoria-simulacro">
+                Modelos de Convocatorias para Ayuntamientos
+              </label>
+              <select
+                id="modelo-convocatoria-simulacro"
+                className="select"
+                style={{ width: "100%" }}
+                value={
+                  convocatoriaSimulacroId !== null &&
+                  convocatorias
+                    .find((convocatoria) => convocatoria.id === convocatoriaSimulacroId)
+                    ?.codigo.startsWith("Apoyo-")
+                    ? convocatoriaSimulacroId
+                    : ""
+                }
+                onChange={(e) =>
+                  setConvocatoriaSimulacroId(
+                    e.target.value === "" ? null : Number(e.target.value)
+                  )
+                }
+              >
+                <option value="">Selecciona un modelo de convocatoria</option>
+                {convocatorias
+                  .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                  .map((convocatoria) => (
+                    <option key={convocatoria.id} value={convocatoria.id}>
+                      {convocatoria.codigo} — {convocatoria.puesto}
+                    </option>
+                  ))}
+              </select>
+            </div>
+          </div>
 
           <div style={{ marginTop: 18 }}>
             <button
