@@ -1784,364 +1784,242 @@ async function descargarMaterialPdf() {
   if (!session) {
     if (pantallaPublica === "LANDING") {
       return (
-        <main className="public-site">
-          <style jsx>{`
-            @media (min-width: 1100px) {
-              .public-process-five {
-                grid-template-columns: repeat(5, minmax(0, 1fr));
-              }
-            }
-          `}</style>
+        <main className="public-site marketing-site">
           <header className="public-header">
-            <button
-              type="button"
-              className="brand public-brand"
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="NetReto"
-            >
-              <span className="brand-mark" aria-hidden="true">N</span>
+            <button type="button" className="brand public-brand" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Tu Coach, inicio">
+              <span className="brand-mark" aria-hidden="true">TC</span>
               <span className="brand-copy">
-                <span className="brand-name">NetReto</span>
-                <span className="brand-byline">by netexamenes.com</span>
-              </span>
+            <span className="brand-name">Tu Coach</span>
+            </span>
             </button>
-
             <nav className="public-nav" aria-label="Navegación pública">
-              <a href="#como-funciona">Cómo funciona</a>
-              <a href="#simulacros">Simulacros</a>
-              <a href="#tests">Tests</a>
-              <a href="#materiales">Materiales</a>
+              <a href="#preparacion">Preparación</a>
+              <a href="#ayuntamientos">Ayuntamientos</a>
+              <a href="#empleo-publico">Empleo público</a>
               <a href="#precio">Precio</a>
             </nav>
-
             <div className="public-header-actions">
-              <button
-                type="button"
-                className="secondary compact-button"
-                onClick={() => {
-                  setError("");
-                  setMensaje("");
-                  setPantallaPublica("LOGIN");
-                }}
-              >
-                Iniciar sesión
-              </button>
-              <button
-                type="button"
-                className="primary compact-button"
-                onClick={() => {
-                  setError("");
-                  setMensaje("");
-                  setPantallaPublica("REGISTRO");
-                }}
-              >
-                Probar gratis
-              </button>
+              <button type="button" className="secondary compact-button" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("LOGIN"); }}>Iniciar sesión</button>
+              <button type="button" className="primary compact-button" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis</button>
             </div>
           </header>
 
-          <div className="public-gva-focus" aria-label="Ámbito de NetReto">
-            <img src="/logo-gva.png" alt="" aria-hidden="true" />
-            <span>Oposiciones para la <strong>Administración Pública de la Comunidad Valenciana</strong>.</span>
-          </div>
-
-          <section className="public-hero">
+          <section className="public-hero marketing-hero">
             <div className="public-hero-copy">
-              <span className="public-kicker">Preparación inteligente de oposiciones</span>
-              <h1>Entrena como te examinan. Corrige como necesitas aprender.</h1>
-              <p>
-                NetReto combina simulacros, tests dirigidos y análisis de tus
-                respuestas para que practiques con criterio y detectes dónde
-                necesitas reforzar.
-              </p>
-
-
-
+              <span className="public-kicker">Oposiciones administrativas · Comunitat Valenciana</span>
+              <h1>Practica para tu oposición. Encuentra tu próxima oportunidad.</h1>
+              <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Oposiciones, bolsas de trabajo y anuncios de difícil cobertura, en un mismo espacio.</p>
               <div className="public-hero-actions">
-                <button
-                  type="button"
-                  className="primary public-cta"
-                  onClick={() => {
-                    setError("");
-                    setMensaje("");
-                    setPantallaPublica("REGISTRO");
-                  }}
-                >
-                  24 horas de acceso gratuito
-                </button>
-                <button
-                  type="button"
-                  className="secondary public-cta"
-                  onClick={() =>
-                    document
-                      .getElementById("como-funciona")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                >
-                  Ver cómo funciona
-                </button>
+                <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 24 horas</button>
+                <a className="secondary public-cta marketing-link" href="/empleo">Explorar empleo público →</a>
               </div>
-
+              <p className="marketing-trial-note">La prueba empieza con tu primer acceso: 2 tests, 2 simulacros y 2 descargas de materiales. Incluye Empleo general.</p>
+              <div className="marketing-scope">Generalitat Valenciana · Diputaciones · Ayuntamientos</div>
             </div>
-
-            <div className="public-value-panel" aria-label="Qué ofrece NetReto">
-              <span className="eyebrow">Todo tu entrenamiento en un solo lugar</span>
-              <div className="value-step">
-                <span className="value-step-number">01</span>
-                <div>
-                  <strong>Simula el examen</strong>
-                  <p>
-                    Practica con pruebas completas construidas para tu convocatoria.
-                  </p>
-                </div>
-              </div>
-              <div className="value-step">
-                <span className="value-step-number">02</span>
-                <div>
-                  <strong>Refuerza lo que necesitas</strong>
-                  <p>
-                    Crea tests por temas o por leyes y normas concretas.
-                  </p>
-                </div>
-              </div>
-              <div className="value-step">
-                <span className="value-step-number">03</span>
-                <div>
-                  <strong>Corrige con más información</strong>
-                  <p>
-                    Revisa resultados y compáralos con la seguridad con la que respondes.
-                  </p>
-                </div>
-              </div>
-              <div className="value-step">
-                <span className="value-step-number">04</span>
-                <div>
-                  <strong>Estudia también con materiales</strong>
-                  <p>
-                    Descarga resúmenes, extractos del temario y textos completos de las normas de tu convocatoria.
-                  </p>
-                </div>
-              </div>
-              <div className="value-trial">
-                <strong>Empieza sin pagar</strong>
-                <span>Accede durante 24 horas y prueba las principales herramientas de preparación.</span>
-                <span>Incluye: 2 tests · 2 simulacros · 2 descargas de materiales · Empleo general</span>
-              </div>
-            </div>
-          </section>
-
-          <section className="public-proof" id="como-funciona">
-            <div className="public-proof-heading">
-              <div>
-                <span className="eyebrow">Cómo funciona</span>
-                <h2>De practicar preguntas a entender cómo estás preparando el examen</h2>
-              </div>
-              <p>
-                NetReto acompaña todo el ciclo de entrenamiento: eliges qué
-                practicar, respondes, corriges y utilizas lo aprendido para decidir
-                dónde concentrar el siguiente esfuerzo.
-              </p>
-            </div>
-
-            <div className="public-process">
-              <article id="simulacros">
-                <span className="process-number">01</span>
-                <div className="process-content">
-                  <span className="process-kicker">Entrena</span>
-                  <h3>Elige cómo quieres practicar</h3>
-                  <p>
-                    Haz un simulacro completo o construye un test específico por
-                    temas, leyes o normas de tu convocatoria.
-                  </p>
-                </div>
-              </article>
-
-              <article id="tests">
-                <span className="process-number">02</span>
-                <div className="process-content">
-                  <span className="process-kicker">Responde</span>
-                  <h3>Contesta y registra tu seguridad</h3>
-                  <p>
-                    Resuelve las preguntas como en una prueba real y, si lo deseas,
-                    indica con qué seguridad has elegido cada respuesta.
-                  </p>
-                </div>
-              </article>
-
-              <article>
-                <span className="process-number">03</span>
-                <div className="process-content">
-                  <span className="process-kicker">Analiza</span>
-                  <h3>Corrige y detecta dónde está el riesgo</h3>
-                  <p>
-                    Revisa aciertos, fallos y preguntas no contestadas, y compara
-                    el resultado con tu nivel de confianza para localizar errores
-                    que merecen más atención.
-                  </p>
-                </div>
-              </article>
-
-              <article id="materiales-proceso">
-                <span className="process-number">04</span>
-                <div className="process-content">
-                  <span className="process-kicker">Estudia</span>
-                  <h3>Apóyate en materiales de tu convocatoria</h3>
-                  <p>
-                    Descarga resúmenes para estudiar, extractos vinculados a tu temario
-                    y el texto completo de las leyes y normas disponibles.
-                  </p>
-                </div>
-              </article>
-            </div>
-          </section>
-
-          <section className="public-highlight" id="materiales">
+            <aside className="marketing-overview" aria-label="Preparación y empleo en Tu Coach">
+              <span className="eyebrow">Dos formas de avanzar</span>
+              <a className="marketing-path" href="#preparacion">
+            <span className="marketing-path-number">01</span>
             <div>
-              <span className="eyebrow">Materiales de estudio</span>
-              <h2>Del entrenamiento al estudio, dentro de tu convocatoria</h2>
-              <p>
-                NetReto incorpora materiales preparados a partir del corpus normativo
-                de cada convocatoria para que puedas estudiar y consultar las normas
-                que realmente forman parte de tu temario.
-              </p>
+            <h2>Prepara tu examen</h2>
+            <p>Practica, corrige y detecta qué necesitas reforzar.</p>
+            <span>Simulacros · Tests · Materiales →</span>
             </div>
-            <div className="highlight-stats">
-              <div>
-                <span>Resúmenes</span>
-                <strong>Material preparado para facilitar el estudio</strong>
-              </div>
-              <div>
-                <span>Extractos</span>
-                <strong>Los artículos y bloques relacionados con tu temario</strong>
-              </div>
-              <div>
-                <span>Texto completo</span>
-                <strong>Leyes y normas completas disponibles en PDF</strong>
-              </div>
+            </a>
+              <a className="marketing-path" href="#empleo-publico">
+            <span className="marketing-path-number">02</span>
+            <div>
+            <h2>Amplía tu búsqueda</h2>
+            <p>Consulta oportunidades y, con tu suscripción, sigue los procesos que te interesan.</p>
+            <span>Oposiciones · Bolsas · Difícil cobertura →</span>
+            </div>
+            </a>
+              <p className="marketing-overview-note">Empieza por una convocatoria o practica con un modelo genérico municipal.</p>
+            </aside>
+          </section>
+
+          <section className="marketing-section" id="preparacion">
+            <div className="marketing-heading">
+            <span className="eyebrow">Preparación</span>
+            <h2>Elige cómo quieres practicar</h2>
+            <p>Un simulacro para entrenar el conjunto. Un test para trabajar los contenidos que más necesitas.</p>
+            </div>
+            <div className="marketing-grid marketing-grid-two">
+              <article className="marketing-card" id="simulacros">
+            <span className="marketing-tag">Simulacros</span>
+            <h3>Practica con pruebas completas</h3>
+            <p>Entrena con la estructura configurada para las convocatorias disponibles o con modelos genéricos de ayuntamientos.</p>
+            <ul>
+            <li>Revisa aciertos, fallos y preguntas no contestadas.</li>
+            <li>Consulta la corrección y descarga preguntas y soluciones en PDF.</li>
+            </ul>
+            </article>
+              <article className="marketing-card" id="tests">
+            <span className="marketing-tag">Tests dirigidos</span>
+            <h3>Refuerza temas y normas</h3>
+            <p>Selecciona contenidos del temario disponible y concentra la práctica en los puntos que quieras mejorar.</p>
+            <ul>
+            <li>Practica por temas, leyes y normas.</li>
+            <li>Revisa tus resultados y tu nivel de seguridad al responder.</li>
+            </ul>
+            </article>
             </div>
           </section>
 
-          <section className="public-highlight">
-            <div>
-              <span className="eyebrow">No sólo una nota</span>
-              <h2>Entiende también cómo estás respondiendo</h2>
-              <p>
-                NetReto conserva tus resultados y te permite revisar el
-                rendimiento acumulado por temas, normas y nivel de seguridad.
-              </p>
+          <section className="marketing-municipal marketing-section" id="ayuntamientos">
+            <div className="marketing-heading">
+            <span className="eyebrow">Modelos genéricos de Ayuntamientos</span>
+            <h2>Practica aunque todavía no hayas elegido convocatoria</h2>
+            <p>Prepara contenidos para puestos administrativos municipales con modelos de referencia y tests por temas y normas.</p>
             </div>
-            <div className="highlight-stats">
-              <div>
-                <span>Por tema</span>
-                <strong>Detecta tus puntos débiles</strong>
-              </div>
-              <div>
-                <span>Por norma</span>
-                <strong>Localiza dónde reforzar</strong>
-              </div>
-              <div>
-                <span>Por seguridad</span>
-                <strong>Identifica errores de exceso de confianza</strong>
-              </div>
+            <div className="marketing-grid marketing-grid-two">
+              <article className="marketing-card">
+            <span className="marketing-tag">C1</span>
+            <h3>Administrativo/a</h3>
+            <p>Entrena contenidos generales, teoría e informática con el modelo municipal disponible.</p>
+            </article>
+              <article className="marketing-card">
+            <span className="marketing-tag">C2</span>
+            <h3>Auxiliar administrativo/a</h3>
+            <p>Prepara contenidos de auxiliar administrativo con simulacros y tests del modelo genérico municipal.</p>
+            </article>
+            </div>
+            <p className="marketing-disclaimer">Los modelos genéricos son herramientas de práctica: no reproducen las bases de una convocatoria municipal concreta.</p>
+          </section>
+
+          <section className="marketing-section marketing-employment" id="empleo-publico">
+            <div className="marketing-heading">
+            <span className="eyebrow">Empleo público</span>
+            <h2>Busca más allá de una oposición</h2>
+            <p>Consulta oportunidades de la Generalitat Valenciana, diputaciones y ayuntamientos de Valencia, Alicante y Castellón, con acceso a sus publicaciones oficiales.</p>
+            </div>
+            <div className="marketing-grid marketing-grid-three">
+              <article className="marketing-card">
+            <span className="marketing-tag">Procesos selectivos</span>
+            <h3>Oposiciones</h3>
+            <p>Consulta convocatorias administrativas y la información disponible sobre plazas, inscripción y publicaciones.</p>
+            </article>
+              <article className="marketing-card">
+            <span className="marketing-tag">Empleo temporal</span>
+            <h3>Bolsas de trabajo</h3>
+            <p>Amplía tu búsqueda con bolsas de empleo temporal en las administraciones incluidas.</p>
+            </article>
+              <article className="marketing-card">
+            <span className="marketing-tag">Otras oportunidades</span>
+            <h3>Difícil cobertura</h3>
+            <p>Localiza anuncios de puestos de difícil cobertura y consulta sus condiciones en la publicación oficial.</p>
+            </article>
+            </div>
+            <div className="marketing-follow">
+            <div>
+            <h3>Sigue los procesos que te interesan</h3>
+            <p>Con tu suscripción, guarda oportunidades en seguimiento y revisa sus novedades oficiales. La preparación específica se indica cuando está disponible.</p>
+            </div>
+            <a href="/empleo" className="primary public-cta marketing-link">Explorar oportunidades →</a>
             </div>
           </section>
 
-          <section className="public-highlight">
-            <div>
-              <span className="eyebrow">Empleo público</span>
-              <h2>Descubre oportunidades y sigue sus novedades</h2>
-              <p>
-                Consulta oportunidades de empleo público de la Generalitat Valenciana,
-                las diputaciones y los ayuntamientos de Valencia, Alicante y Castellón,
-                con su información oficial reunida en un mismo lugar.
-              </p>
+          <section className="marketing-section" id="como-funciona">
+            <div className="marketing-heading">
+            <span className="eyebrow">Cómo funciona</span>
+            <h2>Practica, revisa y decide qué reforzar</h2>
             </div>
-            <div className="highlight-stats">
-              <div>
-                <span>Descubre</span>
-                <strong>Encuentra oportunidades que encajan contigo</strong>
-              </div>
-              <div>
-                <span>Infórmate</span>
-                <strong>Consulta sus publicaciones y novedades oficiales</strong>
-              </div>
-              <div>
-                <span>Prepárate</span>
-                <strong>Conecta cada oportunidad con tu preparación</strong>
-              </div>
-              <button
-                type="button"
-                className="secondary public-cta"
-                onClick={() => window.location.assign("/empleo")}
-              >
-                Ver oportunidades →
-              </button>
-            </div>
+            <ol className="marketing-steps">
+            <li>
+            <span>01</span>
+            <h3>Elige</h3>
+            <p>Una convocatoria disponible, un modelo municipal o un test dirigido.</p>
+            </li>
+            <li>
+            <span>02</span>
+            <h3>Practica</h3>
+            <p>Responde e indica, si lo deseas, tu seguridad en cada respuesta.</p>
+            </li>
+            <li>
+            <span>03</span>
+            <h3>Revisa</h3>
+            <p>Consulta la corrección y el rendimiento por temas y normas.</p>
+            </li>
+            <li>
+            <span>04</span>
+            <h3>Refuerza</h3>
+            <p>Vuelve a practicar y apóyate en los materiales disponibles.</p>
+            </li>
+            </ol>
+          </section>
+
+          <section className="marketing-section marketing-grid marketing-grid-two" id="materiales">
+            <article className="marketing-card marketing-card-dark">
+            <span className="eyebrow">Materiales de estudio</span>
+            <h2>De la pregunta al texto de la norma</h2>
+            <p>Descarga resúmenes, extractos vinculados al temario y normas completas disponibles en PDF para estudiar y consultar.</p>
+            </article>
+            <article className="marketing-card">
+            <span className="eyebrow">Análisis de resultados</span>
+            <h2>Una nota no lo explica todo</h2>
+            <p>Revisa tu rendimiento acumulado por temas, normas y seguridad al responder. Localiza fallos que merecen más atención y orienta tu siguiente sesión.</p>
+            </article>
           </section>
 
           <section className="public-pricing" id="precio">
             <div>
-              <span className="eyebrow">Precio sencillo</span>
-              <h2>Prueba NetReto antes de suscribirte</h2>
-              <p>
-                Prueba NetReto durante 24 horas desde tu primer acceso: hasta 2 tests,
-                2 simulacros y 2 descargas de materiales. Empleo general también está incluido.
-              </p>
+            <span className="eyebrow">Prueba y suscripción</span>
+            <h2>Conoce Tu Coach antes de suscribirte</h2>
+            <p>La prueba gratuita empieza con el primer acceso, no al crear tu cuenta. Durante 24 horas puedes hacer hasta 2 tests, 2 simulacros y 2 descargas de materiales, además de consultar Empleo general.</p>
+            <p>El seguimiento de oportunidades está reservado a la suscripción.</p>
             </div>
-
             <div className="pricing-card">
-              <span className="pricing-name">NetReto</span>
-              <div className="pricing-price">
-                <strong>15 €</strong>
-                <span>/ mes</span>
-              </div>
-              <ul>
-                <li>Simulacros completos</li>
-                <li>Tests por temas y normas</li>
-                <li>Corrección y análisis acumulado</li>
-                <li>PDFs de preguntas y soluciones</li>
-                <li>Materiales de estudio: resúmenes, extractos y normas completas</li>
-                <li>Descubre oportunidades de empleo público</li>
-              </ul>
-              <button
-                type="button"
-                className="primary public-cta"
-                onClick={() => {
-                  setError("");
-                  setMensaje("");
-                  setPantallaPublica("REGISTRO");
-                }}
-              >
-                Probar gratis
-              </button>
-              <span className="pricing-note">
-                La prueba gratuita dura 24 horas desde el primer acceso e incluye hasta 2 tests, 2 simulacros y 2 descargas de materiales.
-              </span>
+            <span className="pricing-name">Tu Coach</span>
+            <div className="pricing-price">
+            <strong>15 €</strong>
+            <span>/ mes</span>
+            </div>
+            <ul>
+            <li>Simulacros de convocatorias y modelos disponibles</li>
+            <li>Tests por temas y normas</li>
+            <li>Corrección y análisis acumulado</li>
+            <li>PDFs de preguntas y soluciones</li>
+            <li>Materiales de estudio disponibles</li>
+            <li>Consulta y seguimiento de oportunidades de empleo público</li>
+            </ul>
+            <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis</button>
+            <span className="pricing-note">Prueba de 24 horas con los límites indicados. Seguimiento incluido en la suscripción.</span>
             </div>
           </section>
 
+          <section className="marketing-section marketing-faq" aria-labelledby="faq-heading">
+            <div className="marketing-heading">
+            <span className="eyebrow">Preguntas frecuentes</span>
+            <h2 id="faq-heading">Antes de empezar</h2>
+            </div>
+            <details>
+            <summary>¿Necesito tener una convocatoria elegida?</summary>
+            <p>No. Puedes practicar con los modelos genéricos municipales y los tests disponibles, y consultar oportunidades para orientar tu búsqueda.</p>
+            </details>
+            <details>
+            <summary>¿Los modelos municipales son exámenes oficiales?</summary>
+            <p>No. Son modelos genéricos de práctica. Revisa siempre las bases, el temario y la estructura de la convocatoria oficial a la que quieras presentarte.</p>
+            </details>
+            <details>
+            <summary>¿Puedo seguir oportunidades durante la prueba?</summary>
+            <p>La prueba incluye Empleo general. El seguimiento de oportunidades está disponible con la suscripción.</p>
+            </details>
+            <details>
+            <summary>¿Todas las oportunidades tienen preparación específica?</summary>
+            <p>No. Cada oportunidad indica si su preparación está disponible en Tu Coach. Puedes consultar su publicación oficial aunque no tenga preparación específica.</p>
+            </details>
+          </section>
           <section className="public-final-cta">
             <div>
-              <span className="eyebrow">Empieza ahora</span>
-              <h2>Prueba NetReto durante 24 horas y decide después.</h2>
+            <span className="eyebrow">Empieza por tu próximo paso</span>
+            <h2>Prueba Tu Coach durante 24 horas.</h2>
             </div>
-            <button
-              type="button"
-              className="primary public-cta"
-              onClick={() => {
-                setError("");
-                setMensaje("");
-                setPantallaPublica("REGISTRO");
-              }}
-            >
-              Crear cuenta y probar
-            </button>
-          </section>
-
+            <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Crear cuenta y probar</button>
+            </section>
           <footer className="public-footer">
-            <strong>NetReto</strong>
-            <span>Oposiciones para la Administración Pública de la Comunidad Valenciana</span>
-          </footer>
+            <strong>Tu Coach</strong>
+            <span>Preparación administrativa y oportunidades de empleo público en la Comunitat Valenciana</span>
+            </footer>
         </main>
       );
     }
