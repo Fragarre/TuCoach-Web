@@ -1,4 +1,4 @@
-type Datos = { categoria_gva?: unknown; url_detalle?: unknown; documentos_pdf?: unknown; bolsas_relacionadas?: unknown; etapa_actual_gva?: unknown; etapa_actual?: unknown; estado_plazo?: unknown };
+type Datos = { categoria_gva?: unknown; url_detalle?: unknown; documentos_pdf?: unknown; bolsas_relacionadas?: unknown; etapa_actual_gva?: unknown; etapa_actual?: unknown; estado_plazo?: unknown; seguimiento_gva_directo?: unknown };
 type Oportunidad = { tipo_proceso: string | null; datos_json: unknown; url_oficial?: string | null; estado_inscripcion?: string | null; inscripcion?: {codigo: string; fecha_cierre?: string | null; fecha_apertura?: string | null} | null };
 export function datosOportunidad(p: Oportunidad): Datos {
  let datos = p.datos_json;
@@ -53,4 +53,12 @@ export function textoSolicitud(p: Oportunidad): string | null {
  if (estado === "PENDIENTE_APERTURA") return apertura ? `Solicitudes a partir del ${fecha(apertura)}` : "Plazo de solicitudes pendiente de apertura";
  if (p.inscripcion?.codigo === "PLAZO_LITERAL" || p.inscripcion?.codigo === "PENDIENTE_BOE") return null;
  return esAdc(p) ? "Consulta el plazo de solicitudes en el anuncio oficial" : "Consulta las condiciones de incorporación en la ficha oficial";
+}
+
+export function enlaceGestionBolsa(p: Oportunidad): string | null {
+ if (!esBolsa(p)) return null;
+ const seguimiento = datosOportunidad(p).seguimiento_gva_directo;
+ if (!seguimiento || typeof seguimiento !== "object") return null;
+ const fase = (seguimiento as Record<string, unknown>).fase_gva;
+ return typeof fase === "string" && fase.includes("https://gvborses.gva.es/gvborses") ? "https://gvborses.gva.es/gvborses" : null;
 }
