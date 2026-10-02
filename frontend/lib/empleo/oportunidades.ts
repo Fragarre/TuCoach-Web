@@ -1,4 +1,4 @@
-type Datos = { categoria_gva?: unknown; url_detalle?: unknown; documentos_pdf?: unknown; bolsas_relacionadas?: unknown; etapa_actual_gva?: unknown; etapa_actual?: unknown; estado_plazo?: unknown; seguimiento_gva_directo?: unknown };
+type Datos = { categoria_gva?: unknown; fase_gva?: unknown; url_detalle?: unknown; documentos_pdf?: unknown; bolsas_relacionadas?: unknown; etapa_actual_gva?: unknown; etapa_actual?: unknown; estado_plazo?: unknown; seguimiento_gva_directo?: unknown };
 type Oportunidad = { tipo_proceso: string | null; datos_json: unknown; url_oficial?: string | null; estado_inscripcion?: string | null; inscripcion?: {codigo: string; fecha_cierre?: string | null; fecha_apertura?: string | null} | null };
 export function datosOportunidad(p: Oportunidad): Datos {
  let datos = p.datos_json;
@@ -61,4 +61,20 @@ export function enlaceGestionBolsa(p: Oportunidad): string | null {
  if (!seguimiento || typeof seguimiento !== "object") return null;
  const fase = (seguimiento as Record<string, unknown>).fase_gva;
  return typeof fase === "string" && fase.includes("https://gvborses.gva.es/gvborses") ? "https://gvborses.gva.es/gvborses" : null;
+}
+
+export function bolsaEnFuncionamiento(p: Oportunidad): boolean {
+ if (!esBolsa(p)) return false;
+ const datos = datosOportunidad(p);
+ const seguimiento = datos.seguimiento_gva_directo && typeof datos.seguimiento_gva_directo === "object" ? datos.seguimiento_gva_directo as Record<string,unknown> : {};
+ const normalizar = (valor: unknown) => typeof valor === "string" ? valor.trim().toLocaleLowerCase("es-ES").replace(/\s+/g, " ") : "";
+ const fase = normalizar(datos.fase_gva);
+ const faseDirecta = normalizar(seguimiento.fase_gva);
+ // La fase literal publicada prevalece sobre el indicador derivado del importador.
+ if (fase) return fase === "bolsa en funcionamiento" || fase === "borsa en funcionament";
+ if (faseDirecta) return /^(?:bolsa en funcionamiento|borsa en funcionament)(?:\b|$)/.test(faseDirecta);
+ return seguimiento.bolsa_en_funcionamiento === true;
+}
+export function visibleEnCatalogo(p: Oportunidad): boolean {
+ return !esBolsa(p) || bolsaEnFuncionamiento(p);
 }
