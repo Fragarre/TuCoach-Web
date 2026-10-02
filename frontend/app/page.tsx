@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
+import Image from "next/image";
 
 import { apiFetch } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
@@ -1806,7 +1807,7 @@ async function descargarMaterialPdf() {
 
           <section className="public-hero marketing-hero">
             <div className="public-hero-copy">
-              <span className="public-kicker">Oposiciones administrativas · Comunitat Valenciana</span>
+              <span className="public-kicker marketing-territory"><Image src="/logo-gva.png" alt="Generalitat Valenciana" width={20} height={41} /><span>Oposiciones administrativas · Comunitat Valenciana</span></span>
               <h1>Practica para tu oposición. Encuentra tu próxima oportunidad.</h1>
               <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Oposiciones, bolsas de trabajo y anuncios de difícil cobertura, en un mismo espacio.</p>
               <div className="public-hero-actions">
@@ -1873,6 +1874,16 @@ async function descargarMaterialPdf() {
             <p>Prepara contenidos para puestos administrativos municipales con modelos de referencia y tests por temas y normas.</p>
             </div>
             <div className="marketing-grid marketing-grid-two">
+              <article className="marketing-card">
+                <span className="marketing-tag">A1</span>
+                <h3>Técnico/a de Administración General</h3>
+                <p>Practica contenidos de administración general con simulacros y tests del modelo genérico municipal.</p>
+              </article>
+              <article className="marketing-card">
+                <span className="marketing-tag">A2</span>
+                <h3>Gestión de Administración General</h3>
+                <p>Refuerza contenidos de gestión administrativa con simulacros y tests del modelo genérico municipal.</p>
+              </article>
               <article className="marketing-card">
             <span className="marketing-tag">C1</span>
             <h3>Administrativo/a</h3>

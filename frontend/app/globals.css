@@ -2313,3 +2313,7 @@ button:not(:disabled):active {
  .marketing-site .public-hero-actions > a { width: 100%; }
  .marketing-scope { line-height: 1.6; }
 }
+
+.marketing-site .marketing-territory { align-items: center; gap: 12px; padding: 10px 14px; }
+.marketing-territory img { flex-shrink: 0; width: 20px; height: 41px; object-fit: contain; }
+.marketing-territory > span { min-width: 0; line-height: 1.5; }
