@@ -2032,6 +2032,7 @@ async function descargarMaterialPdf() {
           <footer className="public-footer">
             <strong>Tu Coach</strong>
             <span>Preparación administrativa y oportunidades de empleo público en la Comunitat Valenciana</span>
+            <a href="/contacto">Contacto</a>
             </footer>
         </main>
       );
