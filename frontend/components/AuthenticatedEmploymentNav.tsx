@@ -30,7 +30,7 @@ export default function AuthenticatedEmploymentNav() {
       const nav = document.querySelector(".app-nav");
       if (!nav) return;
 
-      const existente = document.getElementById(ID);
+      const existente = document.getElementById(ID) as HTMLAnchorElement | null;
       if (!autenticado) {
         existente?.remove();
         document.getElementById(CONTACT_ID)?.remove();
