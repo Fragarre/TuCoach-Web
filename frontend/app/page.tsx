@@ -2287,9 +2287,6 @@ async function descargarMaterialPdf() {
               >
                 Materiales
               </button>
-              <a className="nav-link" href="/contacto">
-                Contacto
-              </a>
             </nav>
 
             <div className="account-area">
