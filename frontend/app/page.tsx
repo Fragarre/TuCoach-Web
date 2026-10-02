@@ -1799,6 +1799,7 @@ async function descargarMaterialPdf() {
               <a href="#empleo-publico">Empleo público</a>
               <a href="#materiales">Materiales</a>
               <a href="#precio">Precio</a>
+              <a href="/contacto">Contacto</a>
             </nav>
             <div className="public-header-actions">
               <button type="button" className="secondary compact-button" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("LOGIN"); }}>Iniciar sesión</button>
@@ -2286,6 +2287,9 @@ async function descargarMaterialPdf() {
               >
                 Materiales
               </button>
+              <a className="nav-link" href="/contacto">
+                Contacto
+              </a>
             </nav>
 
             <div className="account-area">
