@@ -1797,6 +1797,7 @@ async function descargarMaterialPdf() {
               <a href="#preparacion">Preparación</a>
               <a href="#ayuntamientos">Ayuntamientos</a>
               <a href="#empleo-publico">Empleo público</a>
+              <a href="#materiales">Materiales</a>
               <a href="#precio">Precio</a>
             </nav>
             <div className="public-header-actions">
@@ -1962,8 +1963,8 @@ async function descargarMaterialPdf() {
           <section className="marketing-section marketing-grid marketing-grid-two" id="materiales">
             <article className="marketing-card marketing-card-dark">
             <span className="eyebrow">Materiales de estudio</span>
-            <h2>De la pregunta al texto de la norma</h2>
-            <p>Descarga resúmenes, extractos vinculados al temario y normas completas disponibles en PDF para estudiar y consultar.</p>
+            <h2>Resúmenes para el repaso esquemático de temas</h2>
+            <p>Repasa los temas con resúmenes orientados a una revisión esquemática de sus contenidos. Descárgalos en PDF y completa el estudio con extractos vinculados al temario y textos completos de las normas disponibles.</p>
             </article>
             <article className="marketing-card">
             <span className="eyebrow">Análisis de resultados</span>
@@ -1990,7 +1991,8 @@ async function descargarMaterialPdf() {
             <li>Tests por temas y normas</li>
             <li>Corrección y análisis acumulado</li>
             <li>PDFs de preguntas y soluciones</li>
-            <li>Materiales de estudio disponibles</li>
+            <li>Resúmenes para el repaso esquemático de temas</li>
+            <li>Extractos del temario y normas completas disponibles en PDF</li>
             <li>Consulta y seguimiento de oportunidades de empleo público</li>
             </ul>
             <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis</button>
