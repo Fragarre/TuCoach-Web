@@ -462,6 +462,13 @@
     "estado": "APROBADO"
   },
   {
+    "norma_id": 890,
+    "norma": "Ley Orgánica 5/1985, de 19 de junio, del Régimen Electoral General",
+    "fuente": "BOE-A-1985-11672",
+    "archivo": "0890_Ley_Org_nica_5_1985_de_19_de_junio_del_R_gimen_Electoral_General.pdf",
+    "estado": "APROBADO"
+  },
+  {
     "norma_id": 909,
     "norma": "Código Civil",
     "fuente": "BOE-A-1889-4763",
@@ -501,6 +508,13 @@
     "norma": "Ley 5/2019, de 28 de febrero, de estructuras agrarias de la Comunitat Valenciana",
     "fuente": "BOE-A-2019-4086",
     "archivo": "0979_Ley_5_2019_de_28_de_febrero_de_estructuras_agrarias_de_la_Comunitat_Valenciana.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 1021,
+    "norma": "Real Decreto 500/1990, de 20 de abril, por el que se desarrolla el capítulo primero del título sexto de la Ley reguladora de las Haciendas Locales, en materia de presupuestos",
+    "fuente": "BOE-A-1990-9664",
+    "archivo": "1021_Real_Decreto_500_1990_de_20_de_abril_por_el_que_se_desarrolla_el_cap_tulo_primero_del_t_tulo_se.pdf",
     "estado": "APROBADO"
   },
   {
@@ -606,6 +620,13 @@
     "norma": "Ley Orgánica 2/2006, de 3 de mayo, de Educación",
     "fuente": "BOE-A-2006-7899",
     "archivo": "8570_Ley_Org_nica_2_2006_de_3_de_mayo_de_Educaci_n.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 8594,
+    "norma": "Real Decreto Legislativo 781/1986, de 18 de abril, por el que se aprueba el Texto Refundido de las Disposiciones Legales Vigentes en materia de Régimen Local",
+    "fuente": "BOE-A-1986-9865",
+    "archivo": "8594_Real_Decreto_Legislativo_781_1986_de_18_de_abril_por_el_que_se_aprueba_el_Texto_Refundido_de_la.pdf",
     "estado": "APROBADO"
   },
   {
@@ -746,6 +767,13 @@
     "norma": "ley 25/2014 de 27 de noviembre",
     "fuente": "BOE-A-2014-12326",
     "archivo": "11843_ley_25_2014_de_27_de_noviembre.pdf",
+    "estado": "APROBADO"
+  },
+  {
+    "norma_id": 11850,
+    "norma": "Real Decreto Legislativo 2/2004, de 5 de marzo, texto refundido de la Ley Reguladora de las Haciendas Locales",
+    "fuente": "BOE-A-2004-4214",
+    "archivo": "11850_Real_Decreto_Legislativo_2_2004_de_5_de_marzo_texto_refundido_de_la_Ley_Reguladora_de_las_Hacie.pdf",
     "estado": "APROBADO"
   }
 ]
