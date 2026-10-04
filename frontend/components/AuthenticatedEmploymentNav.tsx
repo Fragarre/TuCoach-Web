@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 const ID = "authenticated-employment-nav";
-const CONTACT_ID = "authenticated-contact-nav";
 const HELP_ID = "authenticated-help-nav";
 
 export default function AuthenticatedEmploymentNav() {
@@ -34,11 +33,10 @@ export default function AuthenticatedEmploymentNav() {
       const existente = document.getElementById(ID) as HTMLAnchorElement | null;
       if (!autenticado) {
         existente?.remove();
-        document.getElementById(CONTACT_ID)?.remove();
         document.getElementById(HELP_ID)?.remove();
         return;
       }
-      if (existente && document.getElementById(CONTACT_ID) && document.getElementById(HELP_ID)) return;
+      if (existente && document.getElementById(HELP_ID)) return;
 
       const enlace = existente ?? document.createElement("a");
       enlace.id = ID;
@@ -58,17 +56,6 @@ export default function AuthenticatedEmploymentNav() {
         ayuda.setAttribute("aria-label", "Ir al Centro de ayuda");
       }
       nav.appendChild(ayuda);
-
-      let contacto = document.getElementById(CONTACT_ID) as HTMLAnchorElement | null;
-      if (!contacto) {
-        contacto = document.createElement("a");
-        contacto.id = CONTACT_ID;
-        contacto.className = "nav-link employment-nav-link";
-        contacto.href = "/contacto";
-        contacto.textContent = "Contacto";
-        contacto.setAttribute("aria-label", "Ir a Contacto");
-      }
-      nav.appendChild(contacto);
     }
 
     void sincronizar();
@@ -88,7 +75,6 @@ export default function AuthenticatedEmploymentNav() {
       observer.disconnect();
       listener.subscription.unsubscribe();
       document.getElementById(ID)?.remove();
-      document.getElementById(CONTACT_ID)?.remove();
       document.getElementById(HELP_ID)?.remove();
     };
   }, [pathname, supabase]);
