@@ -2261,13 +2261,6 @@ async function descargarMaterialPdf() {
             <nav className="app-nav" aria-label="Navegación principal">
               <button
                 type="button"
-                className={seccion === "INICIO" ? "nav-link active" : "nav-link"}
-                onClick={() => setSeccion("INICIO")}
-              >
-                Inicio
-              </button>
-              <button
-                type="button"
                 className={seccion === "SIMULACROS" ? "nav-link active" : "nav-link"}
                 onClick={() => setSeccion("SIMULACROS")}
               >
