@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const ID = "authenticated-employment-nav";
 const CONTACT_ID = "authenticated-contact-nav";
+const HELP_ID = "authenticated-help-nav";
 
 export default function AuthenticatedEmploymentNav() {
   const pathname = usePathname();
@@ -34,9 +35,11 @@ export default function AuthenticatedEmploymentNav() {
       if (!autenticado) {
         existente?.remove();
         document.getElementById(CONTACT_ID)?.remove();
+      document.getElementById(HELP_ID)?.remove();
+        document.getElementById(HELP_ID)?.remove();
         return;
       }
-      if (existente && document.getElementById(CONTACT_ID)) return;
+      if (existente && document.getElementById(CONTACT_ID) && document.getElementById(HELP_ID)) return;
 
       const enlace = existente ?? document.createElement("a");
       enlace.id = ID;
@@ -45,6 +48,17 @@ export default function AuthenticatedEmploymentNav() {
       enlace.textContent = "Empleo público";
       enlace.setAttribute("aria-label", "Ir a Empleo público");
       nav.appendChild(enlace);
+
+      let ayuda = document.getElementById(HELP_ID) as HTMLAnchorElement | null;
+      if (!ayuda) {
+        ayuda = document.createElement("a");
+        ayuda.id = HELP_ID;
+        ayuda.className = "nav-link employment-nav-link";
+        ayuda.href = "/ayuda";
+        ayuda.textContent = "Ayuda";
+        ayuda.setAttribute("aria-label", "Ir al Centro de ayuda");
+      }
+      nav.appendChild(ayuda);
 
       let contacto = document.getElementById(CONTACT_ID) as HTMLAnchorElement | null;
       if (!contacto) {
