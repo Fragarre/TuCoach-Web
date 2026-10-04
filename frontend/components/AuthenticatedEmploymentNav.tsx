@@ -35,7 +35,6 @@ export default function AuthenticatedEmploymentNav() {
       if (!autenticado) {
         existente?.remove();
         document.getElementById(CONTACT_ID)?.remove();
-      document.getElementById(HELP_ID)?.remove();
         document.getElementById(HELP_ID)?.remove();
         return;
       }
@@ -90,6 +89,7 @@ export default function AuthenticatedEmploymentNav() {
       listener.subscription.unsubscribe();
       document.getElementById(ID)?.remove();
       document.getElementById(CONTACT_ID)?.remove();
+      document.getElementById(HELP_ID)?.remove();
     };
   }, [pathname, supabase]);
 
