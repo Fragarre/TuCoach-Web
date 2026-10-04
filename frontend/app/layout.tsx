@@ -6,9 +6,11 @@ import AuthenticatedEmploymentNav from "@/components/AuthenticatedEmploymentNav"
 import BrandTextCleanup from "@/components/BrandTextCleanup";
 
 export const metadata: Metadata = {
-  title: "Tu Coach | Oposiciones para la Administración Pública de la Comunidad Valenciana",
+  metadataBase: new URL("https://tucoach-oposiciones.com"),
+  alternates: { canonical: "/" },
+  title: "Tu Coach | Oposiciones y empleo público en la Comunitat Valenciana",
   description:
-    "Simulacros y tests para oposiciones administrativas y modelos genéricos de ayuntamientos. Consulta bolsas de trabajo, anuncios de difícil cobertura y oportunidades de empleo público en la Comunitat Valenciana.",
+    "Tests, simulacros y oportunidades de empleo público para oposiciones de la Generalitat Valenciana y administraciones locales de la Comunitat Valenciana.",
 };
 
 export default function RootLayout({
