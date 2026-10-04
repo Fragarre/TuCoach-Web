@@ -12,6 +12,26 @@ export const metadata: Metadata = {
     "Tests, simulacros y oportunidades de empleo público para oposiciones de la Generalitat Valenciana y administraciones locales de la Comunitat Valenciana.",
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://tucoach-oposiciones.com/#organization",
+      name: "Tu Coach",
+      url: "https://tucoach-oposiciones.com/",
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://tucoach-oposiciones.com/#website",
+      url: "https://tucoach-oposiciones.com/",
+      name: "Tu Coach",
+      publisher: { "@id": "https://tucoach-oposiciones.com/#organization" },
+      inLanguage: "es",
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>
+      <body>\n        <script\n          type="application/ld+json"\n          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}\n        />
         <style>{`
           .brand-name { font-size: 0 !important; }
           .brand-name::after { content: "Tu Coach"; font-size: 1.18rem; }
