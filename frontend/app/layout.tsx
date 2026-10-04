@@ -39,7 +39,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body>\n        <script\n          type="application/ld+json"\n          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}\n        />
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         <style>{`
           .brand-name { font-size: 0 !important; }
           .brand-name::after { content: "Tu Coach"; font-size: 1.18rem; }
