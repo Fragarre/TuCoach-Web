@@ -9,7 +9,7 @@ type Estado = { ultima_novedad_vista_at:string|null };
 type Suscripcion = { proceso_id:number; created_at:string|null; updated_at:string|null };
 
 const CAMPOS_RELEVANTES=new Set(["fecha_apertura","fecha_cierre","fecha_examen","estado","plazas","turno","etapa_actual"]);
-const TIPOS_PUBLICACION=["bases","admitidos","excluidos","tribunal","fecha","lugar","examen","modificacion","modificación","resultado","calificacion","calificación","nombramiento","adjudicacion","adjudicación","lista","seguimiento_oficial"];
+const TIPOS_PUBLICACION=["bases","admitidos","excluidos","tribunal","fecha","lugar","examen","modificacion","modificación","resultado","calificacion","calificación","nombramiento","adjudicacion","adjudicación","lista","seguimiento_oficial","bolsa_etapa","adc_etapa","cesion_datos"];
 function esPublicacionUtil(n:Novedad){const texto=`${n.tipo||""} ${n.resumen||""}`.toLowerCase().trim();if(!texto)return false;if((n.tipo||"").toLowerCase()==="convocatoria")return false;if(/\bnavegaci[oó]n\b/.test(texto)&&texto.length<=80)return false;return TIPOS_PUBLICACION.some(x=>texto.includes(x));}
 function esCambioUtil(n:Novedad){if(n.novedad_tipo!=="CAMBIO")return false;return CAMPOS_RELEVANTES.has((n.campo||"").toLowerCase());}
 function esPosteriorAlSeguimiento(n:Novedad,suscripciones:Suscripcion[]){const s=suscripciones.find(x=>x.proceso_id===n.proceso_id);if(!s||!n.detectado_at)return false;const inicio=s.updated_at||s.created_at;if(!inicio)return false;const novedad=new Date(n.detectado_at).getTime();const seguimiento=new Date(inicio).getTime();if(Number.isNaN(novedad)||Number.isNaN(seguimiento))return false;return novedad>seguimiento;}
