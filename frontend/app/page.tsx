@@ -1811,7 +1811,7 @@ async function descargarMaterialPdf() {
             <div className="public-hero-copy">
               <span className="public-kicker marketing-territory"><Image src="/logo-gva.png" alt="Generalitat Valenciana" width={20} height={41} /><span>Oposiciones administrativas · Comunitat Valenciana</span></span>
               <h1>Practica para tu oposición. Encuentra tu próxima oportunidad.</h1>
-              <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Oposiciones, bolsas de trabajo y anuncios de difícil cobertura, en un mismo espacio.</p>
+              <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Preparación y convocatorias de empleo público, en un mismo espacio.</p>
               <div className="public-hero-actions">
                 <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 24 horas</button>
                 <a className="secondary public-cta marketing-link" href="/empleo">Explorar empleo público →</a>
@@ -1834,7 +1834,7 @@ async function descargarMaterialPdf() {
             <div>
             <h2>Amplía tu búsqueda</h2>
             <p>Consulta oportunidades y, con tu suscripción, sigue los procesos que te interesan.</p>
-            <span>Oposiciones · Bolsas · Difícil cobertura →</span>
+            <span>Convocatorias de empleo público →</span>
             </div>
             </a>
               <p className="marketing-overview-note">Empieza por una convocatoria o practica con un modelo genérico municipal.</p>
@@ -1866,6 +1866,20 @@ async function descargarMaterialPdf() {
             <li>Revisa tus resultados y tu nivel de seguridad al responder.</li>
             </ul>
             </article>
+            </div>
+          </section>
+
+          <section className="marketing-section" id="generalitat-valenciana">
+            <div className="marketing-heading">
+              <span className="eyebrow">Generalitat Valenciana</span>
+              <h2>Preparación por cuerpo administrativo</h2>
+              <p>Accede a información específica para los cuerpos A1-01, A2-01, C1-01 y C2-01.</p>
+            </div>
+            <div className="marketing-grid marketing-grid-two">
+              <article className="marketing-card"><span className="marketing-tag">A1-01</span><h3>A1-01 Generalitat Valenciana</h3><p>Preparación del cuerpo A1-01 con tests, simulacros y materiales.</p><a href="/oposiciones/generalitat-valenciana/a1-01">Ver A1-01 →</a></article>
+              <article className="marketing-card"><span className="marketing-tag">A2-01</span><h3>A2-01 Generalitat Valenciana</h3><p>Preparación del cuerpo A2-01 con tests, simulacros y materiales.</p><a href="/oposiciones/generalitat-valenciana/a2-01">Ver A2-01 →</a></article>
+              <article className="marketing-card"><span className="marketing-tag">C1-01</span><h3>C1-01 Generalitat Valenciana</h3><p>Preparación del cuerpo C1-01 con tests, simulacros y materiales.</p><a href="/oposiciones/generalitat-valenciana/c1-01">Ver C1-01 →</a></article>
+              <article className="marketing-card"><span className="marketing-tag">C2-01</span><h3>C2-01 Generalitat Valenciana</h3><p>Preparación del cuerpo C2-01 con tests, simulacros y materiales.</p><a href="/oposiciones/generalitat-valenciana/c2-01">Ver C2-01 →</a></article>
             </div>
           </section>
 
