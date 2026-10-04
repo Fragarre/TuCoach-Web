@@ -52,49 +52,83 @@ function EmploymentLoading() {
 }
 
 function EmploymentMiniLanding() {
+  const [procesos, setProcesos] = useState<Array<{
+    id:number; organismo_nombre:string; denominacion:string; plazas:number|null;
+    sistema_selectivo:string|null; turno:string|null; estado_inscripcion:string|null;
+    inscripcion:{fecha_cierre?:string|null}|null;
+  }>>([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    let activo = true;
+    fetch("/api/empleo/public/procesos?limite=200", { cache: "no-store" })
+      .then(async (response) => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })
+      .then((data) => { if (activo) setProcesos(Array.isArray(data) ? data : []); })
+      .catch(() => { if (activo) setError("No se han podido cargar las convocatorias."); });
+    return () => { activo = false; };
+  }, []);
+
+  const fecha = (valor?:string|null) => {
+    if (!valor) return null;
+    const d = new Date(valor);
+    return Number.isNaN(d.getTime()) ? valor : d.toLocaleDateString("es-ES");
+  };
+
   return (
     <main style={styles.main}>
       <section style={styles.hero}>
-        <div style={styles.eyebrow}>EMPLEO PÚBLICO · TU COACH</div>
-        <h1 style={styles.title}>Descubre oportunidades. Sigue sus novedades. Prepárate para tu plaza.</h1>
+        <div style={styles.eyebrow}>EMPLEO PÚBLICO · COMUNITAT VALENCIANA</div>
+        <h1 style={styles.title}>Oposiciones y convocatorias de empleo público en la Comunitat Valenciana</h1>
         <p style={styles.lead}>
-          Tu Coach reúne oportunidades de empleo público de la Generalitat Valenciana, las diputaciones
-          y los ayuntamientos de Valencia, Alicante y Castellón, con la información oficial y sus novedades en un mismo lugar.
+          Consulta convocatorias de la Generalitat Valenciana, diputaciones y ayuntamientos de Valencia,
+          Alicante y Castellón. La consulta es pública; el seguimiento de novedades requiere una suscripción activa.
         </p>
         <div style={styles.actions}>
-          <Link href="/" style={styles.primary}>Iniciar sesión o registrarse →</Link>
-          <Link href="/" style={styles.secondary}>Volver a Tu Coach</Link>
+          <a href="#convocatorias" style={styles.primary}>Ver convocatorias →</a>
+          <Link href="/" style={styles.secondary}>Entrar en Tu Coach</Link>
         </div>
-        <p style={styles.note}>Necesitas iniciar sesión para consultar y seguir las oportunidades.</p>
       </section>
 
-      <section style={styles.grid} aria-label="Qué puedes hacer">
-        <article style={styles.card}>
-          <span style={styles.number}>01</span>
-          <span style={styles.kicker}>DESCUBRE</span>
-          <h2 style={styles.cardTitle}>Encuentra oportunidades que encajan contigo</h2>
-          <p style={styles.cardText}>Explora convocatorias de la Generalitat y de la administración local de Valencia, Alicante y Castellón.</p>
-        </article>
-        <article style={styles.card}>
-          <span style={styles.number}>02</span>
-          <span style={styles.kicker}>SIGUE</span>
-          <h2 style={styles.cardTitle}>No pierdas de vista sus novedades oficiales</h2>
-          <p style={styles.cardText}>Sigue una convocatoria y consulta desde Mi seguimiento sus publicaciones y cambios relevantes.</p>
-        </article>
-        <article style={styles.card}>
-          <span style={styles.number}>03</span>
-          <span style={styles.kicker}>PREPÁRATE</span>
-          <h2 style={styles.cardTitle}>Conecta la oportunidad con tu preparación</h2>
-          <p style={styles.cardText}>Cuando una convocatoria encaja contigo, Tu Coach te acompaña en el entrenamiento y el estudio.</p>
-        </article>
+      <section id="convocatorias" style={styles.publicSection}>
+        <div style={styles.sectionHead}>
+          <div>
+            <span style={styles.kicker}>CONVOCATORIAS</span>
+            <h2 style={styles.footerTitle}>Oportunidades de empleo público</h2>
+          </div>
+          <strong>{procesos.length} convocatorias</strong>
+        </div>
+        {error && <p>{error}</p>}
+        <div style={styles.list}>
+          {procesos.map((p) => {
+            const cierre=fecha(p.inscripcion?.fecha_cierre);
+            const abierta=p.estado_inscripcion==="ABIERTO";
+            return <article key={p.id} style={styles.processCard}>
+              <div>
+                <span style={styles.kicker}>{p.organismo_nombre}</span>
+                <h3 style={styles.processTitle}><Link href={`/empleo/proceso/${p.id}`} style={styles.processLink}>{p.denominacion}</Link></h3>
+                <p style={styles.cardText}>
+                  {[p.plazas!=null?`${p.plazas} plaza${p.plazas===1?"":"s"}`:null,p.sistema_selectivo,p.turno].filter(Boolean).join(" · ")}
+                </p>
+              </div>
+              <div style={styles.status}>
+                <strong>{abierta?"Inscripción abierta":p.estado_inscripcion==="PENDIENTE_BOE"?"Pendiente de publicación en BOE":"Consultar plazo"}</strong>
+                {cierre&&<span>Hasta {cierre}</span>}
+              </div>
+            </article>;
+          })}
+        </div>
+        <p style={styles.publicNote}>La información se obtiene de fuentes oficiales. Consulta siempre la publicación oficial antes de presentar una solicitud.</p>
       </section>
 
       <section style={styles.footerBlock}>
         <div>
-          <span style={styles.kicker}>DE LA CONVOCATORIA A LA PREPARACIÓN</span>
-          <h2 style={styles.footerTitle}>Una misma herramienta para descubrir, seguir y prepararte.</h2>
+          <span style={styles.kicker}>SEGUIMIENTO</span>
+          <h2 style={styles.footerTitle}>Sigue las convocatorias que te interesan y consulta sus novedades.</h2>
         </div>
-        <Link href="/" style={styles.primary}>Entrar en Tu Coach →</Link>
+        <Link href="/" style={styles.primary}>Iniciar sesión o registrarse →</Link>
       </section>
     </main>
   );
@@ -118,6 +152,14 @@ const styles: Record<string, React.CSSProperties> = {
   kicker: { display: "block", fontSize: 12, letterSpacing: 1.4, fontWeight: 800, color: "#5c6b80", marginBottom: 8 },
   cardTitle: { margin: 0, fontSize: 22, lineHeight: 1.25 },
   cardText: { margin: "10px 0 0", color: "#5c6b80", fontSize: 15, lineHeight: 1.55 },
+  publicSection: { marginTop: 22, padding: "30px", border: "1px solid #d9dee8", borderRadius: 18, background: "#fff" },
+  sectionHead: { display: "flex", justifyContent: "space-between", alignItems: "end", gap: 20, marginBottom: 18 },
+  list: { display: "grid", gap: 10 },
+  processCard: { display: "flex", justifyContent: "space-between", gap: 24, padding: "18px 0", borderTop: "1px solid #e5e7eb" },
+  processTitle: { margin: 0, fontSize: 20, lineHeight: 1.3 },
+  processLink: { color: "#172033", textDecoration: "none" },
+  status: { minWidth: 190, display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, fontSize: 14 },
+  publicNote: { margin: "20px 0 0", fontSize: 12, color: "#68768a" },
   footerBlock: { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 24, marginTop: 22, padding: "28px 30px", borderRadius: 18, background: "#172033", color: "#fff" },
   footerTitle: { margin: 0, fontSize: 24, lineHeight: 1.25 },
 };
