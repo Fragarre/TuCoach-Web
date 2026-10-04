@@ -12,6 +12,13 @@ type Novedad = {
   campo: string | null;
   resumen: string | null;
   detectado_at: string | null;
+  proceso_id: number;
+};
+
+type Suscripcion = {
+  proceso_id: number;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 type EstadoNovedades = {
@@ -26,12 +33,9 @@ const CAMPOS_RELEVANTES = new Set([
   "plazas",
   "turno",
   "etapa_actual",
-  "tipo_proceso",
-  "url_oficial",
 ]);
 
 const TIPOS_PUBLICACION = [
-  "convocatoria",
   "bases",
   "admitidos",
   "excluidos",
@@ -48,12 +52,13 @@ const TIPOS_PUBLICACION = [
   "adjudicacion",
   "adjudicación",
   "lista",
-  "seguimiento",
+  "seguimiento_oficial",
 ];
 
 function esPublicacionUtil(n: Novedad): boolean {
   const texto = `${n.tipo || ""} ${n.resumen || ""}`.toLowerCase().trim();
   if (!texto) return false;
+  if ((n.tipo || "").toLowerCase() === "convocatoria") return false;
   if (/\bnavegaci[oó]n\b/.test(texto) && texto.length <= 80) return false;
   return TIPOS_PUBLICACION.some((x) => texto.includes(x));
 }
@@ -61,9 +66,18 @@ function esPublicacionUtil(n: Novedad): boolean {
 function esCambioUtil(n: Novedad): boolean {
   if (n.novedad_tipo !== "CAMBIO") return false;
   const campo = (n.campo || "").toLowerCase();
-  if (CAMPOS_RELEVANTES.has(campo)) return true;
-  const texto = `${n.tipo || ""} ${n.resumen || ""}`.toLowerCase();
-  return /(plazo|fecha de examen|fecha examen|lugar de examen|n[uú]mero de plazas|turno|etapa|estado del proceso|tribunal)/i.test(texto);
+  return CAMPOS_RELEVANTES.has(campo);
+}
+
+function esPosteriorAlSeguimiento(n: Novedad, suscripciones: Suscripcion[]): boolean {
+  const s = suscripciones.find((x) => x.proceso_id === n.proceso_id);
+  if (!s || !n.detectado_at) return false;
+  const inicio = s.updated_at || s.created_at;
+  if (!inicio) return false;
+  const novedad = new Date(n.detectado_at).getTime();
+  const seguimiento = new Date(inicio).getTime();
+  if (Number.isNaN(novedad) || Number.isNaN(seguimiento)) return false;
+  return novedad > seguimiento;
 }
 
 export default function EmploymentNovedadesAviso() {
@@ -83,7 +97,7 @@ export default function EmploymentNovedadesAviso() {
 
     async function comprobar(accessToken: string) {
       try {
-        const [cambiosResponse, estadoResponse] = await Promise.all([
+        const [cambiosResponse, estadoResponse, suscripcionesResponse] = await Promise.all([
           fetch("/api/empleo/seguimiento/cambios?limite=100", {
             cache: "no-store",
             headers: { Authorization: `Bearer ${accessToken}` },
@@ -92,17 +106,23 @@ export default function EmploymentNovedadesAviso() {
             cache: "no-store",
             headers: { Authorization: `Bearer ${accessToken}` },
           }),
+          fetch("/api/empleo/suscripciones", {
+            cache: "no-store",
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }),
         ]);
 
-        if (!cambiosResponse.ok || !estadoResponse.ok || cancelado) return;
+        if (!cambiosResponse.ok || !estadoResponse.ok || !suscripcionesResponse.ok || cancelado) return;
 
         const novedades = (await cambiosResponse.json()) as Novedad[];
         const estado = (await estadoResponse.json()) as EstadoNovedades;
+        const suscripciones = (await suscripcionesResponse.json()) as Suscripcion[];
         const vista = estado.ultima_novedad_vista_at;
         const utiles = novedades
           .filter((n) =>
             n.novedad_tipo === "PUBLICACION" ? esPublicacionUtil(n) : esCambioUtil(n)
           )
+          .filter((n) => esPosteriorAlSeguimiento(n, suscripciones))
           .filter((n) => {
             if (!vista || !n.detectado_at) return true;
             return new Date(n.detectado_at).getTime() > new Date(vista).getTime();
