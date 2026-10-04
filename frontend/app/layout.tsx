@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import EmploymentNovedadesAviso from "@/components/EmploymentNovedadesAviso";
-import EmploymentPublicGate from "@/components/EmploymentPublicGate";
 import AuthenticatedEmploymentNav from "@/components/AuthenticatedEmploymentNav";
 import BrandTextCleanup from "@/components/BrandTextCleanup";
 
@@ -85,7 +84,7 @@ export default function RootLayout({
         <BrandTextCleanup />
 
         <EmploymentNovedadesAviso />
-        <EmploymentPublicGate>{children}</EmploymentPublicGate>
+        {children}
         <AuthenticatedEmploymentNav />
       </body>
     </html>
