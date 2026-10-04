@@ -1,59 +1,43 @@
-"use client";
+import type { Metadata } from "next";
+import Link from "next/link";
+import ProcesoSessionSwitch from "./ProcesoSessionSwitch";
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { datosOportunidad, documentosOportunidad, enlaceOficial, esBolsa, esAdc, bolsasRelacionadas, textoSolicitud, enlaceGestionBolsa, bolsaEnFuncionamiento, visibleEnCatalogo } from "@/lib/empleo/oportunidades";
+type Props={params:Promise<{id:string}>};
+type Proceso={id:number;denominacion:string;organismo_nombre:string;plazas:number|null;sistema_selectivo:string|null;turno:string|null;estado:string|null;estado_inscripcion:string|null;fecha_convocatoria:string|null;fecha_examen:string|null;lugar_examen:string|null;ultima_publicacion_at:string|null;inscripcion:{fecha_apertura?:string|null;fecha_cierre?:string|null;literal?:string|null}|null};
+type Publicacion={id:number;titulo:string;fecha_publicacion:string|null;url:string;tipo:string|null};
 
-type Me = { id: string; email: string; employment_access: boolean; subscribed: boolean };
-type Organismo = { id:number; nombre:string; tipo:string|null; provincia:string|null; municipio:string|null };
-type PlazoInscripcion = { codigo:string; fecha_apertura?:string|null; fecha_cierre?:string|null; fecha_referencia?:string|null; dias_habiles?:number|null; literal?:string|null; fecha_cierre_calculada?:boolean; fecha_cierre_sin_festivos_locales?:boolean; aviso_festivos_locales?:string|null; codigo_externo?:string|null; boe_id?:string|null; fecha_boe?:string|null; denominacion?:string|null; plazas?:number|null };
-type Proceso = { id:number; organismo_id:number; organismo_nombre:string; codigo_externo:string|null; identificador_estable:string|null; denominacion:string; cuerpo_escala:string|null; grupo:string|null; subgrupo:string|null; tipo_proceso:string|null; sistema_selectivo:string|null; turno:string|null; plazas:number|null; estado:string|null; es_oportunidad:boolean; anio_oep:number|null; anio_convocatoria:number|null; fecha_convocatoria:string|null; fecha_apertura:string|null; fecha_cierre:string|null; fecha_examen:string|null; lugar_examen:string|null; ultima_publicacion_at:string|null; datos_json:unknown; estado_inscripcion:string|null; inscripcion:(PlazoInscripcion&{plazos_multiples?:boolean;plazos?:PlazoInscripcion[]})|null };
-type Publicacion = { id:number; titulo:string; fecha_publicacion:string|null; url:string; tipo:string|null };
-type Cambio = { id:number; fecha:string|null; descripcion:string; url:string|null };
-
-
-async function getJson<T>(path:string, accessToken:string):Promise<T>{
-  const response=await fetch(`/api/empleo/${path.replace(/^\/+/,"")}`,{cache:"no-store",headers:{Authorization:`Bearer ${accessToken}`}});
-  const text=await response.text(); let body:unknown=null;
-  try{body=text?JSON.parse(text):null}catch{body=text}
-  if(!response.ok){const detail=body&&typeof body==="object"&&"detail"in body?String((body as {detail:unknown}).detail):`HTTP ${response.status}`;throw new Error(detail)}
-  return body as T;
+async function obtener<T>(ruta:string):Promise<T|null>{
+ try{const r=await fetch(`https://tucoach-oposiciones.com/api/empleo/public/${ruta}`,{next:{revalidate:1800}});if(!r.ok)return null;return await r.json() as T}catch{return null}
 }
-function fecha(valor:string|null){if(!valor)return "—";const d=new Date(valor);return Number.isNaN(d.getTime())?valor:d.toLocaleDateString("es-ES")}
-function identificacion(p:Proceso){const texto=p.denominacion||"";const m=texto.match(/\b(?:Convocatoria|Convocat[oò]ria)\s+([A-Z]?\s*\d{1,3}\/\d{2,4}[A-Z]?)\b/i);if(m)return m[1].replace(/\s+/g,"").toUpperCase();const mAut=texto.match(/\b(AUT\s*\d{1,3}\/\d{2,4})\b/i);if(mAut)return mAut[1].replace(/\s+/g,"").toUpperCase();return null}
-function textoInscripcion(p:Proceso){
-  const solicitud=textoSolicitud(p);if(solicitud)return solicitud;
-  const i=p.inscripcion;
-  if(!i&&p.estado_inscripcion==="PENDIENTE_BOE")return "Inscripción pendiente de publicación en BOE";
-  if(!i)return "Plazo de inscripción no determinado";
-  if(i.plazos_multiples&&i.plazos?.length)return i.codigo==="ABIERTO"?"Inscripción abierta · varios plazos":i.codigo==="CERRADO"?"Inscripción cerrada · varios plazos":"Varios plazos de inscripción";
-  if(i.codigo==="ABIERTO"&&i.fecha_cierre)return `Inscripción abierta hasta ${fecha(i.fecha_cierre)}`;
-  if(i.codigo==="CERRADO"&&i.fecha_cierre)return `Inscripción cerrada el ${fecha(i.fecha_cierre)}`;
-  if(i.codigo==="PENDIENTE_APERTURA"&&i.fecha_apertura)return `Inscripción pendiente · abre el ${fecha(i.fecha_apertura)}`;
-  if(i.codigo==="PENDIENTE_BOE")return "Inscripción pendiente de publicación en BOE";
-  if(i.codigo==="PLAZO_LITERAL"){
-    const inicio=i.fecha_referencia?fecha(i.fecha_referencia):null;
-    if(i.dias_habiles&&inicio)return `Plazo: ${i.dias_habiles} días hábiles desde ${inicio}`;
-    return i.literal||"Plazo de solicitud publicado";
-  }
-  return "Plazo de inscripción no determinado";
+function fecha(v?:string|null){if(!v)return "—";const d=new Date(v);return Number.isNaN(d.getTime())?v:new Intl.DateTimeFormat("es-ES").format(d)}
+
+export async function generateMetadata({params}:Props):Promise<Metadata>{
+ const{id}=await params;const p=await obtener<Proceso>(`procesos/${id}`);
+ if(!p)return{title:"Convocatoria de empleo público | Tu Coach",robots:{index:false,follow:true}};
+ const plazas=p.plazas!=null?` ${p.plazas} plaza${p.plazas===1?"":"s"}.`:"";
+ return{title:`${p.denominacion} · ${p.organismo_nombre} | Tu Coach`,description:`Consulta la convocatoria de ${p.denominacion} de ${p.organismo_nombre}.${plazas} Plazos y publicaciones oficiales.`,alternates:{canonical:`/empleo/proceso/${id}`}};
 }
 
-function Loading(){return <main style={styles.loadingMain}><style>{css}</style><div style={styles.loadingBox} role="status" aria-live="polite" aria-busy="true"><span style={styles.spinner} aria-hidden="true"/>Cargando convocatoria…</div></main>}
-
-export default function EmpleoProcesoPage(){
-  const params=useParams<{id:string}>(); const id=params?.id; const supabase=useMemo(()=>createClient(),[]);
-  const [me,setMe]=useState<Me|null>(null); const [proceso,setProceso]=useState<Proceso|null>(null); const [organismo,setOrganismo]=useState<Organismo|null>(null); const [publicaciones,setPublicaciones]=useState<Publicacion[]>([]); const [cambios,setCambios]=useState<Cambio[]>([]); const [cargando,setCargando]=useState(true); const [error,setError]=useState("");
-  useEffect(()=>{if(!id)return;let activo=true;async function cargar(){setCargando(true);setError("");try{const{data,error:authError}=await supabase.auth.getSession();if(authError)throw new Error(authError.message);const token=data.session?.access_token;if(!token)throw new Error("Se requiere autenticación.");const[m,encontrado,p,c,o]=await Promise.all([getJson<Me>("me",token),getJson<Proceso>(`procesos/${id}`,token),getJson<Publicacion[]>(`procesos/${id}/publicaciones`,token),getJson<Cambio[]>(`procesos/${id}/cambios`,token),getJson<Organismo[]>("organismos",token)]);if(!activo)return;if(!encontrado.es_oportunidad||!visibleEnCatalogo(encontrado))throw new Error("El proceso no está disponible en el catálogo.");setMe(m);setProceso(encontrado);setOrganismo(o.find(x=>x.id===encontrado.organismo_id)||null);setPublicaciones(p);setCambios(c)}catch(e){if(activo)setError(e instanceof Error?e.message:String(e))}finally{if(activo)setCargando(false)}}void cargar();return()=>{activo=false}},[id,supabase]);
-  if(cargando)return <Loading/>;
-  if(error||!me||!proceso)return <main style={styles.main}><a href="/empleo" style={styles.back}>← Volver a Empleo público</a><section style={styles.panel}><h1 style={styles.title}>Convocatoria</h1><p>{error||"No se ha podido cargar la convocatoria."}</p></section></main>;
-  if(!me.employment_access)return <main style={styles.main}><h1>Empleo público</h1><p>Tu cuenta no tiene acceso al módulo de Empleo.</p><a href="/">Volver a Tu Coach</a></main>;
-  const idConv=identificacion(proceso);const datos=datosOportunidad(proceso);const documentos=documentosOportunidad(proceso);const oficial=enlaceOficial(proceso);const bolsa=esBolsa(proceso);const gestionBolsa=enlaceGestionBolsa(proceso);const relacionadas=bolsasRelacionadas(proceso);const plazos=proceso.inscripcion?.plazos_multiples?proceso.inscripcion.plazos||[]:[];
-  return <main style={styles.main}><style>{css}</style><header style={styles.header}><a href="/empleo" style={styles.back}>← Volver a Empleo público</a><a href="/" style={styles.link}>Tu Coach</a></header><section style={styles.panel}><div style={styles.kicker}>{proceso.organismo_nombre}{organismo?.provincia?` · ${organismo.provincia}`:""}{organismo?.municipio?` · ${organismo.municipio}`:""}</div><div style={styles.titleRow}><div><div style={styles.badge}>{bolsaEnFuncionamiento(proceso)?"Bolsa en funcionamiento":proceso.estado||"SIN ESTADO"}</div><h1 style={styles.title}>{idConv?`Convocatoria ${idConv}`:proceso.denominacion}</h1>{idConv&&<p style={styles.description}>{proceso.denominacion.replace(/^\s*(?:Convocatoria|Convocat[oò]ria)\s+[A-Z]?\s*\d{1,3}\/\d{2,4}[A-Z]?\.?\s*/i,"").trim()}</p>}</div></div><div style={styles.detailGrid}><div><strong>Estado</strong><div>{bolsaEnFuncionamiento(proceso)?"Bolsa en funcionamiento":proceso.estado||"—"}</div></div><div><strong>Tipo</strong><div>{proceso.tipo_proceso||"—"}</div></div><div><strong>Turno</strong><div>{proceso.turno||"—"}</div></div>{!bolsa&&<div><strong>Plazas</strong><div>{proceso.plazas??"Plazas no definidas"}</div></div>}<div><strong>Convocatoria</strong><div>{idConv||proceso.anio_convocatoria||"—"}</div></div><div><strong>Grupo</strong><div>{proceso.grupo||"—"}</div></div><div><strong>Subgrupo</strong><div>{proceso.subgrupo||"—"}</div></div><div><strong>Escala</strong><div>{proceso.cuerpo_escala||"—"}</div></div>{!bolsa&&<div><strong>{esAdc(proceso)?"Solicitudes":"Inscripción"}</strong><div>{textoInscripcion(proceso)}</div></div>}<div><strong>Apertura</strong><div>{fecha(proceso.fecha_apertura)}</div></div><div><strong>Examen</strong><div>{fecha(proceso.fecha_examen)}</div></div><div><strong>Lugar</strong><div>{proceso.lugar_examen||"—"}</div></div><div><strong>Última publicación</strong><div>{fecha(proceso.ultima_publicacion_at)}</div></div><div><strong>Etapa actual</strong><div>{typeof datos.etapa_actual_gva==="string"?datos.etapa_actual_gva:typeof datos.etapa_actual==="string"?datos.etapa_actual:"No indicada"}</div></div></div>{plazos.length>0&&<div style={styles.deadlines}><h2 style={styles.sectionTitle}>Plazos de inscripción</h2><p style={styles.deadlineIntro}>Esta convocatoria tiene varios plazos oficiales. Se muestran por separado para no atribuir una única fecha de cierre al proceso completo.</p><div style={styles.deadlineGrid}>{plazos.map((x,index)=><div key={x.boe_id||x.codigo_externo||index} style={styles.deadlineCard}><strong>{x.denominacion||`Plazo ${index+1}`}</strong>{!bolsa&&x.plazas!=null&&<div style={styles.muted}>{x.plazas} {x.plazas===1?"plaza":"plazas"}</div>}<div style={styles.deadlineStatus}>{x.codigo==="ABIERTO"?"Inscripción abierta":x.codigo==="CERRADO"?"Inscripción cerrada":x.codigo==="PENDIENTE_APERTURA"?"Pendiente de apertura":x.codigo}</div><div>Apertura: {fecha(x.fecha_apertura||null)}</div><div>Cierre: {fecha(x.fecha_cierre||null)}</div>{x.fecha_boe&&<div style={styles.muted}>BOE: {fecha(x.fecha_boe)}</div>}{x.fecha_cierre_sin_festivos_locales&&x.aviso_festivos_locales&&<div style={styles.deadlineWarning}>{x.aviso_festivos_locales}</div>}</div>)}</div></div>}{esAdc(proceso)&&<section style={styles.deadlines}><h2 style={styles.sectionTitle}>Bolsas relacionadas</h2><p>{relacionadas.length?relacionadas.join(", "):"No constan bolsas relacionadas en los datos disponibles"}</p></section>}<div style={styles.columns}><div><h2 style={styles.sectionTitle}>Publicaciones oficiales</h2>{!bolsa&&oficial&&<div style={styles.row}><a href={oficial} target="_blank" rel="noreferrer" style={styles.link}>Abrir ficha oficial de GVA</a></div>}{gestionBolsa&&<div style={styles.row}><a href={gestionBolsa} target="_blank" rel="noreferrer" style={styles.link}>Gestionar en GVbolsas · requiere identificación</a></div>}{documentos.map((x,index)=><div key={`${x.url}-${index}`} style={styles.row}><div style={styles.pubTitle}>{x.texto}</div><a href={x.url} target="_blank" rel="noreferrer" style={styles.link}>Abrir documento oficial PDF</a></div>)}{publicaciones.length?publicaciones.map(x=><div key={x.id} style={styles.row}><div style={styles.pubTitle}>{x.titulo}</div><div style={styles.muted}>{fecha(x.fecha_publicacion)}{x.tipo?` · ${x.tipo}`:""}</div><a href={enlaceOficial({tipo_proceso:null,datos_json:null,url_oficial:x.url})||undefined} target="_blank" rel="noreferrer" style={styles.link}>Abrir publicación oficial</a></div>):!documentos.length&&!oficial&&<p style={styles.muted}>Sin publicaciones registradas.</p>}</div><div><h2 style={styles.sectionTitle}>Cambios</h2>{cambios.length?cambios.map(x=><div key={x.id} style={styles.row}><div style={styles.pubTitle}>{x.descripcion}</div><div style={styles.muted}>{fecha(x.fecha)}</div>{x.url&&<a href={x.url} target="_blank" rel="noreferrer" style={styles.link}>Abrir</a>}</div>):<p style={styles.muted}>Sin cambios registrados.</p>}</div></div></section></main>;
+export default async function Page({params}:Props){
+ const{id}=await params;
+ const [p,pubs]=await Promise.all([obtener<Proceso>(`procesos/${id}`),obtener<Publicacion[]>(`procesos/${id}/publicaciones?limite=100`)]);
+ return <ProcesoSessionSwitch>
+  <main style={s.main}>
+   <Link href="/empleo">← Volver a Empleo público</Link>
+   {!p?<section style={s.panel}><h1>Convocatoria</h1><p>Esta convocatoria no está disponible en el catálogo público.</p></section>:
+   <section style={s.panel}>
+    <p style={s.org}>{p.organismo_nombre}</p><h1 style={s.title}>{p.denominacion}</h1>
+    <div style={s.grid}>
+     <div><strong>Estado</strong><p>{p.estado||"—"}</p></div><div><strong>Plazas</strong><p>{p.plazas??"No definidas"}</p></div>
+     <div><strong>Sistema selectivo</strong><p>{p.sistema_selectivo||"—"}</p></div><div><strong>Turno</strong><p>{p.turno||"—"}</p></div>
+     <div><strong>Inscripción</strong><p>{p.estado_inscripcion==="ABIERTO"?"Abierta":p.estado_inscripcion==="PENDIENTE_BOE"?"Pendiente de publicación en BOE":p.estado_inscripcion||"Sin plazo confirmado"}</p></div>
+     <div><strong>Cierre</strong><p>{fecha(p.inscripcion?.fecha_cierre)}</p></div><div><strong>Examen</strong><p>{fecha(p.fecha_examen)}</p></div><div><strong>Lugar</strong><p>{p.lugar_examen||"—"}</p></div>
+    </div>
+    {p.inscripcion?.literal&&<section style={s.block}><h2>Plazo de inscripción</h2><p>{p.inscripcion.literal}</p></section>}
+    <section style={s.block}><h2>Publicaciones oficiales</h2>{pubs?.length?pubs.map(x=><article key={x.id} style={s.pub}><strong>{x.titulo}</strong><div>{fecha(x.fecha_publicacion)}{x.tipo?` · ${x.tipo}`:""}</div><a href={x.url} target="_blank" rel="noreferrer">Abrir publicación oficial</a></article>):<p>Sin publicaciones registradas.</p>}</section>
+    <section style={s.follow}><h2>Seguimiento de la convocatoria</h2><p>El seguimiento de novedades está disponible para usuarios con suscripción activa.</p><Link href="/?acceso=login">Iniciar sesión →</Link></section>
+   </section>}
+  </main>
+ </ProcesoSessionSwitch>
 }
-
-const css="@keyframes empleo-spin { to { transform: rotate(360deg); } }";
-const styles:Record<string,React.CSSProperties>={
- main:{maxWidth:1280,margin:"0 auto",padding:"32px 20px 56px",fontFamily:"system-ui, sans-serif",color:"#172033"},loadingMain:{minHeight:"70vh",display:"flex",alignItems:"center",justifyContent:"center",fontFamily:"system-ui, sans-serif",color:"#172033"},loadingBox:{display:"flex",alignItems:"center",gap:10,padding:"12px 18px",border:"1px solid #d9dee8",borderRadius:10,background:"#fff",boxShadow:"0 8px 30px rgba(23,32,51,0.12)",fontSize:14,fontWeight:600},spinner:{width:18,height:18,border:"2px solid #d9dee8",borderTopColor:"#172033",borderRadius:"50%",display:"inline-block",animation:"empleo-spin .8s linear infinite"},header:{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:18},back:{textDecoration:"none",color:"inherit"},link:{color:"inherit"},panel:{border:"1px solid #d9dee8",borderRadius:14,padding:24,background:"#fff"},kicker:{fontSize:12,letterSpacing:1.4,fontWeight:700,opacity:.62,marginBottom:8},titleRow:{marginBottom:22},title:{fontSize:32,lineHeight:1.2,margin:"10px 0 8px"},description:{fontSize:17,lineHeight:1.5,margin:0,maxWidth:1000},badge:{display:"inline-block",border:"1px solid #cfd6e2",borderRadius:999,padding:"4px 9px",fontSize:12},detailGrid:{display:"grid",gridTemplateColumns:"repeat(4,minmax(0,1fr))",gap:18,padding:"20px 0 24px",borderTop:"1px solid #e5e8ee",borderBottom:"1px solid #e5e8ee"},deadlines:{padding:"24px 0 0"},deadlineIntro:{margin:"6px 0 14px",fontSize:14,opacity:.72},deadlineGrid:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(250px,1fr))",gap:12},deadlineCard:{border:"1px solid #d9dee8",borderRadius:10,padding:14,display:"grid",gap:6},deadlineStatus:{fontWeight:700,marginTop:3},deadlineWarning:{fontSize:12,lineHeight:1.4,opacity:.72,marginTop:4},columns:{display:"grid",gridTemplateColumns:"1fr 1fr",gap:36,marginTop:24},sectionTitle:{fontSize:21,margin:"0 0 10px"},row:{borderTop:"1px solid #edf0f4",padding:"14px 0",display:"grid",gap:6},pubTitle:{lineHeight:1.45},muted:{opacity:.68,fontSize:13}
-};
+const s:Record<string,React.CSSProperties>={main:{maxWidth:1100,margin:"0 auto",padding:"36px 20px 64px",fontFamily:"system-ui,sans-serif",color:"#172033"},panel:{marginTop:18,border:"1px solid #d9e2ef",borderRadius:18,padding:28,background:"#fff"},org:{fontSize:13,fontWeight:800,color:"#1557c0",textTransform:"uppercase"},title:{fontSize:36,lineHeight:1.15,margin:"8px 0 24px"},grid:{display:"grid",gridTemplateColumns:"repeat(auto-fit,minmax(190px,1fr))",gap:18,padding:"20px 0",borderTop:"1px solid #e5e7eb",borderBottom:"1px solid #e5e7eb"},block:{marginTop:28},pub:{padding:"14px 0",borderTop:"1px solid #e5e7eb",display:"grid",gap:5},follow:{marginTop:28,padding:20,borderRadius:12,background:"#f4f8ff"}};
