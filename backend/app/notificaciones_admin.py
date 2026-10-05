@@ -8,7 +8,7 @@ import httpx
 logger = logging.getLogger(__name__)
 
 _DESTINATARIO = "soporte@tucoach-oposiciones.com"
-_REMITENTE = "Tu Coach <noreply@tucoach-oposiciones.com>"
+_REMITENTE = "Tu Coach <soporte@tucoach-oposiciones.com>"
 _RESEND_URL = "https://api.resend.com/emails"
 
 
