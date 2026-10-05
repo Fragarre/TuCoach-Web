@@ -5,6 +5,8 @@ import os
 
 import httpx
 
+from app.postgres import conectar_postgres
+
 logger = logging.getLogger(__name__)
 
 _DESTINATARIO = "soporte@tucoach-oposiciones.com"
@@ -45,3 +47,48 @@ def enviar_notificacion_admin(*, asunto: str, texto: str, idempotency_key: str) 
     except httpx.HTTPError:
         logger.exception("No se pudo enviar la notificación administrativa.")
         return False
+
+
+def notificar_registro_confirmado(*, user_id, email: str) -> bool:
+    """
+    Reclama de forma atómica la notificación de registro y la envía una sola vez.
+    Si el envío falla, libera la marca para permitir un reintento posterior.
+    """
+    with conectar_postgres() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE public.profiles
+                SET registro_notificado_at = now()
+                WHERE id = %s
+                  AND registro_notificado_at IS NULL
+                RETURNING registro_notificado_at
+                """,
+                (user_id,),
+            )
+            reclamado = cur.fetchone() is not None
+        con.commit()
+
+    if not reclamado:
+        return True
+
+    enviado = enviar_notificacion_admin(
+        asunto="Tu Coach · Nuevo registro confirmado",
+        texto=f"Se ha confirmado un nuevo registro en Tu Coach.\n\nUsuario: {email}",
+        idempotency_key=f"registro-confirmado-{user_id}",
+    )
+    if enviado:
+        return True
+
+    with conectar_postgres() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE public.profiles
+                SET registro_notificado_at = NULL
+                WHERE id = %s
+                """,
+                (user_id,),
+            )
+        con.commit()
+    return False
