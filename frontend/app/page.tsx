@@ -1926,16 +1926,6 @@ async function descargarMaterialPdf() {
             <h3>Oposiciones</h3>
             <p>Consulta convocatorias administrativas y la información disponible sobre plazas, inscripción y publicaciones.</p>
             </article>
-              <article className="marketing-card">
-            <span className="marketing-tag">Empleo temporal</span>
-            <h3>Bolsas de trabajo</h3>
-            <p>Amplía tu búsqueda con bolsas de empleo temporal en las administraciones incluidas.</p>
-            </article>
-              <article className="marketing-card">
-            <span className="marketing-tag">Otras oportunidades</span>
-            <h3>Difícil cobertura</h3>
-            <p>Localiza anuncios de puestos de difícil cobertura y consulta sus condiciones en la publicación oficial.</p>
-            </article>
             </div>
             <div className="marketing-follow">
             <div>
