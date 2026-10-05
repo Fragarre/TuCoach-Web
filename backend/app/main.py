@@ -403,7 +403,7 @@ def materiales_normas_api(
         ):
             raise HTTPException(
                 status_code=403,
-                detail="La prueba gratuita de 24 horas ha finalizado.",
+                detail="La prueba gratuita de 48 horas ha finalizado.",
             )
 
         convocatoria = obtener_convocatoria_materiales(convocatoria_id)
@@ -437,7 +437,7 @@ def materiales_pdf_api(
         if es_prueba_24h and not estado.get("prueba_24h_activa", False):
             raise HTTPException(
                 status_code=403,
-                detail="La prueba gratuita de 24 horas ha finalizado.",
+                detail="La prueba gratuita de 48 horas ha finalizado.",
             )
 
         if (
@@ -527,7 +527,7 @@ def disponibilidad_simulacro(
             if not estado.get("prueba_24h_activa", False):
                 raise HTTPException(
                     status_code=403,
-                    detail="La prueba gratuita de 24 horas ha finalizado.",
+                    detail="La prueba gratuita de 48 horas ha finalizado.",
                 )
             if int(estado.get("prueba_24h_simulacros_restantes", 0)) <= 0:
                 raise HTTPException(
@@ -653,7 +653,7 @@ def nuevo_test_api(
             if not estado.get("prueba_24h_activa", False):
                 raise HTTPException(
                     status_code=403,
-                    detail="La prueba gratuita de 24 horas ha finalizado.",
+                    detail="La prueba gratuita de 48 horas ha finalizado.",
                 )
             if int(estado.get("prueba_24h_tests_restantes", 0)) <= 0:
                 raise HTTPException(
@@ -703,7 +703,7 @@ def nuevo_simulacro(
             if not estado.get("prueba_24h_activa", False):
                 raise HTTPException(
                     status_code=403,
-                    detail="La prueba gratuita de 24 horas ha finalizado.",
+                    detail="La prueba gratuita de 48 horas ha finalizado.",
                 )
             if int(estado.get("prueba_24h_simulacros_restantes", 0)) <= 0:
                 raise HTTPException(

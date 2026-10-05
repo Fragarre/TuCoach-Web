@@ -772,7 +772,7 @@ def crear_simulacro(
                     SELECT
                         prueba_24h_inicio_at,
                         prueba_24h_simulacros_usados,
-                        now() < prueba_24h_inicio_at + interval '24 hours' AS prueba_24h_activa
+                        now() < prueba_24h_inicio_at + interval '48 hours' AS prueba_24h_activa
                     FROM public.profiles
                     WHERE id = %s
                     FOR UPDATE
@@ -785,10 +785,10 @@ def crear_simulacro(
                     raise ValueError("El usuario no tiene perfil TuCoach.")
 
                 if perfil["prueba_24h_inicio_at"] is None:
-                    raise ValueError("La prueba gratuita de 24 horas no está iniciada.")
+                    raise ValueError("La prueba gratuita de 48 horas no está iniciada.")
 
                 if not bool(perfil["prueba_24h_activa"]):
-                    raise ValueError("La prueba gratuita de 24 horas ha finalizado.")
+                    raise ValueError("La prueba gratuita de 48 horas ha finalizado.")
 
                 if int(perfil["prueba_24h_simulacros_usados"] or 0) >= 2:
                     raise ValueError("Has alcanzado el límite de 2 simulacros de la prueba gratuita.")
