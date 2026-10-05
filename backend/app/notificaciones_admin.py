@@ -119,6 +119,16 @@ def notificar_alta_suscripcion_pagada(
     if not reclamado:
         return True
 
+    if email is None:
+        with conectar_postgres() as con:
+            with con.cursor() as cur:
+                cur.execute(
+                    "SELECT email FROM public.profiles WHERE id = %s LIMIT 1",
+                    (user_id,),
+                )
+                fila = cur.fetchone()
+        email = fila[0] if fila and fila[0] else None
+
     identificacion = email or str(user_id)
     enviado = enviar_notificacion_admin(
         asunto="Tu Coach · Nueva suscripción pagada",
