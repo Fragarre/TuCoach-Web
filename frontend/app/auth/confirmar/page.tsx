@@ -42,6 +42,21 @@ export default function ConfirmarCuenta() {
         return;
       }
 
+      // Aviso administrativo secundario: nunca bloquea la confirmación de cuenta.
+      if (data.session?.access_token) {
+        try {
+          await fetch("/api/backend/api/v1/auth/registro-confirmado", {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${data.session.access_token}`,
+            },
+            cache: "no-store",
+          });
+        } catch {
+          // La cuenta ya está confirmada; un fallo del aviso no cambia ese resultado.
+        }
+      }
+
       token.current = "";
       setEstado("CONFIRMADA");
     } catch {

@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
+import logging
 import os
 import stripe
 from psycopg.rows import dict_row
@@ -12,8 +13,9 @@ from app.billing import (
     obtener_stripe_webhook_secret,
 )
 from app.postgres import conectar_postgres
+from app.notificaciones_admin import notificar_alta_suscripcion_pagada
 
-
+logger = logging.getLogger(__name__)
 ESTADOS_CON_ACCESO = {"active", "trialing", "past_due"}
 
 
@@ -326,6 +328,24 @@ def procesar_webhook(payload: bytes, signature: str) -> str:
         # correcto o fallido refrescamos la suscripción completa y dejamos
         # que su status determine el acceso.
         _guardar_suscripcion(user_id, suscripcion)
+
+        if (
+            tipo == "invoice.paid"
+            and getattr(objeto, "billing_reason", None) == "subscription_create"
+        ):
+            try:
+                notificar_alta_suscripcion_pagada(
+                    subscription_id=subscription_id,
+                    user_id=user_id,
+                )
+            except Exception:
+                # La notificación administrativa es secundaria: nunca debe
+                # convertir un pago ya procesado en un webhook fallido.
+                logger.exception(
+                    "Fallo al enviar la notificación administrativa "
+                    "de nueva suscripción pagada."
+                )
+
         return tipo
 
     return tipo

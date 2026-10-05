@@ -25,6 +25,7 @@ from app.subscriptions import (
     obtener_customer_id_stripe,
 )
 from app.postgres import comprobar_postgres
+from app.notificaciones_admin import notificar_registro_confirmado
 from app.repositorio_contenidos import (
     comprobar_base,
     obtener_convocatorias,
@@ -215,6 +216,14 @@ def me(usuario: UsuarioAutenticado = Depends(usuario_actual)) -> UsuarioActual:
 @app.get("/api/v1/admin/me")
 def admin_me(usuario: UsuarioAutenticado = Depends(exigir_admin)) -> dict[str, str | bool]:
     return {"id": str(usuario.id), "email": usuario.email, "admin": True}
+
+
+@app.post("/api/v1/auth/registro-confirmado")
+def registro_confirmado_api(
+    usuario: UsuarioAutenticado = Depends(usuario_actual),
+) -> dict[str, bool]:
+    notificar_registro_confirmado(user_id=usuario.id, email=usuario.email)
+    return {"received": True}
 
 
 
