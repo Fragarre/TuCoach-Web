@@ -1911,7 +1911,7 @@ async function descargarMaterialPdf() {
             <p>Prepara contenidos de auxiliar administrativo con simulacros y tests del modelo genérico municipal.</p>
             </article>
             </div>
-            <p className="marketing-disclaimer">Los modelos genéricos son herramientas de práctica: no reproducen las bases de una convocatoria municipal concreta.</p>
+            <p className="marketing-disclaimer">Los modelos genéricos son herramientas de práctica: no reproducen las bases de una convocatoria municipal concreta. <a href="/oposiciones/ayuntamientos">Más información sobre tests y simulacros para oposiciones de Ayuntamientos →</a></p>
           </section>
 
           <section className="marketing-section marketing-employment" id="empleo-publico">
@@ -1925,16 +1925,6 @@ async function descargarMaterialPdf() {
             <span className="marketing-tag">Procesos selectivos</span>
             <h3>Oposiciones</h3>
             <p>Consulta convocatorias administrativas y la información disponible sobre plazas, inscripción y publicaciones.</p>
-            </article>
-              <article className="marketing-card">
-            <span className="marketing-tag">Empleo temporal</span>
-            <h3>Bolsas de trabajo</h3>
-            <p>Amplía tu búsqueda con bolsas de empleo temporal en las administraciones incluidas.</p>
-            </article>
-              <article className="marketing-card">
-            <span className="marketing-tag">Otras oportunidades</span>
-            <h3>Difícil cobertura</h3>
-            <p>Localiza anuncios de puestos de difícil cobertura y consulta sus condiciones en la publicación oficial.</p>
             </article>
             </div>
             <div className="marketing-follow">

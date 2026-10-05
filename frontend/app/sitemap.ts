@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: BASE, changeFrequency: "weekly", priority: 1 },
     { url: `${BASE}/empleo`, changeFrequency: "daily", priority: 0.9 },
     { url: `${BASE}/oposiciones/generalitat-valenciana`, changeFrequency: "weekly", priority: 0.9 },
+    { url: `${BASE}/oposiciones/ayuntamientos`, changeFrequency: "weekly", priority: 0.9 },
     { url: `${BASE}/oposiciones/generalitat-valenciana/a1-01`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/oposiciones/generalitat-valenciana/a2-01`, changeFrequency: "weekly", priority: 0.8 },
     { url: `${BASE}/oposiciones/generalitat-valenciana/c1-01`, changeFrequency: "weekly", priority: 0.8 },
