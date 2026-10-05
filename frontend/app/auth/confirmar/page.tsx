@@ -75,7 +75,7 @@ export default function ConfirmarCuenta() {
             <>
               <h1>Tu cuenta ha sido confirmada</h1>
               <p>El registro se ha completado. Ya puedes iniciar sesión en Tu Coach.</p>
-              <p>Tu prueba de 24 horas comenzará cuando accedas por primera vez.</p>
+              <p>Tu prueba de 48 horas comenzará cuando accedas por primera vez.</p>
               <Link className="primary auth-submit" href="/?acceso=login">Iniciar sesión</Link>
             </>
           ) : estado === "ERROR" ? (

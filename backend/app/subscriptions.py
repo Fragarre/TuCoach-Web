@@ -478,7 +478,7 @@ def obtener_estado_suscripcion(user_id: UUID) -> dict:
         else None
     )
     fin_24h = (
-        inicio_24h + timedelta(hours=24)
+        inicio_24h + timedelta(hours=48)
         if inicio_24h is not None
         else None
     )
@@ -559,7 +559,7 @@ def obtener_estado_suscripcion(user_id: UUID) -> dict:
 
 def consumir_descarga_material_prueba_24h(user_id: UUID) -> int:
     """
-    Consume una descarga de materiales de la prueba gratuita de 24 horas.
+    Consume una descarga de materiales de la prueba gratuita de 48 horas.
 
     La actualización es atómica: solo incrementa el contador si la prueba
     continúa activa y todavía no se han consumido las 2 descargas permitidas.
@@ -575,7 +575,7 @@ def consumir_descarga_material_prueba_24h(user_id: UUID) -> int:
                     updated_at = now()
                 WHERE id = %s
                   AND prueba_24h_inicio_at IS NOT NULL
-                  AND now() < prueba_24h_inicio_at + interval '24 hours'
+                  AND now() < prueba_24h_inicio_at + interval '48 hours'
                   AND prueba_24h_materiales_descargados < 2
                 RETURNING prueba_24h_materiales_descargados
                 """,
@@ -589,7 +589,7 @@ def consumir_descarga_material_prueba_24h(user_id: UUID) -> int:
                     SELECT
                         prueba_24h_inicio_at,
                         prueba_24h_materiales_descargados,
-                        now() < prueba_24h_inicio_at + interval '24 hours'
+                        now() < prueba_24h_inicio_at + interval '48 hours'
                             AS prueba_24h_activa
                     FROM public.profiles
                     WHERE id = %s
@@ -603,12 +603,12 @@ def consumir_descarga_material_prueba_24h(user_id: UUID) -> int:
 
                 if perfil["prueba_24h_inicio_at"] is None:
                     raise ValueError(
-                        "La prueba gratuita de 24 horas no está iniciada."
+                        "La prueba gratuita de 48 horas no está iniciada."
                     )
 
                 if not bool(perfil["prueba_24h_activa"]):
                     raise ValueError(
-                        "La prueba gratuita de 24 horas ha finalizado."
+                        "La prueba gratuita de 48 horas ha finalizado."
                     )
 
                 raise ValueError(

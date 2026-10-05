@@ -1813,7 +1813,7 @@ async function descargarMaterialPdf() {
               <h1>Practica para tu oposición. Encuentra tu próxima oportunidad.</h1>
               <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Preparación y convocatorias de empleo público, en un mismo espacio.</p>
               <div className="public-hero-actions">
-                <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 24 horas</button>
+                <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 48 horas</button>
                 <a className="secondary public-cta marketing-link" href="/empleo">Explorar empleo público →</a>
               </div>
               <p className="marketing-trial-note">La prueba empieza con tu primer acceso: 2 tests, 2 simulacros y 2 descargas de materiales. Incluye Empleo general.</p>
@@ -1982,7 +1982,7 @@ async function descargarMaterialPdf() {
             <div>
             <span className="eyebrow">Prueba y suscripción</span>
             <h2>Conoce Tu Coach antes de suscribirte</h2>
-            <p>La prueba gratuita empieza con el primer acceso, no al crear tu cuenta. Durante 24 horas puedes hacer hasta 2 tests, 2 simulacros y 2 descargas de materiales, además de consultar Empleo general.</p>
+            <p>La prueba gratuita empieza con el primer acceso, no al crear tu cuenta. Durante 48 horas puedes hacer hasta 2 tests, 2 simulacros y 2 descargas de materiales, además de consultar Empleo general.</p>
             <p>El seguimiento de oportunidades está reservado a la suscripción.</p>
             </div>
             <div className="pricing-card">
@@ -2001,7 +2001,7 @@ async function descargarMaterialPdf() {
             <li>Consulta y seguimiento de oportunidades de empleo público</li>
             </ul>
             <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis</button>
-            <span className="pricing-note">Prueba de 24 horas con los límites indicados. Seguimiento incluido en la suscripción.</span>
+            <span className="pricing-note">Prueba de 48 horas con los límites indicados. Seguimiento incluido en la suscripción.</span>
             </div>
           </section>
 
@@ -2030,7 +2030,7 @@ async function descargarMaterialPdf() {
           <section className="public-final-cta">
             <div>
             <span className="eyebrow">Empieza por tu próximo paso</span>
-            <h2>Prueba Tu Coach durante 24 horas.</h2>
+            <h2>Prueba Tu Coach durante 48 horas.</h2>
             </div>
             <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Crear cuenta y probar</button>
             </section>
@@ -2121,12 +2121,12 @@ async function descargarMaterialPdf() {
             </span>
             <h1>
               {esRegistro
-                ? "Crea tu cuenta y prueba Tu Coach durante 24 horas."
+                ? "Crea tu cuenta y prueba Tu Coach durante 48 horas."
                 : "Continúa con tu preparación."}
             </h1>
             <p>
               {esRegistro
-                ? "Tu prueba de 24 horas comienza con el primer acceso e incluye hasta 2 tests, 2 simulacros, 2 descargas de materiales y Empleo general."
+                ? "Tu prueba de 48 horas comienza con el primer acceso e incluye hasta 2 tests, 2 simulacros, 2 descargas de materiales y Empleo general."
                 : "Accede a tus simulacros, tests, resultados y herramientas de preparación."}
             </p>
 
@@ -2357,7 +2357,7 @@ async function descargarMaterialPdf() {
                       : estadoSuscripcion.suscrito
                         ? "Suscripción activa"
                         : prueba24hActiva
-                        ? "Prueba gratuita de 24 horas activa"
+                        ? "Prueba gratuita de 48 horas activa"
                         : "Suscripción no activa"}
                 </strong>
                 <span>

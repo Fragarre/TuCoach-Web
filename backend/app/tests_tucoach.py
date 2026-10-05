@@ -549,12 +549,12 @@ def crear_test(
 
                 if inicio_24h is None:
                     raise ValueError(
-                        "La prueba gratuita de 24 horas no está iniciada."
+                        "La prueba gratuita de 48 horas no está iniciada."
                     )
 
-                if datetime.now(timezone.utc) >= inicio_24h + timedelta(hours=24):
+                if datetime.now(timezone.utc) >= inicio_24h + timedelta(hours=48):
                     raise ValueError(
-                        "La prueba gratuita de 24 horas ha finalizado."
+                        "La prueba gratuita de 48 horas ha finalizado."
                     )
 
                 if tests_usados >= 2:
