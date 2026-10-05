@@ -92,3 +92,55 @@ def notificar_registro_confirmado(*, user_id, email: str) -> bool:
             )
         con.commit()
     return False
+
+
+def notificar_alta_suscripcion_pagada(
+    *, subscription_id: str, user_id, email: str | None = None
+) -> bool:
+    """
+    Envía una sola notificación por el alta pagada de una suscripción.
+    No interviene en la concesión de acceso ni en el estado de Stripe.
+    """
+    with conectar_postgres() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE public.subscriptions
+                SET alta_pagada_notificada_at = now()
+                WHERE subscription_id = %s
+                  AND alta_pagada_notificada_at IS NULL
+                RETURNING alta_pagada_notificada_at
+                """,
+                (subscription_id,),
+            )
+            reclamado = cur.fetchone() is not None
+        con.commit()
+
+    if not reclamado:
+        return True
+
+    identificacion = email or str(user_id)
+    enviado = enviar_notificacion_admin(
+        asunto="Tu Coach · Nueva suscripción pagada",
+        texto=(
+            "Se ha confirmado el primer pago de una nueva suscripción en Tu Coach."
+            f"\n\nUsuario: {identificacion}"
+            f"\nSuscripción Stripe: {subscription_id}"
+        ),
+        idempotency_key=f"alta-suscripcion-pagada-{subscription_id}",
+    )
+    if enviado:
+        return True
+
+    with conectar_postgres() as con:
+        with con.cursor() as cur:
+            cur.execute(
+                """
+                UPDATE public.subscriptions
+                SET alta_pagada_notificada_at = NULL
+                WHERE subscription_id = %s
+                """,
+                (subscription_id,),
+            )
+        con.commit()
+    return False
