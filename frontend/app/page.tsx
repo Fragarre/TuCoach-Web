@@ -1911,7 +1911,7 @@ async function descargarMaterialPdf() {
             <p>Prepara contenidos de auxiliar administrativo con simulacros y tests del modelo genérico municipal.</p>
             </article>
             </div>
-            <p className="marketing-disclaimer">Los modelos genéricos son herramientas de práctica: no reproducen las bases de una convocatoria municipal concreta.</p>
+            <p className="marketing-disclaimer">Los modelos genéricos son herramientas de práctica: no reproducen las bases de una convocatoria municipal concreta. <a href="/oposiciones/ayuntamientos">Más información sobre tests y simulacros para oposiciones de Ayuntamientos →</a></p>
           </section>
 
           <section className="marketing-section marketing-employment" id="empleo-publico">
