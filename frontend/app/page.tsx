@@ -1814,7 +1814,7 @@ async function descargarMaterialPdf() {
               <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Preparación y convocatorias de empleo público, en un mismo espacio.</p>
               <div className="public-hero-actions">
                 <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 48 horas</button>
-                <a className="secondary public-cta marketing-link" href="/empleo">Explorar empleo público →</a>
+                <span className="secondary public-cta marketing-link" aria-disabled="true" title="Empleo público temporalmente desactivado por mantenimiento">Empleo público — mantenimiento</span>
               </div>
               <p className="marketing-trial-note">La prueba empieza con tu primer acceso: 2 tests, 2 simulacros y 2 descargas de materiales. Incluye Empleo general.</p>
               <div className="marketing-scope">Generalitat Valenciana · Diputaciones · Ayuntamientos</div>
