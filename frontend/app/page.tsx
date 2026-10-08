@@ -1917,6 +1917,7 @@ async function descargarMaterialPdf() {
           <section className="marketing-section marketing-employment" id="empleo-publico">
             <div className="marketing-heading">
             <span className="eyebrow">Empleo público</span>
+            <p role="status" style={{ margin: "10px 0 0", fontWeight: 600 }}>La opción de empleo público está temporalmente desactivada por mantenimiento.</p>
             <h2>Busca más allá de una oposición</h2>
             <p>Consulta oportunidades de la Generalitat Valenciana, diputaciones y ayuntamientos de Valencia, Alicante y Castellón, con acceso a sus publicaciones oficiales.</p>
             </div>
@@ -1932,7 +1933,7 @@ async function descargarMaterialPdf() {
             <h3>Sigue los procesos que te interesan</h3>
             <p>Con tu suscripción, guarda oportunidades en seguimiento y revisa sus novedades oficiales. La preparación específica se indica cuando está disponible.</p>
             </div>
-            <a href="/empleo" className="primary public-cta marketing-link">Explorar oportunidades →</a>
+            <span className="primary public-cta marketing-link" aria-disabled="true" title="Empleo público temporalmente desactivado por mantenimiento">Empleo público temporalmente desactivado</span>
             </div>
           </section>
 
