@@ -26,6 +26,7 @@ const structuredData = {
       "@id": "https://tucoach-oposiciones.com/#website",
       url: "https://tucoach-oposiciones.com/",
       name: "Tu Coach",
+      alternateName: "tucoach-oposiciones.com",
       publisher: { "@id": "https://tucoach-oposiciones.com/#organization" },
       inLanguage: "es",
     },
