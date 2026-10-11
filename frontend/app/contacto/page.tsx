@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Contacto | Tu Coach",
-  description: "Contacto y soporte de Tu Coach.",
+  description: "Contacto y soporte de Tu Coach.", alternates: { canonical: "/contacto" },
 };
 
 export default function ContactoPage() {

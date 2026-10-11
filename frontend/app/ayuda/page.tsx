@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "next/link"; import type { Metadata } from "next"; export const metadata: Metadata = { title: "Ayuda: c\u00f3mo utilizar Tu Coach | Tu Coach", description: "Gu\u00eda para empezar a preparar tu oposici\u00f3n con Tu Coach: tests, simulacros y c\u00f3mo entender tus resultados.", alternates: { canonical: "/ayuda" } };
 
 const S={main:{maxWidth:1040,margin:"0 auto",padding:"36px 20px 72px",fontFamily:"system-ui, sans-serif",color:"#172033"} as React.CSSProperties,hero:{padding:"34px 38px",border:"1px solid #d9e2ef",borderRadius:20,background:"#f7faff"} as React.CSSProperties,nav:{display:"flex",flexWrap:"wrap",gap:8,margin:"22px 0"} as React.CSSProperties,chip:{padding:"8px 11px",border:"1px solid #cbd8e8",borderRadius:9,color:"#1557c0",textDecoration:"none",fontWeight:700,fontSize:14} as React.CSSProperties,section:{padding:"24px 4px",borderBottom:"1px solid #e2e8f0",lineHeight:1.65} as React.CSSProperties};
 export default function Ayuda(){
