@@ -52,7 +52,7 @@ const TIPOS_PUBLICACION = [
   "adjudicacion",
   "adjudicación",
   "lista",
-  "seguimiento_oficial",
+  "seguimiento_oficial", "bolsa_etapa", "adc_etapa", "adc_relacionado", "cesion_datos",
 ];
 
 function esPublicacionUtil(n: Novedad): boolean {
