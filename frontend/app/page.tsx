@@ -1722,7 +1722,7 @@ async function descargarMaterialPdf() {
   }
 
   if (cargandoSesion) {
-    return <main className="page">Comprobando sesión...</main>;
+    return <main className="page"><h1>Tu Coach: oposiciones y empleo p&uacute;blico en la Comunitat Valenciana</h1><p>Tests, simulacros y materiales para preparar las oposiciones administrativas de la Generalitat Valenciana (A1-01, A2-01, C1-01 y C2-01) y de ayuntamientos, junto con las convocatorias de empleo p&uacute;blico recopiladas de fuentes oficiales.</p><nav><a href="/oposiciones/generalitat-valenciana">Oposiciones Generalitat Valenciana</a> &middot; <a href="/oposiciones/ayuntamientos">Oposiciones de ayuntamientos</a> &middot; <a href="/empleo">Empleo p&uacute;blico</a> &middot; <a href="/ayuda">Ayuda</a></nav><p>Comprobando sesi&oacute;n...</p></main>;
   }
 
   if (session && pantallaPublica === "NUEVA_PASSWORD") {
