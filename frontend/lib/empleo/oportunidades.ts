@@ -78,3 +78,29 @@ export function bolsaEnFuncionamiento(p: Oportunidad): boolean {
 export function visibleEnCatalogo(p: Oportunidad): boolean {
  return !esBolsa(p) || bolsaEnFuncionamiento(p);
 }
+
+// --- Relación bolsa ↔ ADC ---------------------------------------------------
+// Las bolsas llevan su referencia en la denominación ("790-B", "835-L") y los
+// ADC listan las referencias de las bolsas a las que se dirigen (a veces solo
+// el número). Dos referencias coinciden si el número es igual y, cuando ambas
+// traen letra, la letra también. Referencias con "/" (p. ej. 500/22) no se cruzan.
+type ClaveBolsa = { numero: string; letra: string | null };
+function claveBolsa(ref: string): ClaveBolsa | null {
+ const texto = ref.toUpperCase().trim();
+ if (/\d\s*\/\s*\d/.test(texto)) return null;
+ const m = texto.match(/(\d{2,4})(?:\s*-?\s*([BL]))?\b/);
+ return m ? { numero: m[1], letra: m[2] ?? null } : null;
+}
+export function referenciaBolsa(p: { denominacion: string | null }): string | null {
+ const m = (p.denominacion || "").match(/\b(\d{2,4})\s*-\s*([BL])\b/i);
+ return m ? `${m[1]}-${m[2].toUpperCase()}` : null;
+}
+export function mismaBolsa(a: string, b: string): boolean {
+ const ka = claveBolsa(a), kb = claveBolsa(b);
+ return !!ka && !!kb && ka.numero === kb.numero && (!ka.letra || !kb.letra || ka.letra === kb.letra);
+}
+export function adcDeBolsa<T extends Oportunidad>(bolsa: { denominacion: string | null }, adcs: T[]): T[] {
+ const ref = referenciaBolsa(bolsa);
+ if (!ref) return [];
+ return adcs.filter(a => esAdc(a) && bolsasRelacionadas(a).some(r => mismaBolsa(r, ref)));
+}
