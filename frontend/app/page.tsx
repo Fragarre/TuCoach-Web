@@ -3130,7 +3130,7 @@ async function descargarMaterialPdf() {
                 materialConvocatoriaId !== null &&
                 !convocatorias
                   .find((convocatoria) => convocatoria.id === materialConvocatoriaId)
-                  ?.codigo.startsWith("Apoyo-")
+                  ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                   ? materialConvocatoriaId
                   : ""
               }
@@ -3145,7 +3145,7 @@ async function descargarMaterialPdf() {
             >
               <option value="">Selecciona una convocatoria</option>
               {convocatorias
-                .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                .filter((convocatoria) => !convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                 .map((convocatoria) => (
                   <option key={convocatoria.id} value={convocatoria.id}>
                     {convocatoria.codigo} — {convocatoria.puesto}
@@ -3166,7 +3166,7 @@ async function descargarMaterialPdf() {
                 materialConvocatoriaId !== null &&
                 convocatorias
                   .find((convocatoria) => convocatoria.id === materialConvocatoriaId)
-                  ?.codigo.startsWith("Apoyo-")
+                  ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                   ? materialConvocatoriaId
                   : ""
               }
@@ -3181,7 +3181,7 @@ async function descargarMaterialPdf() {
             >
               <option value="">Selecciona un modelo de convocatoria</option>
               {convocatorias
-                .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                .filter((convocatoria) => convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                 .map((convocatoria) => (
                   <option key={convocatoria.id} value={convocatoria.id}>
                     {convocatoria.codigo} — {convocatoria.puesto}
@@ -3306,7 +3306,7 @@ async function descargarMaterialPdf() {
                   convocatoriaSimulacroId !== null &&
                   !convocatorias
                     .find((convocatoria) => convocatoria.id === convocatoriaSimulacroId)
-                    ?.codigo.startsWith("Apoyo-")
+                    ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                     ? convocatoriaSimulacroId
                     : ""
                 }
@@ -3318,7 +3318,7 @@ async function descargarMaterialPdf() {
               >
                 <option value="">Selecciona una convocatoria</option>
                 {convocatorias
-                  .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                  .filter((convocatoria) => !convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                   .map((convocatoria) => (
                     <option key={convocatoria.id} value={convocatoria.id}>
                       {convocatoria.codigo} — {convocatoria.puesto}
@@ -3339,7 +3339,7 @@ async function descargarMaterialPdf() {
                   convocatoriaSimulacroId !== null &&
                   convocatorias
                     .find((convocatoria) => convocatoria.id === convocatoriaSimulacroId)
-                    ?.codigo.startsWith("Apoyo-")
+                    ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                     ? convocatoriaSimulacroId
                     : ""
                 }
@@ -3351,7 +3351,7 @@ async function descargarMaterialPdf() {
               >
                 <option value="">Selecciona un modelo de convocatoria</option>
                 {convocatorias
-                  .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                  .filter((convocatoria) => convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                   .map((convocatoria) => (
                     <option key={convocatoria.id} value={convocatoria.id}>
                       {convocatoria.codigo} — {convocatoria.puesto}
@@ -3466,7 +3466,7 @@ async function descargarMaterialPdf() {
                     convocatoriaTestId !== null &&
                     !convocatorias
                       .find((convocatoria) => convocatoria.id === convocatoriaTestId)
-                      ?.codigo.startsWith("Apoyo-")
+                      ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                       ? convocatoriaTestId
                       : ""
                   }
@@ -3480,7 +3480,7 @@ async function descargarMaterialPdf() {
                 >
                   <option value="">Selecciona una convocatoria</option>
                   {convocatorias
-                    .filter((convocatoria) => !convocatoria.codigo.startsWith("Apoyo-"))
+                    .filter((convocatoria) => !convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                     .map((convocatoria) => (
                       <option key={convocatoria.id} value={convocatoria.id}>
                         {convocatoria.codigo} — {convocatoria.puesto}
@@ -3501,7 +3501,7 @@ async function descargarMaterialPdf() {
                     convocatoriaTestId !== null &&
                     convocatorias
                       .find((convocatoria) => convocatoria.id === convocatoriaTestId)
-                      ?.codigo.startsWith("Apoyo-")
+                      ?.codigo.match(/^(?:Apoyo|Modelo de Examen)-/)
                       ? convocatoriaTestId
                       : ""
                   }
@@ -3515,7 +3515,7 @@ async function descargarMaterialPdf() {
                 >
                   <option value="">Selecciona un modelo de convocatoria</option>
                   {convocatorias
-                    .filter((convocatoria) => convocatoria.codigo.startsWith("Apoyo-"))
+                    .filter((convocatoria) => convocatoria.codigo.match(/^(?:Apoyo|Modelo de Examen)-/))
                     .map((convocatoria) => (
                       <option key={convocatoria.id} value={convocatoria.id}>
                         {convocatoria.codigo} — {convocatoria.puesto}

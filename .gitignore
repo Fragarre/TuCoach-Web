@@ -17,3 +17,6 @@ backend/data/*.rollback
 node_modules
 
 backend/materiales/resumenes/backups_publicacion/
+
+# Next.js build info
+*.tsbuildinfo
