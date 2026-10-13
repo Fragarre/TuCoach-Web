@@ -1814,7 +1814,7 @@ async function descargarMaterialPdf() {
               <p>Simulacros y tests de convocatorias disponibles y modelos genéricos para ayuntamientos. Preparación y convocatorias de empleo público, en un mismo espacio.</p>
               <div className="public-hero-actions">
                 <button type="button" className="primary public-cta" onClick={() => { setError(""); setMensaje(""); setPantallaPublica("REGISTRO"); }}>Probar gratis durante 48 horas</button>
-                <span className="secondary public-cta marketing-link" aria-disabled="true" title="Empleo público temporalmente desactivado por mantenimiento">Empleo público — mantenimiento</span>
+                <a className="secondary public-cta marketing-link" href="/empleo">Explorar empleo público →</a>
               </div>
               <p className="marketing-trial-note">La prueba empieza con tu primer acceso: 2 tests, 2 simulacros y 2 descargas de materiales. Incluye Empleo general.</p>
               <div className="marketing-scope">Generalitat Valenciana · Diputaciones · Ayuntamientos</div>
@@ -1917,7 +1917,6 @@ async function descargarMaterialPdf() {
           <section className="marketing-section marketing-employment" id="empleo-publico">
             <div className="marketing-heading">
             <span className="eyebrow">Empleo público</span>
-            <p role="status" style={{ margin: "10px 0 0", fontWeight: 600 }}>La opción de empleo público está temporalmente desactivada por mantenimiento.</p>
             <h2>Busca más allá de una oposición</h2>
             <p>Consulta oportunidades de la Generalitat Valenciana, diputaciones y ayuntamientos de Valencia, Alicante y Castellón, con acceso a sus publicaciones oficiales.</p>
             </div>
@@ -1933,7 +1932,7 @@ async function descargarMaterialPdf() {
             <h3>Sigue los procesos que te interesan</h3>
             <p>Con tu suscripción, guarda oportunidades en seguimiento y revisa sus novedades oficiales. La preparación específica se indica cuando está disponible.</p>
             </div>
-            <span className="primary public-cta marketing-link" aria-disabled="true" title="Empleo público temporalmente desactivado por mantenimiento">Empleo público temporalmente desactivado</span>
+            <a href="/empleo" className="primary public-cta marketing-link">Explorar oportunidades →</a>
             </div>
           </section>
 
