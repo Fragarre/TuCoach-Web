@@ -12,3 +12,4 @@ psycopg[binary,pool]
 beautifulsoup4>=4.13,<5
 pypdf>=6,<7
 PyMuPDF>=1.26,<2
+tzdata

@@ -1,6 +1,6 @@
 import base64
 import stripe
-from fastapi import Depends, FastAPI, HTTPException, Query, Request
+from fastapi import BackgroundTasks, Depends, FastAPI, HTTPException, Query, Request
 from pydantic import BaseModel
 
 from app.analisis_rendimiento import generar_analisis_rendimiento
@@ -26,6 +26,7 @@ from app.subscriptions import (
 )
 from app.postgres import comprobar_postgres
 from app.notificaciones_admin import notificar_registro_confirmado
+from app.correos_usuario import enviar_bienvenida
 from app.repositorio_contenidos import (
     comprobar_base,
     obtener_convocatorias,
@@ -220,9 +221,11 @@ def admin_me(usuario: UsuarioAutenticado = Depends(exigir_admin)) -> dict[str, s
 
 @app.post("/api/v1/auth/registro-confirmado")
 def registro_confirmado_api(
+    background_tasks: BackgroundTasks,
     usuario: UsuarioAutenticado = Depends(usuario_actual),
 ) -> dict[str, bool]:
     notificar_registro_confirmado(user_id=usuario.id, email=usuario.email)
+    background_tasks.add_task(enviar_bienvenida, user_id=usuario.id, email=usuario.email)
     return {"received": True}
 
 

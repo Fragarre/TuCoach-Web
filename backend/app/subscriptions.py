@@ -14,6 +14,7 @@ from app.billing import (
 )
 from app.postgres import conectar_postgres
 from app.notificaciones_admin import notificar_alta_suscripcion_pagada
+from app.correos_usuario import enviar_confirmacion_suscripcion
 
 logger = logging.getLogger(__name__)
 ESTADOS_CON_ACCESO = {"active", "trialing", "past_due"}
@@ -344,6 +345,21 @@ def procesar_webhook(payload: bytes, signature: str) -> str:
                 logger.exception(
                     "Fallo al enviar la notificación administrativa "
                     "de nueva suscripción pagada."
+                )
+
+            try:
+                enviar_confirmacion_suscripcion(
+                    subscription_id=subscription_id,
+                    user_id=user_id,
+                    invoice=objeto,
+                    suscripcion=suscripcion,
+                )
+            except Exception:
+                # Igual que la notificación administrativa: un fallo de correo
+                # nunca debe convertir un pago ya procesado en un webhook fallido.
+                logger.exception(
+                    "Fallo al enviar al usuario la confirmación "
+                    "de suscripción pagada."
                 )
 
         return tipo
