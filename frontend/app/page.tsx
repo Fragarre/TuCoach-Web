@@ -505,6 +505,14 @@ const [materialTipo, setMaterialTipo] = useState<
   }, []);
 
   useEffect(() => {
+    if (cargandoSesion || session) return;
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    if (!id) return;
+    const t = window.setTimeout(() => document.getElementById(id)?.scrollIntoView(), 0);
+    return () => window.clearTimeout(t);
+  }, [cargandoSesion, session]);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setCargandoSesion(false);
