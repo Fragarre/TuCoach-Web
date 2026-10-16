@@ -4,6 +4,10 @@ Calcula la dificultad de cada pregunta a partir de los datos que ya trae la
 consulta de candidatas (tipo de fuente, enunciado y opciones). No consulta ni
 modifica ninguna base de datos.
 
+Si la base de contenidos tiene la columna lote_preguntas.nivel_dificultad
+(calculada en TuCoach-Mantenimiento con calcular_nivel_dificultad.py), se usa
+ese nivel. Si no existe o está vacío, el nivel se calcula aquí como antes.
+
 Se activa con la variable de entorno OPOCOACH_FILTRO_DIFICULTAD=1.
 Si no está definida o vale otra cosa, la selección funciona exactamente igual que antes.
 
@@ -19,6 +23,7 @@ from __future__ import annotations
 
 import os
 import re
+import time
 
 MULTIPLICADOR_MINIMO = 8
 
@@ -67,6 +72,64 @@ def puntuacion_pistas(enunciado: str, opciones: dict[str, str], correcta: str) -
 
 
 _CACHE_NIVELES: dict[int, int] = {}
+_GUARDADOS: dict[int, int | None] = {}
+_ESTADO = {"columna": None, "comprobado": 0.0}
+_VIGENCIA_CACHE_S = 3600  # los niveles guardados se releen como mucho cada hora
+
+
+def _cargar_niveles_guardados(ids: list[int]) -> None:
+    """Lee de la base de contenidos los niveles guardados de las preguntas indicadas.
+
+    Si la columna no existe o hay cualquier error, no hace nada (se usa el cálculo local).
+    """
+    ahora = time.time()
+    if ahora - _ESTADO["comprobado"] > _VIGENCIA_CACHE_S:
+        _GUARDADOS.clear()
+        _ESTADO["columna"] = None
+        _ESTADO["comprobado"] = ahora
+    pendientes = [i for i in ids if i not in _GUARDADOS]
+    if not pendientes or _ESTADO["columna"] is False:
+        return
+    try:
+        from app.database import (
+            ORIGEN_CONTENIDOS_POSTGRES,
+            conectar_contenidos_postgres,
+            conectar_contenidos_sqlite,
+            obtener_origen_contenidos,
+        )
+        if obtener_origen_contenidos() == ORIGEN_CONTENIDOS_POSTGRES:
+            with conectar_contenidos_postgres() as con:
+                with con.cursor() as cur:
+                    if _ESTADO["columna"] is None:
+                        cur.execute(
+                            "SELECT 1 FROM information_schema.columns WHERE table_schema=%s "
+                            "AND table_name=%s AND column_name=%s",
+                            ("contenidos", "lote_preguntas", "nivel_dificultad"))
+                        _ESTADO["columna"] = cur.fetchone() is not None
+                    if not _ESTADO["columna"]:
+                        return
+                    cur.execute(
+                        "SELECT id, nivel_dificultad FROM contenidos.lote_preguntas WHERE id = ANY(%s)",
+                        (pendientes,))
+                    filas = [(f["id"], f["nivel_dificultad"]) for f in cur.fetchall()]
+        else:
+            with conectar_contenidos_sqlite() as con:
+                if _ESTADO["columna"] is None:
+                    columnas = {r[1] for r in con.execute("PRAGMA table_info(lote_preguntas)")}
+                    _ESTADO["columna"] = "nivel_dificultad" in columnas
+                if not _ESTADO["columna"]:
+                    return
+                filas = con.execute(
+                    "SELECT id, nivel_dificultad FROM lote_preguntas "
+                    "WHERE id IN (SELECT value FROM json_each(?))",
+                    (str(pendientes),)).fetchall()
+                filas = [(f[0], f[1]) for f in filas]
+        for i in pendientes:
+            _GUARDADOS[i] = None
+        for i, n in filas:
+            _GUARDADOS[int(i)] = int(n) if n is not None else None
+    except Exception:
+        _ESTADO["columna"] = False
 
 
 def nivel_dificultad(pregunta) -> int:
@@ -74,6 +137,9 @@ def nivel_dificultad(pregunta) -> int:
         clave = int(pregunta["pregunta_id"])
     except (KeyError, IndexError, TypeError, ValueError):
         return _calcular_nivel(pregunta)
+    guardado = _GUARDADOS.get(clave)
+    if guardado is not None:
+        return guardado
     if clave not in _CACHE_NIVELES:
         _CACHE_NIVELES[clave] = _calcular_nivel(pregunta)
     return _CACHE_NIVELES[clave]
@@ -107,6 +173,10 @@ def filtrar_por_dificultad(candidatas: list, cantidad: int) -> list:
     if not filtro_activo() or cantidad <= 0 or not candidatas:
         return candidatas
     objetivo = MULTIPLICADOR_MINIMO * cantidad
+    try:
+        _cargar_niveles_guardados([int(p["pregunta_id"]) for p in candidatas])
+    except Exception:
+        pass
     niveles = [(p, nivel_dificultad(p)) for p in candidatas]
     for tope in (1, 2, 3):
         pool = [p for p, n in niveles if n <= tope]
