@@ -491,8 +491,9 @@ const [materialTipo, setMaterialTipo] = useState<
     const params = new URLSearchParams(window.location.search);
     const estado = params.get("checkout");
 
-    if (params.get("acceso") === "login") {
-      setPantallaPublica("LOGIN");
+    const acceso = params.get("acceso");
+    if (acceso === "login" || acceso === "registro") {
+      setPantallaPublica(acceso === "login" ? "LOGIN" : "REGISTRO");
       params.delete("acceso");
       const consulta = params.toString();
       window.history.replaceState({}, "", `${window.location.pathname}${consulta ? `?${consulta}` : ""}${window.location.hash}`);
