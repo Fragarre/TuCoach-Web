@@ -19,6 +19,7 @@ from app.database import (
 )
 from app.postgres import conectar_postgres
 from app.repositorio_contenidos import convocatoria_esta_activa
+from app.dificultad import filtrar_por_dificultad
 
 ORIGENES_VALIDOS = {
     "A1", "A2", "C1", "C2",
@@ -195,6 +196,7 @@ def _seleccionar(
     cantidad: int,
     ultima: dict[int, datetime],
 ) -> list:
+    candidatas = filtrar_por_dificultad(candidatas, cantidad)
     limite = datetime.now().astimezone() - timedelta(days=DIAS_SIN_REPETICION)
     no_recientes, recientes = [], []
 
