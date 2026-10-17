@@ -1,7 +1,8 @@
 # Tu Coach Web
 
-Migración paralela de Tu Coach. No modifica la aplicación Streamlit ni
-TuCoach-Mantenimiento.
+Aplicación web de Tu Coach (backend FastAPI + frontend Next.js). Los
+contenidos se preparan en TuCoach-Mantenimiento. La antigua versión
+Streamlit dejó de usarse en octubre de 2026 (repositorio archivado).
 
 ## Arquitectura actual
 

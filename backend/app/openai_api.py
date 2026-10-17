@@ -16,8 +16,8 @@ def generar_analisis_rendimiento_ia(
     """
     Genera el comentario interpretativo del rendimiento acumulado.
 
-    La clave se lee exclusivamente del entorno. Por compatibilidad con la
-    versión Streamlit se utiliza OPENAI_API_KEY_OPOCOACH.
+    La clave se lee exclusivamente del entorno (OPENAI_API_KEY_OPOCOACH;
+    nombre heredado, configurado en Render: no renombrar sin cambiarlo allí).
     """
 
     api_key = os.getenv("OPENAI_API_KEY_OPOCOACH")

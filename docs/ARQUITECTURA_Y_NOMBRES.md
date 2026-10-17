@@ -1,6 +1,6 @@
 # Tu Coach — arquitectura y nomenclatura
 
-**Estado verificado:** 13/09/2026
+**Estado verificado:** 17/10/2026
 
 ## 1. Objetivo
 
@@ -20,12 +20,12 @@ Los nombres históricos son identificadores técnicos heredados. No implican que
 
 | Nombre técnico actual | Plataforma / ubicación | Función actual | Nombre funcional |
 | --- | --- | --- | --- |
-| `Fragarre/OpoCoach-Web` | GitHub | Repositorio principal: frontend y backend de la aplicación | Tu Coach |
+| `Fragarre/TuCoach-Web` | GitHub | Repositorio principal: frontend y backend de la aplicación | Tu Coach |
 | `Fragarre/NetReto-Web-Empleo` | GitHub | Código específico del módulo de Empleo | Tu Coach · Empleo |
-| `backend/employment_service` | Submódulo dentro de `OpoCoach-Web` | Integra el backend de Empleo en el backend principal | Servicio Empleo |
+| `backend/employment_service` | Submódulo dentro de `TuCoach-Web` | Integra el backend de Empleo en el backend principal | Servicio Empleo |
 | `opocoach-web-staging-backend` | Render | Único servicio web backend activo; sirve Tu Coach e integra las rutas de Empleo | Backend Tu Coach |
 | `netreto-empleo-periodic` | Render | Cron activo que ejecuta periódicamente la actualización de Empleo | Actualizador Empleo |
-| `opocoach-web-test` (`fgvnzgyrejobubccikfn`) | Supabase | Base de datos principal: aplicación, usuarios y datos principales | BD Tu Coach |
+| `TuCoach-Web` (`fgvnzgyrejobubccikfn`) | Supabase | Base de datos principal: aplicación, usuarios y datos principales | BD Tu Coach |
 | `netreto-empleo` (`deuhjpnonwulntnryczd`) | Supabase | Base de datos separada del módulo Empleo: procesos, publicaciones, cambios, seguimiento, etc. | BD Empleo |
 
 ## 4. Render: recursos que deben existir
@@ -35,7 +35,7 @@ Actualmente hay **dos recursos activos** y ambos son necesarios:
 ### `opocoach-web-staging-backend`
 
 - Tipo: Web Service.
-- Repositorio: `Fragarre/OpoCoach-Web`.
+- Repositorio: `Fragarre/TuCoach-Web`.
 - Rama: `main`.
 - Directorio raíz: `backend`.
 - Región: Frankfurt.
@@ -64,7 +64,7 @@ No debe confundirse `netreto-empleo-api` (eliminado) con `netreto-empleo-periodi
 
 Se mantienen deliberadamente dos bases de datos separadas:
 
-### Principal — `opocoach-web-test`
+### Principal — `TuCoach-Web`
 
 Project ref: `fgvnzgyrejobubccikfn`.
 
@@ -80,22 +80,22 @@ Contiene el dominio específico de Empleo. El backend unificado accede a ella me
 
 ## 7. Relación entre los repositorios
 
-`OpoCoach-Web` es el repositorio principal desplegable. El código específico del backend de Empleo se conserva en `NetReto-Web-Empleo` y se incorpora al repositorio principal mediante el submódulo:
+`TuCoach-Web` es el repositorio principal desplegable. El código específico del backend de Empleo se conserva en `NetReto-Web-Empleo` y se incorpora al repositorio principal mediante el submódulo:
 
 `backend/employment_service`
 
 Por tanto, un cambio del backend de Empleo puede requerir dos pasos:
 
 1. commit del cambio en `NetReto-Web-Empleo`;
-2. actualización del puntero del submódulo en `OpoCoach-Web` para que el backend principal despliegue esa versión.
+2. actualización del puntero del submódulo en `TuCoach-Web` para que el backend principal despliegue esa versión.
 
-No asumir que un commit en `NetReto-Web-Empleo` actualiza automáticamente la versión integrada en `OpoCoach-Web`.
+No asumir que un commit en `NetReto-Web-Empleo` actualiza automáticamente la versión integrada en `TuCoach-Web`.
 
 ## 8. Despliegues
 
 ### Frontend
 
-El frontend Next.js de `OpoCoach-Web` se despliega mediante Vercel a partir del repositorio principal.
+El frontend Next.js de `TuCoach-Web` se despliega mediante Vercel a partir del repositorio principal.
 
 ### Backend
 
@@ -109,7 +109,7 @@ El cron `netreto-empleo-periodic` se mantiene separado del servicio web y ejecut
 
 Antes de cualquier limpieza de nombres, no realizar directamente ninguna de estas operaciones:
 
-- renombrar `OpoCoach-Web`;
+- renombrar `TuCoach-Web` (repositorio GitHub o proyecto Supabase);
 - renombrar o eliminar `NetReto-Web-Empleo`;
 - eliminar `backend/employment_service`;
 - eliminar `netreto-empleo-periodic`;
@@ -125,3 +125,5 @@ La prioridad es **estabilidad antes que uniformidad nominal**. Los nombres hered
 Si en el futuro se decide unificar la nomenclatura, debe tratarse como una migración independiente: inventario de dependencias, cambios uno a uno, pruebas y posibilidad de reversión.
 
 Mientras tanto, toda documentación y toda interfaz dirigida al usuario debe utilizar **Tu Coach**; los nombres `OpoCoach` y `NetReto` quedan reservados para identificar componentes técnicos heredados.
+
+> Actualización 17/10/2026: el repositorio GitHub se llama ahora `Fragarre/TuCoach-Web` (antes `OpoCoach-Web`) y el proyecto Supabase principal se llama `TuCoach-Web` (antes `opocoach-web-test`); el *project ref* no cambia. El servicio Render conserva su nombre técnico `opocoach-web-staging-backend`.
